@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Jacob&#39;s Notes</title>
+  <icon>https://zmlu.me/img/logo.png</icon>
+  <subtitle>记录·分享</subtitle>
+  <link href="https://zmlu.me/atom.xml" rel="self"/>
+  
+  <link href="https://zmlu.me/"/>
+  <updated>2020-07-16T02:56:24.000Z</updated>
+  <id>https://zmlu.me/</id>
+  
+  <author>
+    <name>Jacob</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用Scrapy抓取百度热点新闻</title>
+    <link href="https://zmlu.me/p/QHV65K.html"/>
+    <id>https://zmlu.me/p/QHV65K.html</id>
+    <published>2020-07-01T16:00:00.000Z</published>
+    <updated>2020-07-16T02:56:24.000Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;安装Scrapy&quot;&gt;&lt;a href=&quot;#安装Scrapy&quot; class=&quot;headerlink&quot; title=&quot;安装Scrapy&quot;&gt;&lt;/a&gt;安装Scrapy&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;pip install Scrapy&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;创建项目&quot;&gt;&lt;a href=&quot;#创建项目&quot; class=&quot;headerlink&quot; title=&quot;创建项目&quot;&gt;&lt;/a&gt;创建项目&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;scrapy startproject tutorial&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Python" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Python/"/>
+    
+    
+    <category term="Python" scheme="https://zmlu.me/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CarKey功能预测及介绍</title>
+    <link href="https://zmlu.me/p/T5A9FS.html"/>
+    <id>https://zmlu.me/p/T5A9FS.html</id>
+    <published>2020-06-16T16:00:00.000Z</published>
+    <updated>2020-06-17T06:52:50.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>[202006期] 有价值 iOS App</title>
+    <link href="https://zmlu.me/p/2S9K9NA.html"/>
+    <id>https://zmlu.me/p/2S9K9NA.html</id>
+    <published>2020-06-10T16:00:00.000Z</published>
+    <updated>2020-06-11T07:14:00.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
+    
+    
+    <category term="Netflix" scheme="https://zmlu.me/tags/Netflix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ES文件挂载</title>
+    <link href="https://zmlu.me/p/PW04BF.html"/>
+    <id>https://zmlu.me/p/PW04BF.html</id>
+    <published>2020-06-09T16:00:00.000Z</published>
+    <updated>2020-07-16T02:56:24.000Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;文件挂载前准备&quot;&gt;&lt;a href=&quot;#文件挂载前准备&quot; class=&quot;headerlink&quot; title=&quot;文件挂载前准备&quot;&gt;&lt;/a&gt;文件挂载前准备&lt;/h2&gt;&lt;p&gt;进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;docker exec -it test_es bash&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;找到配置文件所在位置：&lt;code&gt;/usr/share/elasticsearch/config&lt;/code&gt; 下，可以看的配置文件：&lt;code&gt;elasticsearch.yml&lt;/code&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Elasticsearch" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>iOS 14 新功能预料大合集</title>
+    <link href="https://zmlu.me/p/2RSHAR.html"/>
+    <id>https://zmlu.me/p/2RSHAR.html</id>
+    <published>2020-06-09T16:00:00.000Z</published>
+    <updated>2020-06-10T09:25:58.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;iOS14还有几天就能与大家在WWDC20(6月22日)上见面了，苹果一直在加利福尼亚的库比蒂诺总部研发该系统，并且适用设备据说与iOS13相同。本文汇总并且根据功能分类了“自古以来”有关iOS14新功能的爆料。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
+    
+    
+    <category term="Android" scheme="https://zmlu.me/tags/Android/"/>
+    
+    <category term="HomeKit" scheme="https://zmlu.me/tags/HomeKit/"/>
+    
+    <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python切片</title>
+    <link href="https://zmlu.me/p/253PZX0.html"/>
+    <id>https://zmlu.me/p/253PZX0.html</id>
+    <published>2020-06-08T16:00:00.000Z</published>
+    <updated>2020-06-09T06:35:30.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;记录下Python五个高级特性，分别是切片、迭代、列表生成式、生成器、迭代器，记录切片学习的笔记。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Python" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Python/"/>
+    
+    
+    <category term="Python" scheme="https://zmlu.me/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ES镜像制作并启动</title>
+    <link href="https://zmlu.me/p/10C2G1E.html"/>
+    <id>https://zmlu.me/p/10C2G1E.html</id>
+    <published>2020-05-18T16:00:00.000Z</published>
+    <updated>2020-07-16T02:56:24.000Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;拉取镜像及相关配置&quot;&gt;&lt;a href=&quot;#拉取镜像及相关配置&quot; class=&quot;headerlink&quot; title=&quot;拉取镜像及相关配置&quot;&gt;&lt;/a&gt;拉取镜像及相关配置&lt;/h1&gt;&lt;h2 id=&quot;拉取镜像&quot;&gt;&lt;a href=&quot;#拉取镜像&quot; class=&quot;headerlink&quot; title=&quot;拉取镜像&quot;&gt;&lt;/a&gt;拉取镜像&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;docker pull elasticsearch:6.8.3&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;启动容器&quot;&gt;&lt;a href=&quot;#启动容器&quot; class=&quot;headerlink&quot; title=&quot;启动容器&quot;&gt;&lt;/a&gt;启动容器&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Elasticsearch" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
+    
+    
+    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>运用Live Template加快写代码速度</title>
+    <link href="https://zmlu.me/p/1W7RVXA.html"/>
+    <id>https://zmlu.me/p/1W7RVXA.html</id>
+    <published>2020-05-10T16:00:00.000Z</published>
+    <updated>2020-05-11T08:21:10.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;用IDEA写代码的时候往往会重复性的写一段类似或者一样的代码，让人懊恼不已。&lt;br&gt;IDEA自带了个Live Template功能，不仅有许多自带的快捷写代码的功能，而且还可以自定义属于自己的Live Template。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="技巧" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%8A%80%E5%B7%A7/"/>
+    
+    
+    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>理解 JavaScript 的 async、await</title>
+    <link href="https://zmlu.me/p/3Q3X94C.html"/>
+    <id>https://zmlu.me/p/3Q3X94C.html</id>
+    <published>2020-04-26T16:00:00.000Z</published>
+    <updated>2020-04-27T03:32:32.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Javascript" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Javascript/"/>
+    
+    
+    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python在全局代理下安装包报错</title>
+    <link href="https://zmlu.me/p/1E56RCW.html"/>
+    <id>https://zmlu.me/p/1E56RCW.html</id>
+    <published>2020-03-24T16:00:00.000Z</published>
+    <updated>2020-03-25T09:03:32.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;之前配置小飞机的时候，在我的mac上把终端设置了&lt;code&gt;ALL_PROXY&lt;/code&gt;属性，让全局代理。&lt;br&gt;不过在使用Python安装模块的时候报错了。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs python&quot;&gt;Python&lt;span class=&quot;hljs-string&quot;&gt;&amp;#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal&lt;/span&gt;&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;以下是解决办法:&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Python" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Python/"/>
+    
+    
+    <category term="Python" scheme="https://zmlu.me/tags/Python/"/>
+    
+    <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在macOS上运用Crontab运行定时任务</title>
+    <link href="https://zmlu.me/p/11CFSV5.html"/>
+    <id>https://zmlu.me/p/11CFSV5.html</id>
+    <published>2020-03-18T16:00:00.000Z</published>
+    <updated>2020-03-19T06:24:46.000Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;在电脑上运行脚本固然好，但是如果能定时运行，那最好了。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;通过创建Crontab，可以在macOS上运行定时任务！让我们做一个示例。&lt;/p&gt;
+&lt;p&gt;假设您要运行一个名为&lt;code&gt;work.sh&lt;/code&gt;的脚本，该脚本可以为您完成一些工作——脚本实际上运行了什么不重要。 但是你每天要花费几分钟来运行这个脚本，大大浪费了时间，这完全可以交给定时任务来完成。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="macOS" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/macOS/"/>
+    
+    
+    <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>「翻译」Java 14带来了许多新功能</title>
+    <link href="https://zmlu.me/p/2305442.html"/>
+    <id>https://zmlu.me/p/2305442.html</id>
+    <published>2020-03-17T16:00:00.000Z</published>
+    <updated>2020-03-19T02:53:08.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Java 14包含比前两个发行版更多的新功能-其中大多数旨在简化编程开发工作。&lt;/p&gt;
+&lt;p&gt;Java 14计划于3月17日发布。版本14包含的&lt;a href=&quot;https://openjdk.java.net/projects/jdk/14/&quot;&gt;JEP&lt;/a&gt;（Java Enhancement Proposals）比Java 12和13的总和还多。 那么，对于每天编写和维护代码的Java开发人员来说，最重要的是什么呢？&lt;/p&gt;
+&lt;p&gt;在本文中，我研究了以下主要方面：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;改进的&lt;code&gt;switch&lt;/code&gt;表达式，该表达式最初在Java 12和Java 13中作为预览出现，现在已完全成为Java 14的一部分&lt;/li&gt;
+&lt;li&gt;新增&lt;code&gt;instanceof&lt;/code&gt;的模式匹配（语法糖）&lt;/li&gt;
+&lt;li&gt;增强的&lt;code&gt;NullPointerExceptions&lt;/code&gt;提示（JVM功能）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果您阅读本文并尝试在代码库中使用其中的某些功能，建议您通过&lt;a href=&quot;mailto:amber-dev@openjdk.java.net&quot;&gt;向Java团队提供反馈&lt;/a&gt;来分享您的经验。 这样，您就有机会为Java的发展做出贡献。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Java" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Java/"/>
+    
+    
+    <category term="总结" scheme="https://zmlu.me/tags/%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git设置代理</title>
+    <link href="https://zmlu.me/p/35NJX8Y.html"/>
+    <id>https://zmlu.me/p/35NJX8Y.html</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-19T02:21:32.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速&lt;/p&gt;
+&lt;h1 id=&quot;设置代理&quot;&gt;&lt;a href=&quot;#设置代理&quot; class=&quot;headerlink&quot; title=&quot;设置代理&quot;&gt;&lt;/a&gt;设置代理&lt;/h1&gt;&lt;h2 id=&quot;socks5&quot;&gt;&lt;a href=&quot;#socks5&quot; class=&quot;headerlink&quot; title=&quot;socks5&quot;&gt;&lt;/a&gt;socks5&lt;/h2&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Git" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Git/"/>
+    
+    
+    <category term="加速" scheme="https://zmlu.me/tags/%E5%8A%A0%E9%80%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac提示安装包已损坏的解决方法</title>
+    <link href="https://zmlu.me/p/2H0WSE.html"/>
+    <id>https://zmlu.me/p/2H0WSE.html</id>
+    <published>2020-01-20T16:00:00.000Z</published>
+    <updated>2020-03-07T08:21:02.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;从网上下载的软件安装包，经常提示：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;xxx已损坏，无法打开。您应该将它移到废纸篓。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;现在总结下解决方法。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="收藏" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%94%B6%E8%97%8F/"/>
+    
+    
+    <category term="总结" scheme="https://zmlu.me/tags/%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>请记住人生中的“三”</title>
+    <link href="https://zmlu.me/p/18JYVC6.html"/>
+    <id>https://zmlu.me/p/18JYVC6.html</id>
+    <published>2020-01-15T16:00:00.000Z</published>
+    <updated>2020-03-19T02:23:54.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;【男人三大责任】&lt;br&gt;让父母骄傲，&lt;br&gt;让自己的妻子幸福，&lt;br&gt;保持高贵的灵魂&lt;/p&gt;
+&lt;p&gt;【女人三大责任】&lt;br&gt;激励自己的丈夫，让他飞翔&lt;br&gt;照顾好他的家族&lt;br&gt;做气质非凡，独一无二的自己&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="摘抄" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%91%98%E6%8A%84/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>真正的自律，就是战胜你自己</title>
+    <link href="https://zmlu.me/p/ZAB5E7.html"/>
+    <id>https://zmlu.me/p/ZAB5E7.html</id>
+    <published>2020-01-15T16:00:00.000Z</published>
+    <updated>2020-03-07T08:22:34.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;1&lt;/p&gt;
+&lt;p&gt;问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。&lt;/p&gt;
+&lt;p&gt;三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。&lt;/p&gt;
+&lt;p&gt;他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="摘抄" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%91%98%E6%8A%84/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>各种主键生成方法介绍以及生成优缺点对比</title>
+    <link href="https://zmlu.me/p/34QH0JS.html"/>
+    <id>https://zmlu.me/p/34QH0JS.html</id>
+    <published>2020-01-09T16:00:00.000Z</published>
+    <updated>2020-03-19T02:23:40.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;一个系统各个表中必须要存在一列来存放唯一主键ID，并且如果这个系统是分布式的，有多个分布数据库还需要保证每个数据库中的id不能重复，这就要求需要唯一ID的特性：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;整个系统ID唯一&lt;/li&gt;
+&lt;li&gt;ID是数字类型，而且是趋势递增的&lt;/li&gt;
+&lt;li&gt;ID简短，查询效率快&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;生成ID的方式有多种，大厂肯定用的没这么简单，但是咱们小系统用一下还是绰绰有余的，下面逐一介绍。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="SQL" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/SQL/"/>
+    
+    
+    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    
+    <category term="SQL" scheme="https://zmlu.me/tags/SQL/"/>
+    
+    <category term="UUID" scheme="https://zmlu.me/tags/UUID/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Netflix各国价格对比(2019)</title>
+    <link href="https://zmlu.me/p/2ZVKR9E.html"/>
+    <id>https://zmlu.me/p/2ZVKR9E.html</id>
+    <published>2020-01-07T16:00:00.000Z</published>
+    <updated>2020-03-19T02:24:08.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;先上个简介：&lt;br&gt;Netflix是一家美国公司，在美国、加拿大提供互联网随选流媒体播放，定制DVD、蓝光光碟在线出租业务。该公司成立于1997年，总部位于加利福尼亚州洛斯盖图，1999年开始订阅服务。2009年，该公司可提供多达10万部DVD电影，并有1千万的订户。2007年2月25日，Netflix宣布已经售出第10亿份DVD。&lt;/p&gt;
+&lt;p&gt;最近入了奈飞，感觉视频挺全，但是价格每个国家都不同，虽然价格不同，但是可以看的视频是同样多的。&lt;br&gt;一下是2019年1月抓取的各个国家的价格数据。方便大家选择哪个国家进行开通续费，仅供参考。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;目前土耳其和阿根廷的价格是最便宜的，但是奈飞增加了这两个地区的限制，如果首次注册账号选择这两个地区，需要用当地手机号接收验证码。不过可以首先开通个别的国家的套餐，然后取消套餐，等待套餐过期了之后，用这两个国家的ip进行续费，就不用需要接受验证码了。&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="收藏" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%94%B6%E8%97%8F/"/>
+    
+    
+    <category term="Netflix" scheme="https://zmlu.me/tags/Netflix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实现浏览器WebP图片自适应加载</title>
+    <link href="https://zmlu.me/p/3MDAQPQ.html"/>
+    <id>https://zmlu.me/p/3MDAQPQ.html</id>
+    <published>2020-01-05T16:00:00.000Z</published>
+    <updated>2020-03-19T02:23:16.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。&lt;/p&gt;
+&lt;h1 id=&quot;主要思路&quot;&gt;&lt;a href=&quot;#主要思路&quot; class=&quot;headerlink&quot; title=&quot;主要思路&quot;&gt;&lt;/a&gt;主要思路&lt;/h1&gt;&lt;p&gt;如何判断浏览器是否支持WebP格式的图片，除了在前端加载一个1×1像素的WebP图片来获取宽度的方法，还有个方法，那就是查看浏览器发出的请求头中的Accept字段，如果改字段中带着&lt;code&gt;image/webp&lt;/code&gt;说明浏览器支持WebP，反之则就是不持支。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Nginx" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Nginx/"/>
+    
+    
+    <category term="WebP" scheme="https://zmlu.me/tags/WebP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
+    <link href="https://zmlu.me/p/2JJ2AE2.html"/>
+    <id>https://zmlu.me/p/2JJ2AE2.html</id>
+    <published>2020-01-02T16:00:00.000Z</published>
+    <updated>2020-03-19T02:23:08.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。&lt;/p&gt;
+&lt;p&gt;Google推出了一种图片格式: WebP (&lt;a href=&quot;https://developers.google.com/speed/webp/&quot;&gt;Google官方网址&lt;/a&gt;)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Nginx" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Nginx/"/>
+    
+    
+    <category term="Google" scheme="https://zmlu.me/tags/Google/"/>
+    
+    <category term="WebP" scheme="https://zmlu.me/tags/WebP/"/>
+    
+  </entry>
+  
+</feed>
