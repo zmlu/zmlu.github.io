@@ -1,6 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ES镜像制作并启动</title>
+    <url>/p/10C2G1E.html</url>
+    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
+<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
+<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
+<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
+<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
+<p>在配置文件最下面，添加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>修改完成后，执行此命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>然后，重新启动elasticsearch，即可启动成功；</p>
+<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
+<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
+<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
+<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
+<p>均改为 512m</p>
+<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
+<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ES文件挂载</title>
+    <url>/p/PW04BF.html</url>
+    <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker exec -it test_es bash<br></code></pre></td></tr></table></figure>
+<p>找到配置文件所在位置：<code>/usr/share/elasticsearch/config</code> 下，可以看的配置文件：<code>elasticsearch.yml</code></p>
+<a id="more"></a>
+
+<p>拷贝配置文件到宿主机 <code>/opt/elasticsearch/</code> 目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker cp  test_es:/usr/share/elasticsearch/config/elasticsearch.yml  /opt/elasticsearch/<br></code></pre></td></tr></table></figure>
+<p>停止并且删除原来创建的容器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker stop test_es <br>docker rm  test_es<br></code></pre></td></tr></table></figure>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改 <code>/opt/elasticsearch/elasticsearch.yml</code> 配置文件</p>
+<p>将 <code>transport.host: 0.0.0.0</code> 前的#去掉后保存文件退出，其作用是允许任何ip地址访问elasticsearch。<br>开发测试阶段可以这么做，生产环境下指定具体的IP在<code>elasticsearch.yml</code>配置文件中添加如下跨域访问，方便下面的可视化连接工具连接。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cluster.name: &quot;docker-cluster&quot;<br>network.host: 0.0.0.0<br><br><span class="hljs-meta">#</span><span class="bash">开启跨域访问</span><br>http.cors.enabled: true<br>http.cors.allow-origin: &quot;*&quot;<br></code></pre></td></tr></table></figure>
+<h2 id="重新创建容器"><a href="#重新创建容器" class="headerlink" title="重新创建容器"></a>重新创建容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run -d --name=tensquare_elasticsearch -p 9200:9200 -p 9300:9300 -v  /opt/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="系统调优"><a href="#系统调优" class="headerlink" title="系统调优"></a>系统调优</h2><p>启动后发现启动失败了，这时什么原因呢？这与我们刚才修改的配置有关，因为 elasticsearch在启动的时候会进行一些检查，比如最多打开的文件的个数以及虚拟内存 区域数量等等，如果你放开了此配置，意味着需要打开更多的文件以及虚拟内存，所以 我们还需要系统调优。</p>
+<p>一共需要修改两处</p>
+<h3 id="修改-etc-security-limits-conf"><a href="#修改-etc-security-limits-conf" class="headerlink" title="修改 /etc/security/limits.conf"></a>修改 /etc/security/limits.conf</h3><p>添加如下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">* soft nofile 65536 <br>* hard nofile 65536<br></code></pre></td></tr></table></figure>
+<p>nofile是单个进程允许打开的最大文件个数<br>soft nofile 是软限制<br>hard nofile是硬限制</p>
+<h3 id="修改-etc-sysctl-conf"><a href="#修改-etc-sysctl-conf" class="headerlink" title="修改 /etc/sysctl.conf"></a>修改 /etc/sysctl.conf</h3><p>添加如下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>限制一个进程可以拥有的VMA(虚拟内存区域)的数量；执行下面命令 修改内核参数马上生效</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>重新启动虚拟机，再次启动容器，发现已经可以启动并远程访问</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>gitignore文件不起作用</title>
+    <url>/p/TSMFKX.html</url>
+    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
+<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git设置代理</title>
+    <url>/p/35NJX8Y.html</url>
+    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
+<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
+<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
+<p>显示如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
+<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>加速</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Gulp加速Hexo</title>
+    <url>/p/8VNSFG.html</url>
+    <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
+<h1 id="安装Gulp到Hexo博客"><a href="#安装Gulp到Hexo博客" class="headerlink" title="安装Gulp到Hexo博客"></a>安装Gulp到Hexo博客</h1><p>参见文章：<a href="https://zmlu.github.io/p/14JCGNP.html">安装Gulp</a></p>
+<p>进入hexo博客的根目录（public文件夹所在的目录），安装一些必要的组件。</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp gulp-babel gulp-clean-css gulp-htmlclean gulp-htmlmin gulp-uglify @babel/core @babel/preset-env @babel/register<br></code></pre></td></tr></table></figure>
+<h1 id="新建-babelrc"><a href="#新建-babelrc" class="headerlink" title="新建.babelrc"></a>新建.babelrc</h1><p>依然在hexo博客根目录下新建.babelrc文件</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;presets&quot;</span>: [ <span class="hljs-string">&quot;@babel/preset-env&quot;</span> ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h1><p>在hexo博客根目录下新建gulpfile.js文件，内容如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);<br><span class="hljs-keyword">var</span> babel = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-babel&#x27;</span>);<br><span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>);<br><span class="hljs-keyword">var</span> cleanCSS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-clean-css&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlmin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlmin&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlclean = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlclean&#x27;</span>);<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * css</span><br><span class="hljs-comment"> */</span><br>gulp.task(<span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.css&#x27;</span>)<br>			.pipe(cleanCSS())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-js&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src([<span class="hljs-string">&#x27;./public/**/*.js&#x27;</span>, <span class="hljs-string">&#x27;!./public/**/*.min.js&#x27;</span>])<br>			.pipe(babel())<br>			.pipe(uglify())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.html&#x27;</span>)<br>			.pipe(htmlclean())<br>			.pipe(htmlmin(&#123;<br>				removeComments: <span class="hljs-literal">true</span>,<br>				minifyJS: <span class="hljs-literal">true</span>,<br>				minifyCSS: <span class="hljs-literal">true</span>,<br>				minifyURLs: <span class="hljs-literal">true</span>,<br>			&#125;))<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,gulp.parallel(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-string">&#x27;minify-js&#x27;</span>));<br></code></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>执行完<code>hexo g</code>产生编译文件后，再手动执行执行<code>gulp</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[15:03:44] Using gulpfile E:\dev\hexoBlog\gulpfile.js<br>[15:03:44] Starting &#x27;default&#x27;...<br>[15:03:44] Starting &#x27;minify-html&#x27;...<br>[15:03:44] Starting &#x27;minify-css&#x27;...<br>[15:03:44] Starting &#x27;minify-js&#x27;...<br>[15:03:47] Finished &#x27;minify-css&#x27; after 3.52 s<br>[15:03:48] Finished &#x27;minify-html&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;minify-js&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;default&#x27; after 4.63 s<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Gulp</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Gulp</tag>
+        <tag>Hexo</tag>
+        <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装Gulp</title>
+    <url>/p/14JCGNP.html</url>
+    <content><![CDATA[<p>记录一下安装Gulp的过程，参考官方文档，参考地址见文章末尾。</p>
+<p>如果你先前将gulp安装到全局环境中了，请执行<code>npm rm --global gulp</code>将<code>gulp</code>删除再继续以下操作。更多信息请参考<a href="https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467">Sip</a>。</p>
+<a id="more"></a>
+
+<h1 id="检查-node、npm-和-npx-是否正确安装"><a href="#检查-node、npm-和-npx-是否正确安装" class="headerlink" title="检查 node、npm 和 npx 是否正确安装"></a>检查 node、npm 和 npx 是否正确安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">node --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-node-version-command.png" alt="Output:v8.11.1"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-npm-version-command.png" alt="Output:5.6.0"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-npx-version-command.png" alt="Output:9.7.1"></p>
+<p>如果上述工具还没安装，请参考<a href="https://nodejs.org/en/">这里</a>。</p>
+<h1 id="安装-gulp-命令行工具"><a href="#安装-gulp-命令行工具" class="headerlink" title="安装 gulp 命令行工具"></a>安装 gulp 命令行工具</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --global gulp-cli<br></code></pre></td></tr></table></figure>
+<h1 id="创建项目目录并进入"><a href="#创建项目目录并进入" class="headerlink" title="创建项目目录并进入"></a>创建项目目录并进入</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx mkdirp my-project<br>cd my-project<br></code></pre></td></tr></table></figure>
+<h1 id="在项目目录下创建-package-json-文件"><a href="#在项目目录下创建-package-json-文件" class="headerlink" title="在项目目录下创建 package.json 文件"></a>在项目目录下创建 package.json 文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm init<br></code></pre></td></tr></table></figure>
+<p>上述命令将指引你设置项目名、版本、描述信息等。</p>
+<h1 id="安装-gulp，作为开发时依赖项"><a href="#安装-gulp，作为开发时依赖项" class="headerlink" title="安装 gulp，作为开发时依赖项"></a>安装 gulp，作为开发时依赖项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp<br></code></pre></td></tr></table></figure>
+<h1 id="检查-gulp-版本"><a href="#检查-gulp-版本" class="headerlink" title="检查 gulp 版本"></a>检查 gulp 版本</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp --version<br></code></pre></td></tr></table></figure>
+<p>确保输出与下面的屏幕截图匹配，否则你可能需要执行本指南中的上述步骤。</p>
+<p><img src="https://gulpjs.com/img/docs-gulp-version-command.png" alt="Output: CLI version 2.0.1 &amp; Local version 4.0.0"></p>
+<h1 id="创建-gulpfile-文件"><a href="#创建-gulpfile-文件" class="headerlink" title="创建 gulpfile 文件"></a>创建 gulpfile 文件</h1><p>利用任何文本编辑器在项目大的根目录下创建一个名为 gulpfile.js 的文件，并在文件中输入以下内容：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultTask</span>(<span class="hljs-params">cb</span>) </span>&#123;<br>  <span class="hljs-comment">// place code for your default task here</span><br>  cb();<br>&#125;<br><br><span class="hljs-built_in">exports</span>.default = defaultTask<br></code></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在项目根目录下执行 gulp 命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp<br></code></pre></td></tr></table></figure>
+<p>如需运行多个任务（task），可以执行<code>gulp &lt;task&gt; &lt;othertask&gt;</code>。</p>
+<h1 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h1><p>默认任务（task）将执行，因为任务为空，因此没有实际动作。</p>
+<p><img src="https://gulpjs.com/img/docs-gulp-command.png" alt="Output:Starting default &amp; Finished default"></p>
+<blockquote>
+<p>参考： <a href="https://gulpjs.com/docs/en/getting-started/quick-start">Gulp Quick Start</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Gulp</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Gulp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[Material Design] 尝试使用 Bottom Navigation</title>
     <url>/p/GJ0Q47.html</url>
     <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
@@ -74,177 +241,10 @@
         <category>Android</category>
       </categories>
       <tags>
+        <tag>Java</tag>
         <tag>Material Design</tag>
         <tag>Android</tag>
         <tag>Google</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ES镜像制作并启动</title>
-    <url>/p/10C2G1E.html</url>
-    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
-<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
-<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
-<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
-<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
-<p>在配置文件最下面，添加如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>修改完成后，执行此命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>然后，重新启动elasticsearch，即可启动成功；</p>
-<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
-<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
-<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
-<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
-<p>均改为 512m</p>
-<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
-<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Elasticsearch</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ES文件挂载</title>
-    <url>/p/PW04BF.html</url>
-    <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker exec -it test_es bash<br></code></pre></td></tr></table></figure>
-<p>找到配置文件所在位置：<code>/usr/share/elasticsearch/config</code> 下，可以看的配置文件：<code>elasticsearch.yml</code></p>
-<a id="more"></a>
-
-<p>拷贝配置文件到宿主机 <code>/opt/elasticsearch/</code> 目录下</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker cp  test_es:/usr/share/elasticsearch/config/elasticsearch.yml  /opt/elasticsearch/<br></code></pre></td></tr></table></figure>
-<p>停止并且删除原来创建的容器</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker stop test_es <br>docker rm  test_es<br></code></pre></td></tr></table></figure>
-<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改 <code>/opt/elasticsearch/elasticsearch.yml</code> 配置文件</p>
-<p>将 <code>transport.host: 0.0.0.0</code> 前的#去掉后保存文件退出，其作用是允许任何ip地址访问elasticsearch。<br>开发测试阶段可以这么做，生产环境下指定具体的IP在<code>elasticsearch.yml</code>配置文件中添加如下跨域访问，方便下面的可视化连接工具连接。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cluster.name: &quot;docker-cluster&quot;<br>network.host: 0.0.0.0<br><br><span class="hljs-meta">#</span><span class="bash">开启跨域访问</span><br>http.cors.enabled: true<br>http.cors.allow-origin: &quot;*&quot;<br></code></pre></td></tr></table></figure>
-<h2 id="重新创建容器"><a href="#重新创建容器" class="headerlink" title="重新创建容器"></a>重新创建容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run -d --name=tensquare_elasticsearch -p 9200:9200 -p 9300:9300 -v  /opt/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="系统调优"><a href="#系统调优" class="headerlink" title="系统调优"></a>系统调优</h2><p>启动后发现启动失败了，这时什么原因呢？这与我们刚才修改的配置有关，因为 elasticsearch在启动的时候会进行一些检查，比如最多打开的文件的个数以及虚拟内存 区域数量等等，如果你放开了此配置，意味着需要打开更多的文件以及虚拟内存，所以 我们还需要系统调优。</p>
-<p>一共需要修改两处</p>
-<h3 id="修改-etc-security-limits-conf"><a href="#修改-etc-security-limits-conf" class="headerlink" title="修改 /etc/security/limits.conf"></a>修改 /etc/security/limits.conf</h3><p>添加如下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">* soft nofile 65536 <br>* hard nofile 65536<br></code></pre></td></tr></table></figure>
-<p>nofile是单个进程允许打开的最大文件个数<br>soft nofile 是软限制<br>hard nofile是硬限制</p>
-<h3 id="修改-etc-sysctl-conf"><a href="#修改-etc-sysctl-conf" class="headerlink" title="修改 /etc/sysctl.conf"></a>修改 /etc/sysctl.conf</h3><p>添加如下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>限制一个进程可以拥有的VMA(虚拟内存区域)的数量；执行下面命令 修改内核参数马上生效</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>重新启动虚拟机，再次启动容器，发现已经可以启动并远程访问</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Elasticsearch</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git设置代理</title>
-    <url>/p/35NJX8Y.html</url>
-    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
-<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
-<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
-<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
-<p>显示如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
-<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>加速</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gitignore文件不起作用</title>
-    <url>/p/TSMFKX.html</url>
-    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
-<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用Gulp加速Hexo</title>
-    <url>/p/8VNSFG.html</url>
-    <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
-<h1 id="安装Gulp到Hexo博客"><a href="#安装Gulp到Hexo博客" class="headerlink" title="安装Gulp到Hexo博客"></a>安装Gulp到Hexo博客</h1><p>参见文章：<a href="https://zmlu.github.io/p/14JCGNP.html">安装Gulp</a></p>
-<p>进入hexo博客的根目录（public文件夹所在的目录），安装一些必要的组件。</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp gulp-babel gulp-clean-css gulp-htmlclean gulp-htmlmin gulp-uglify @babel/core @babel/preset-env @babel/register<br></code></pre></td></tr></table></figure>
-<h1 id="新建-babelrc"><a href="#新建-babelrc" class="headerlink" title="新建.babelrc"></a>新建.babelrc</h1><p>依然在hexo博客根目录下新建.babelrc文件</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;presets&quot;</span>: [ <span class="hljs-string">&quot;@babel/preset-env&quot;</span> ]<br>&#125;<br></code></pre></td></tr></table></figure>
-<h1 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h1><p>在hexo博客根目录下新建gulpfile.js文件，内容如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);<br><span class="hljs-keyword">var</span> babel = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-babel&#x27;</span>);<br><span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>);<br><span class="hljs-keyword">var</span> cleanCSS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-clean-css&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlmin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlmin&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlclean = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlclean&#x27;</span>);<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * css</span><br><span class="hljs-comment"> */</span><br>gulp.task(<span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.css&#x27;</span>)<br>			.pipe(cleanCSS())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-js&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src([<span class="hljs-string">&#x27;./public/**/*.js&#x27;</span>, <span class="hljs-string">&#x27;!./public/**/*.min.js&#x27;</span>])<br>			.pipe(babel())<br>			.pipe(uglify())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.html&#x27;</span>)<br>			.pipe(htmlclean())<br>			.pipe(htmlmin(&#123;<br>				removeComments: <span class="hljs-literal">true</span>,<br>				minifyJS: <span class="hljs-literal">true</span>,<br>				minifyCSS: <span class="hljs-literal">true</span>,<br>				minifyURLs: <span class="hljs-literal">true</span>,<br>			&#125;))<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,gulp.parallel(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-string">&#x27;minify-js&#x27;</span>));<br></code></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>执行完<code>hexo g</code>产生编译文件后，再手动执行执行<code>gulp</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[15:03:44] Using gulpfile E:\dev\hexoBlog\gulpfile.js<br>[15:03:44] Starting &#x27;default&#x27;...<br>[15:03:44] Starting &#x27;minify-html&#x27;...<br>[15:03:44] Starting &#x27;minify-css&#x27;...<br>[15:03:44] Starting &#x27;minify-js&#x27;...<br>[15:03:47] Finished &#x27;minify-css&#x27; after 3.52 s<br>[15:03:48] Finished &#x27;minify-html&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;minify-js&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;default&#x27; after 4.63 s<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Gulp</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Gulp</tag>
-        <tag>Hexo</tag>
-        <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安装Gulp</title>
-    <url>/p/14JCGNP.html</url>
-    <content><![CDATA[<p>记录一下安装Gulp的过程，参考官方文档，参考地址见文章末尾。</p>
-<p>如果你先前将gulp安装到全局环境中了，请执行<code>npm rm --global gulp</code>将<code>gulp</code>删除再继续以下操作。更多信息请参考<a href="https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467">Sip</a>。</p>
-<a id="more"></a>
-
-<h1 id="检查-node、npm-和-npx-是否正确安装"><a href="#检查-node、npm-和-npx-是否正确安装" class="headerlink" title="检查 node、npm 和 npx 是否正确安装"></a>检查 node、npm 和 npx 是否正确安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">node --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-node-version-command.png" alt="Output:v8.11.1"></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-npm-version-command.png" alt="Output:5.6.0"></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-npx-version-command.png" alt="Output:9.7.1"></p>
-<p>如果上述工具还没安装，请参考<a href="https://nodejs.org/en/">这里</a>。</p>
-<h1 id="安装-gulp-命令行工具"><a href="#安装-gulp-命令行工具" class="headerlink" title="安装 gulp 命令行工具"></a>安装 gulp 命令行工具</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --global gulp-cli<br></code></pre></td></tr></table></figure>
-<h1 id="创建项目目录并进入"><a href="#创建项目目录并进入" class="headerlink" title="创建项目目录并进入"></a>创建项目目录并进入</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx mkdirp my-project<br>cd my-project<br></code></pre></td></tr></table></figure>
-<h1 id="在项目目录下创建-package-json-文件"><a href="#在项目目录下创建-package-json-文件" class="headerlink" title="在项目目录下创建 package.json 文件"></a>在项目目录下创建 package.json 文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm init<br></code></pre></td></tr></table></figure>
-<p>上述命令将指引你设置项目名、版本、描述信息等。</p>
-<h1 id="安装-gulp，作为开发时依赖项"><a href="#安装-gulp，作为开发时依赖项" class="headerlink" title="安装 gulp，作为开发时依赖项"></a>安装 gulp，作为开发时依赖项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp<br></code></pre></td></tr></table></figure>
-<h1 id="检查-gulp-版本"><a href="#检查-gulp-版本" class="headerlink" title="检查 gulp 版本"></a>检查 gulp 版本</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp --version<br></code></pre></td></tr></table></figure>
-<p>确保输出与下面的屏幕截图匹配，否则你可能需要执行本指南中的上述步骤。</p>
-<p><img src="https://gulpjs.com/img/docs-gulp-version-command.png" alt="Output: CLI version 2.0.1 &amp; Local version 4.0.0"></p>
-<h1 id="创建-gulpfile-文件"><a href="#创建-gulpfile-文件" class="headerlink" title="创建 gulpfile 文件"></a>创建 gulpfile 文件</h1><p>利用任何文本编辑器在项目大的根目录下创建一个名为 gulpfile.js 的文件，并在文件中输入以下内容：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultTask</span>(<span class="hljs-params">cb</span>) </span>&#123;<br>  <span class="hljs-comment">// place code for your default task here</span><br>  cb();<br>&#125;<br><br><span class="hljs-built_in">exports</span>.default = defaultTask<br></code></pre></td></tr></table></figure>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在项目根目录下执行 gulp 命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp<br></code></pre></td></tr></table></figure>
-<p>如需运行多个任务（task），可以执行<code>gulp &lt;task&gt; &lt;othertask&gt;</code>。</p>
-<h1 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h1><p>默认任务（task）将执行，因为任务为空，因此没有实际动作。</p>
-<p><img src="https://gulpjs.com/img/docs-gulp-command.png" alt="Output:Starting default &amp; Finished default"></p>
-<blockquote>
-<p>参考： <a href="https://gulpjs.com/docs/en/getting-started/quick-start">Gulp Quick Start</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Gulp</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Gulp</tag>
       </tags>
   </entry>
   <entry>
@@ -303,49 +303,6 @@
       <tags>
         <tag>HomeKit</tag>
         <tag>米家</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JSP基本语法记录01</title>
-    <url>/p/3AB4DA.html</url>
-    <content><![CDATA[<p>最近项目上需要改老项目，巩固一下JSP方面的语法知识。</p>
-<a id="more"></a>
-
-<h1 id="JSP注释"><a href="#JSP注释" class="headerlink" title="JSP注释"></a>JSP注释</h1><p>JSP注释用于注释在程序开发过程中的开发提示，不会输出到浏览器端。<br>JSP注释的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%--JSP注释 --%&gt;<br></code></pre></td></tr></table></figure>
-<p>与JSP注释相似的是HTML注释，HTML注释的语法格式如下：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- HTML注释 --&gt;</span><br></code></pre></td></tr></table></figure>
-<p>HTML注释的内容会输出到浏览器端，在浏览器端查看网页源代码可以看到HTML注释的内容，而JSP注释的内容则查看不到。<br>下面是JSP注释和HTML注释的代码示例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP注释示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    注释示例<br>    &lt;!-- 增加JSP注释 --&gt;<br>    &lt;%--JSP注释 --%&gt;<br>    &lt;!-- 增加html注释 --&gt;<br>    &lt;!-- html注释 --&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>通过在浏览器端查看网页源代码可以看到html注释的内容可以看到，而JSP注释的内容则查看不到。如下图所示。</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/annotation8f234306e8e6514f.png" alt="annotation.png"></p>
-<h1 id="JSP声明"><a href="#JSP声明" class="headerlink" title="JSP声明"></a>JSP声明</h1><p>JSP声明用于声明变量和方法。JSP声明的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%!  JSP声明部分  %&gt;<br></code></pre></td></tr></table></figure>
-<p>下面看一个JSP声明的实例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP声明示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出count的值，然后再将count加1</span><br>        out.println(count++);<br>    %&gt;<br>    &lt;br/&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出info()方法的返回值</span><br>        out.println(info());<br>    %&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>在浏览器中测试该页面，可以看到正常输出了count 的值和info()方法的返回值，每次刷新页面，count的值就会加1。页面效果图如下（刷新许多次）：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/declare1ab0df224e6dad3d.png" alt="declare.png"></p>
-<h1 id="输出JSP表达式"><a href="#输出JSP表达式" class="headerlink" title="输出JSP表达式"></a>输出JSP表达式</h1><p>输出JSP表达式的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%=表达式%&gt;<br></code></pre></td></tr></table></figure>
-<p>下面是用表达式改写JSP声明的示例的页面代码，使用JSP表达式输出同样能达到上面的效果，代码如下：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP表达式示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;!-- 使用表达式输出变量的值 --&gt;<br>    &lt;%=count++%&gt;<br>    &lt;br/&gt;<br>    &lt;!-- 使用表达式输出方法的返回值 --&gt;<br>    &lt;%=info()%&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>页面效果如下：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/expression94586bd6a2b9a018.png" alt="expression.png"></p>
-<h1 id="JSP脚本"><a href="#JSP脚本" class="headerlink" title="JSP脚本"></a>JSP脚本</h1><p>JSP脚本是使用Java代码执行页面的控制，JSP脚本的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%  脚本语言代码 %&gt;<br></code></pre></td></tr></table></figure>
-<p>下面是一个使用Java脚本语言控制HTML中表格的示例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;脚本测试&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    &lt;table border=<span class="hljs-string">&quot;1px&quot;</span> cellspacing=<span class="hljs-string">&quot;0px&quot;</span> style=<span class="hljs-string">&quot;border-collapse:collapse&quot;</span> width=<span class="hljs-string">&quot;300px&quot;</span>&gt;<br>    &lt;!-- Java脚本 --&gt;<br>    &lt;%<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++) <br>    &#123;<br>    %&gt;<br>        &lt;!-- 上面的循环控制&lt;tr&gt;标签循环 --&gt;<br>        &lt;tr&gt;<br>            &lt;td&gt;循环值：&lt;/td&gt;<br>            &lt;td&gt;&lt;%=i %&gt;&lt;/td&gt;<br>        &lt;/tr&gt;<br>    &lt;%&#125; %&gt;<br>    &lt;/table&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>页面的效果如下图所示：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/scripte85aac144f3530f4.png" alt="script.png"></p>
-<p>上面就是JSP的四种基本语法，详细理解 这四种语法还需要有Servlet的知识，如JSP声明变量和方法，JSP声明的变量和方法会在该JSP页面对应的Servlet中有对应的声明，不是独立存在的，因为在Java中方法是不能独立存在的，方法的声明需要在类中声明。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>JSP</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>JSP</tag>
       </tags>
   </entry>
   <entry>
@@ -440,6 +397,90 @@
       </tags>
   </entry>
   <entry>
+    <title>JSP基本语法记录01</title>
+    <url>/p/3AB4DA.html</url>
+    <content><![CDATA[<p>最近项目上需要改老项目，巩固一下JSP方面的语法知识。</p>
+<a id="more"></a>
+
+<h1 id="JSP注释"><a href="#JSP注释" class="headerlink" title="JSP注释"></a>JSP注释</h1><p>JSP注释用于注释在程序开发过程中的开发提示，不会输出到浏览器端。<br>JSP注释的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%--JSP注释 --%&gt;<br></code></pre></td></tr></table></figure>
+<p>与JSP注释相似的是HTML注释，HTML注释的语法格式如下：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- HTML注释 --&gt;</span><br></code></pre></td></tr></table></figure>
+<p>HTML注释的内容会输出到浏览器端，在浏览器端查看网页源代码可以看到HTML注释的内容，而JSP注释的内容则查看不到。<br>下面是JSP注释和HTML注释的代码示例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP注释示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    注释示例<br>    &lt;!-- 增加JSP注释 --&gt;<br>    &lt;%--JSP注释 --%&gt;<br>    &lt;!-- 增加html注释 --&gt;<br>    &lt;!-- html注释 --&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>通过在浏览器端查看网页源代码可以看到html注释的内容可以看到，而JSP注释的内容则查看不到。如下图所示。</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/annotation8f234306e8e6514f.png" alt="annotation.png"></p>
+<h1 id="JSP声明"><a href="#JSP声明" class="headerlink" title="JSP声明"></a>JSP声明</h1><p>JSP声明用于声明变量和方法。JSP声明的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%!  JSP声明部分  %&gt;<br></code></pre></td></tr></table></figure>
+<p>下面看一个JSP声明的实例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP声明示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出count的值，然后再将count加1</span><br>        out.println(count++);<br>    %&gt;<br>    &lt;br/&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出info()方法的返回值</span><br>        out.println(info());<br>    %&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>在浏览器中测试该页面，可以看到正常输出了count 的值和info()方法的返回值，每次刷新页面，count的值就会加1。页面效果图如下（刷新许多次）：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/declare1ab0df224e6dad3d.png" alt="declare.png"></p>
+<h1 id="输出JSP表达式"><a href="#输出JSP表达式" class="headerlink" title="输出JSP表达式"></a>输出JSP表达式</h1><p>输出JSP表达式的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%=表达式%&gt;<br></code></pre></td></tr></table></figure>
+<p>下面是用表达式改写JSP声明的示例的页面代码，使用JSP表达式输出同样能达到上面的效果，代码如下：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP表达式示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;!-- 使用表达式输出变量的值 --&gt;<br>    &lt;%=count++%&gt;<br>    &lt;br/&gt;<br>    &lt;!-- 使用表达式输出方法的返回值 --&gt;<br>    &lt;%=info()%&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>页面效果如下：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/expression94586bd6a2b9a018.png" alt="expression.png"></p>
+<h1 id="JSP脚本"><a href="#JSP脚本" class="headerlink" title="JSP脚本"></a>JSP脚本</h1><p>JSP脚本是使用Java代码执行页面的控制，JSP脚本的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%  脚本语言代码 %&gt;<br></code></pre></td></tr></table></figure>
+<p>下面是一个使用Java脚本语言控制HTML中表格的示例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;脚本测试&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    &lt;table border=<span class="hljs-string">&quot;1px&quot;</span> cellspacing=<span class="hljs-string">&quot;0px&quot;</span> style=<span class="hljs-string">&quot;border-collapse:collapse&quot;</span> width=<span class="hljs-string">&quot;300px&quot;</span>&gt;<br>    &lt;!-- Java脚本 --&gt;<br>    &lt;%<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++) <br>    &#123;<br>    %&gt;<br>        &lt;!-- 上面的循环控制&lt;tr&gt;标签循环 --&gt;<br>        &lt;tr&gt;<br>            &lt;td&gt;循环值：&lt;/td&gt;<br>            &lt;td&gt;&lt;%=i %&gt;&lt;/td&gt;<br>        &lt;/tr&gt;<br>    &lt;%&#125; %&gt;<br>    &lt;/table&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>页面的效果如下图所示：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/scripte85aac144f3530f4.png" alt="script.png"></p>
+<p>上面就是JSP的四种基本语法，详细理解 这四种语法还需要有Servlet的知识，如JSP声明变量和方法，JSP声明的变量和方法会在该JSP页面对应的Servlet中有对应的声明，不是独立存在的，因为在Java中方法是不能独立存在的，方法的声明需要在类中声明。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>JSP</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JSP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
+    <url>/p/2JJ2AE2.html</url>
+    <content><![CDATA[<p>服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。</p>
+<p>Google推出了一种图片格式: WebP (<a href="https://developers.google.com/speed/webp/">Google官方网址</a>)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%</p>
+<a id="more"></a>
+
+<p><a href="https://caniuse.com/#feat=webp">查看支持率</a></p>
+<p><img src="https://file.moetu.org/images/2020/01/06/webp805caf2e553e4f3ad1.jpg" alt="WebP支持率"></p>
+<p>原图加载截图：（12.61s）</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/Chrome--d61d7c79a27fca39.jpg" alt="Chrome 原图 加载"></p>
+<p>WebP加载截图：（4.72s）</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/Chrome-Webp-7a40425fcab83529.jpg" alt="Chrome Webp 加载"></p>
+<p>可以看出加载Webp会大大提高加载速度</p>
+<h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
+<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>libwebp是图片转成webp的工具</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">yum install libwebp-tools<br></code></pre></td></tr></table></figure>
+<p>测试:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cwebp -q 100 1.jpg -o 1.webp<br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/libwebpd4b8956ec9f0cc80.jpg" alt="测试libwebp安装"></p>
+<p>如果出现以上信息，说明安装成功。</p>
+<h2 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><p>配置：</p>
+<p>让<code>.png.webp</code>、<code>.jpg.webp</code>、<code>.gif.webp</code>的请求执行转WebP的lua文件。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>    expires               365d;<br>    autoindex             on;<br>    autoindex_exact_size  on;<br>    try_files             $uri $uri/ @webp;<br>&#125;<br>    <br>location @webp &#123;    <br>    if ($uri ~ \.(png|jpg|gif)\.webp) &#123;<br>        content_by_lua_file  lua/imgProcess.lua;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/nginxwebplua03e80bf8dc3f9b85.jpg" alt="Nginx-Lua配置WebP转换"></p>
+<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span> <span class="hljs-comment">--判断文件是否存在的方法</span><br>    <span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-keyword">local</span> newFile = ngx.var.request_filename;<br> <span class="hljs-keyword">local</span> originalFile = newFile:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>, #newFile - <span class="hljs-number">5</span>); <span class="hljs-comment">--请求的webp图片去掉.webp后缀</span><br><br> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>   ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>   <span class="hljs-keyword">return</span>;<br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile);  <span class="hljs-comment">--用libwebp转换图片</span><br><br> <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>     ngx.exec(ngx.var.uri); <span class="hljs-comment">--重定向到转换成的webp图片</span><br> <span class="hljs-keyword">else</span><br>     ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>); <span class="hljs-comment">--转换失败：404</span><br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/weblua2dc97f3492a10817.jpg" alt="WebP转换的Lua"></p>
+<h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>访问前图片，服务器上没有WebP文件。</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/3123de3b82b6d0ef1761eac2796a88fa58aa0d2c178c2991.jpg" alt="访问前图片"></p>
+<p>当服务器接收到<code>.jpg.webp</code>的请求后，自动生成WebP文件：</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/webpdd22bfaefcb9faff.jpg" alt="访问后自动生成WebP"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Google</tag>
+        <tag>WebP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>理解 JavaScript 的 async、await</title>
     <url>/p/3Q3X94C.html</url>
     <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
@@ -500,47 +541,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
-    <url>/p/2JJ2AE2.html</url>
-    <content><![CDATA[<p>服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。</p>
-<p>Google推出了一种图片格式: WebP (<a href="https://developers.google.com/speed/webp/">Google官方网址</a>)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%</p>
-<a id="more"></a>
-
-<p><a href="https://caniuse.com/#feat=webp">查看支持率</a></p>
-<p><img src="https://file.moetu.org/images/2020/01/06/webp805caf2e553e4f3ad1.jpg" alt="WebP支持率"></p>
-<p>原图加载截图：（12.61s）</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/Chrome--d61d7c79a27fca39.jpg" alt="Chrome 原图 加载"></p>
-<p>WebP加载截图：（4.72s）</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/Chrome-Webp-7a40425fcab83529.jpg" alt="Chrome Webp 加载"></p>
-<p>可以看出加载Webp会大大提高加载速度</p>
-<h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
-<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>libwebp是图片转成webp的工具</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">yum install libwebp-tools<br></code></pre></td></tr></table></figure>
-<p>测试:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cwebp -q 100 1.jpg -o 1.webp<br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/libwebpd4b8956ec9f0cc80.jpg" alt="测试libwebp安装"></p>
-<p>如果出现以上信息，说明安装成功。</p>
-<h2 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><p>配置：</p>
-<p>让<code>.png.webp</code>、<code>.jpg.webp</code>、<code>.gif.webp</code>的请求执行转WebP的lua文件。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>    expires               365d;<br>    autoindex             on;<br>    autoindex_exact_size  on;<br>    try_files             $uri $uri/ @webp;<br>&#125;<br>    <br>location @webp &#123;    <br>    if ($uri ~ \.(png|jpg|gif)\.webp) &#123;<br>        content_by_lua_file  lua/imgProcess.lua;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/nginxwebplua03e80bf8dc3f9b85.jpg" alt="Nginx-Lua配置WebP转换"></p>
-<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span> <span class="hljs-comment">--判断文件是否存在的方法</span><br>    <span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-keyword">local</span> newFile = ngx.var.request_filename;<br> <span class="hljs-keyword">local</span> originalFile = newFile:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>, #newFile - <span class="hljs-number">5</span>); <span class="hljs-comment">--请求的webp图片去掉.webp后缀</span><br><br> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>   ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>   <span class="hljs-keyword">return</span>;<br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile);  <span class="hljs-comment">--用libwebp转换图片</span><br><br> <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>     ngx.exec(ngx.var.uri); <span class="hljs-comment">--重定向到转换成的webp图片</span><br> <span class="hljs-keyword">else</span><br>     ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>); <span class="hljs-comment">--转换失败：404</span><br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/weblua2dc97f3492a10817.jpg" alt="WebP转换的Lua"></p>
-<h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>访问前图片，服务器上没有WebP文件。</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/3123de3b82b6d0ef1761eac2796a88fa58aa0d2c178c2991.jpg" alt="访问前图片"></p>
-<p>当服务器接收到<code>.jpg.webp</code>的请求后，自动生成WebP文件：</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/webpdd22bfaefcb9faff.jpg" alt="访问后自动生成WebP"></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Google</tag>
-        <tag>WebP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实现浏览器WebP图片自适应加载</title>
     <url>/p/3MDAQPQ.html</url>
     <content><![CDATA[<p>让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。</p>
@@ -595,6 +595,27 @@
       </tags>
   </entry>
   <entry>
+    <title>Python在全局代理下安装包报错</title>
+    <url>/p/1E56RCW.html</url>
+    <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Python<span class="hljs-string">&#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal</span><br></code></pre></td></tr></table></figure>
+<p>以下是解决办法:</p>
+<a id="more"></a>
+
+<p>首先去掉所有代理，和终端的<code>PROXY</code>属性，然后安装<code>pysocks</code>模块</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install pysocks<br></code></pre></td></tr></table></figure>
+<p>安装完毕后再加上代理或者终端<code>PROXY</code>属性，即可正常安装其他模块。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Composer安装、更新速度慢问题解决</title>
     <url>/p/2ZHKMM0.html</url>
     <content><![CDATA[<p>今天想在自己的服务器上安装一个论坛软件，需要用到php的Composer来安装，无奈很慢，贴出自己的解决方法。</p>
@@ -617,27 +638,6 @@
       <tags>
         <tag>Composer</tag>
         <tag>PHP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python在全局代理下安装包报错</title>
-    <url>/p/1E56RCW.html</url>
-    <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Python<span class="hljs-string">&#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal</span><br></code></pre></td></tr></table></figure>
-<p>以下是解决办法:</p>
-<a id="more"></a>
-
-<p>首先去掉所有代理，和终端的<code>PROXY</code>属性，然后安装<code>pysocks</code>模块</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install pysocks<br></code></pre></td></tr></table></figure>
-<p>安装完毕后再加上代理或者终端<code>PROXY</code>属性，即可正常安装其他模块。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>Mac</tag>
       </tags>
   </entry>
   <entry>
@@ -698,136 +698,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Orcale日常记录</title>
-    <url>/p/3PN2K8A.html</url>
-    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
-<a id="more"></a>
-
-<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
-<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
-<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
-<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>SQL</category>
-      </categories>
-      <tags>
-        <tag>Mac</tag>
-        <tag>Orcale</tag>
-        <tag>SQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>各种主键生成方法介绍以及生成优缺点对比</title>
-    <url>/p/34QH0JS.html</url>
-    <content><![CDATA[<p>一个系统各个表中必须要存在一列来存放唯一主键ID，并且如果这个系统是分布式的，有多个分布数据库还需要保证每个数据库中的id不能重复，这就要求需要唯一ID的特性：</p>
-<ol>
-<li>整个系统ID唯一</li>
-<li>ID是数字类型，而且是趋势递增的</li>
-<li>ID简短，查询效率快</li>
-</ol>
-<p>生成ID的方式有多种，大厂肯定用的没这么简单，但是咱们小系统用一下还是绰绰有余的，下面逐一介绍。</p>
-<a id="more"></a>
-
-<h1 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h1><p>这个是最大众的方案，直接用工具类方法生成一个uuid。</p>
-<p>优点：</p>
-<ol>
-<li>代码实现简单。</li>
-<li>本机生成，没有性能问题</li>
-<li>因为是全球唯一的ID，所以迁移数据容易</li>
-</ol>
-<p>缺点：</p>
-<ol>
-<li>每次生成的ID是无序的，无法保证趋势递增</li>
-<li>UUID的字符串存储，查询效率慢</li>
-<li>存储空间大</li>
-<li>ID本事无业务含义，不可读</li>
-</ol>
-<p>应用场景：</p>
-<ol>
-<li>类似生成token令牌的场景</li>
-<li>不适用一些要求有趋势递增的ID场景</li>
-</ol>
-<h1 id="MySQL主键自增"><a href="#MySQL主键自增" class="headerlink" title="MySQL主键自增"></a>MySQL主键自增</h1><p>这个方法也是很普遍用到的，设置简单，利用了mysql的主键自增auto_increment，默认每次ID加1。</p>
-<p>优点：</p>
-<ol>
-<li>数字化，id递增</li>
-<li>查询效率高</li>
-<li>具有一定的业务可读</li>
-</ol>
-<p>缺点：</p>
-<ol>
-<li>存在单点问题，如果mysql挂了，就没法生成iD了</li>
-<li>数据库压力大，高并发抗不住</li>
-</ol>
-<h1 id="MySQL多实例主键自增"><a href="#MySQL多实例主键自增" class="headerlink" title="MySQL多实例主键自增"></a>MySQL多实例主键自增</h1><p><img src="https://file.moetu.org/images/2020/01/10/a80b93ea7dbc4f4e9413b040765fc8686e33c8ad65de12fd.jpg" alt="MySQL多实例主键自增"></p>
-<p>每台的初始值分别为1,2,3…N，步长为N（这个案例步长为4）</p>
-<p>优点：解决了单点问题</p>
-<p>缺点：一旦把步长定好后，就无法扩容；而且单个数据库的压力大，数据库自身性能无法满足高并发</p>
-<p>应用场景：数据不需要扩容的场景</p>
-<h1 id="雪花snowflake算法"><a href="#雪花snowflake算法" class="headerlink" title="雪花snowflake算法"></a>雪花snowflake算法</h1><p>雪花算法生成64位的二进制正整数，然后转换成10进制的数。64位二进制数由如下部分组成：</p>
-<p><img src="https://file.moetu.org/images/2020/01/10/c7cc4ea5a0b842319d278aa2adcf1036d969dfd2c4c9b6ef.jpg" alt="雪花snowflake算法"></p>
-<ul>
-<li>1位标识符：始终是0</li>
-<li>41位时间戳：41位时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截 )得到的值，这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的</li>
-<li>10位机器标识码：可以部署在1024个节点，如果机器分机房（IDC）部署，这10位可以由 5位机房ID + 5位机器ID 组成</li>
-<li>12位序列：毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号</li>
-</ul>
-<p>实现方式Java版：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Twitter_Snowflake&lt;br&gt;</span><br><span class="hljs-comment"> * SnowFlake的结构如下(每部分用-分开):&lt;br&gt;</span><br><span class="hljs-comment"> * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000 &lt;br&gt;</span><br><span class="hljs-comment"> * 1位标识，由于long基本类型在Java中是带符号的，最高位是符号位，正数是0，负数是1，所以id一般是正数，最高位是0&lt;br&gt;</span><br><span class="hljs-comment"> * 41位时间截(毫秒级)，注意，41位时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截)</span><br><span class="hljs-comment"> * 得到的值），这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的（如下下面程序IdWorker类的startTime属性）。41位的时间截，可以使用69年，年T = (1L &lt;&lt; 41) / (1000L * 60 * 60 * 24 * 365) = 69&lt;br&gt;</span><br><span class="hljs-comment"> * 10位的数据机器位，可以部署在1024个节点，包括5位datacenterId和5位workerId&lt;br&gt;</span><br><span class="hljs-comment"> * 12位序列，毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号&lt;br&gt;</span><br><span class="hljs-comment"> * 加起来刚好64位，为一个Long型。&lt;br&gt;</span><br><span class="hljs-comment"> * SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，并且效率较高，经测试，SnowFlake每秒能够产生26万ID左右。</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SnowflakeIdWorker</span> </span>&#123;<br><br>	<span class="hljs-comment">// ==============================Fields===========================================</span><br>	<span class="hljs-comment">/** 开始时间截 (2015-01-01) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> twepoch = <span class="hljs-number">1420041600000L</span>;<br><br>	<span class="hljs-comment">/** 机器id所占的位数 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> workerIdBits = <span class="hljs-number">5L</span>;<br><br>	<span class="hljs-comment">/** 数据标识id所占的位数 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> datacenterIdBits = <span class="hljs-number">5L</span>;<br><br>	<span class="hljs-comment">/** 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> maxWorkerId = -<span class="hljs-number">1L</span> ^ (-<span class="hljs-number">1L</span> &lt;&lt; workerIdBits);<br><br>	<span class="hljs-comment">/** 支持的最大数据标识id，结果是31 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> maxDatacenterId = -<span class="hljs-number">1L</span> ^ (-<span class="hljs-number">1L</span> &lt;&lt; datacenterIdBits);<br><br>	<span class="hljs-comment">/** 序列在id中占的位数 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> sequenceBits = <span class="hljs-number">12L</span>;<br><br>	<span class="hljs-comment">/** 机器ID向左移12位 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> workerIdShift = sequenceBits;<br><br>	<span class="hljs-comment">/** 数据标识id向左移17位(12+5) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> datacenterIdShift = sequenceBits + workerIdBits;<br><br>	<span class="hljs-comment">/** 时间截向左移22位(5+5+12) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;<br><br>	<span class="hljs-comment">/** 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> sequenceMask = -<span class="hljs-number">1L</span> ^ (-<span class="hljs-number">1L</span> &lt;&lt; sequenceBits);<br><br>	<span class="hljs-comment">/** 工作机器ID(0~31) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> workerId;<br><br>	<span class="hljs-comment">/** 数据中心ID(0~31) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> datacenterId;<br><br>	<span class="hljs-comment">/** 毫秒内序列(0~4095) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> sequence = <span class="hljs-number">0L</span>;<br><br>	<span class="hljs-comment">/** 上次生成ID的时间截 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> lastTimestamp = -<span class="hljs-number">1L</span>;<br><br>	<span class="hljs-comment">//==============================Constructors=====================================</span><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 构造函数</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> workerId 工作ID (0~31)</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> datacenterId 数据中心ID (0~31)</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SnowflakeIdWorker</span><span class="hljs-params">(<span class="hljs-keyword">long</span> workerId, <span class="hljs-keyword">long</span> datacenterId)</span> </span>&#123;<br>		<span class="hljs-keyword">if</span> (workerId &gt; maxWorkerId || workerId &lt; <span class="hljs-number">0</span>) &#123;<br>			<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(String.format(<span class="hljs-string">&quot;worker Id can&#x27;t be greater than %d or less than 0&quot;</span>, maxWorkerId));<br>		&#125;<br>		<span class="hljs-keyword">if</span> (datacenterId &gt; maxDatacenterId || datacenterId &lt; <span class="hljs-number">0</span>) &#123;<br>			<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(String.format(<span class="hljs-string">&quot;datacenter Id can&#x27;t be greater than %d or less than 0&quot;</span>, maxDatacenterId));<br>		&#125;<br>		<span class="hljs-keyword">this</span>.workerId = workerId;<br>		<span class="hljs-keyword">this</span>.datacenterId = datacenterId;<br>	&#125;<br><br>	<span class="hljs-comment">// ==============================Methods==========================================</span><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 获得下一个ID (该方法是线程安全的)</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span> SnowflakeId</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">long</span> <span class="hljs-title">nextId</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-keyword">long</span> timestamp = timeGen();<br><br>		<span class="hljs-comment">//如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常</span><br>		<span class="hljs-keyword">if</span> (timestamp &lt; lastTimestamp) &#123;<br>			<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<br>					String.format(<span class="hljs-string">&quot;Clock moved backwards.  Refusing to generate id for %d milliseconds&quot;</span>, lastTimestamp - timestamp));<br>		&#125;<br><br>		<span class="hljs-comment">//如果是同一时间生成的，则进行毫秒内序列</span><br>		<span class="hljs-keyword">if</span> (lastTimestamp == timestamp) &#123;<br>			sequence = (sequence + <span class="hljs-number">1</span>) &amp; sequenceMask;<br>			<span class="hljs-comment">//毫秒内序列溢出</span><br>			<span class="hljs-keyword">if</span> (sequence == <span class="hljs-number">0</span>) &#123;<br>				<span class="hljs-comment">//阻塞到下一个毫秒,获得新的时间戳</span><br>				timestamp = tilNextMillis(lastTimestamp);<br>			&#125;<br>		&#125;<br>		<span class="hljs-comment">//时间戳改变，毫秒内序列重置</span><br>		<span class="hljs-keyword">else</span> &#123;<br>			sequence = <span class="hljs-number">0L</span>;<br>		&#125;<br><br>		<span class="hljs-comment">//上次生成ID的时间截</span><br>		lastTimestamp = timestamp;<br><br>		<span class="hljs-comment">//移位并通过或运算拼到一起组成64位的ID</span><br>		<span class="hljs-keyword">return</span> ((timestamp - twepoch) &lt;&lt; timestampLeftShift) <span class="hljs-comment">//</span><br>				| (datacenterId &lt;&lt; datacenterIdShift) <span class="hljs-comment">//</span><br>				| (workerId &lt;&lt; workerIdShift) <span class="hljs-comment">//</span><br>				| sequence;<br>	&#125;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 阻塞到下一个毫秒，直到获得新的时间戳</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> lastTimestamp 上次生成ID的时间截</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span> 当前时间戳</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">long</span> <span class="hljs-title">tilNextMillis</span><span class="hljs-params">(<span class="hljs-keyword">long</span> lastTimestamp)</span> </span>&#123;<br>		<span class="hljs-keyword">long</span> timestamp = timeGen();<br>		<span class="hljs-keyword">while</span> (timestamp &lt;= lastTimestamp) &#123;<br>			timestamp = timeGen();<br>		&#125;<br>		<span class="hljs-keyword">return</span> timestamp;<br>	&#125;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 返回以毫秒为单位的当前时间</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span> 当前时间(毫秒)</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">long</span> <span class="hljs-title">timeGen</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-keyword">return</span> System.currentTimeMillis();<br>	&#125;<br><br>	<span class="hljs-comment">//==============================Test=============================================</span><br>	<span class="hljs-comment">/** 测试 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>		SnowflakeIdWorker idWorker = <span class="hljs-keyword">new</span> SnowflakeIdWorker(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++) &#123;<br>			<span class="hljs-keyword">long</span> id = idWorker.nextId();<br>			System.out.println(Long.toBinaryString(id));<br>			System.out.println(id);<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>优点：</p>
-<ol>
-<li>此方案每秒能够产生409.6万个ID，性能快</li>
-<li>时间戳在高位，自增序列在低位，整个ID是趋势递增的，按照时间有序递增</li>
-<li>灵活度高，可以根据业务需求，调整bit位的划分，满足不同的需求</li>
-</ol>
-<p>缺点：</p>
-<ol>
-<li>依赖机器的时钟，如果服务器时钟回拨，会导致重复ID生成</li>
-</ol>
-<p>在分布式场景中，服务器时钟回拨会经常遇到，一般存在10ms之间的回拨；小伙伴们就说这点10ms，很短可以不考虑吧。但此算法就是建立在毫秒级别的生成方案，一旦回拨，就很有可能存在重复ID。</p>
-<h1 id="Redis生成方案"><a href="#Redis生成方案" class="headerlink" title="Redis生成方案"></a>Redis生成方案</h1><p>利用redis的incr原子性操作自增，一般算法为：年份 + 当天距当年第多少天 + 天数 + 小时 + redis自增</p>
-<p>优点：有序递增，可读性强</p>
-<p>缺点：占用带宽，每次要向redis进行请求</p>
-<blockquote>
-<p>参考：</p>
-<ol>
-<li><a href="https://www.toutiao.com/i6682195317716156942/">老顾聊技术-你想了解一线大厂的分布式唯一ID生成方案吗？</a></li>
-<li><a href="https://www.cnblogs.com/relucent/p/4955340.html">永夜微光-Twitter的分布式自增ID算法snowflake (Java版)</a></li>
-</ol>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>SQL</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>SQL</tag>
-        <tag>UUID</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Element输入框自动去除空格及校验</title>
-    <url>/p/2KGC076.html</url>
-    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
-<a id="more"></a>
-
-<p>可以自定义一个指令，代码如下</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br>Vue.directive(<span class="hljs-string">&#x27;trim&#x27;</span>, &#123;<br>  <span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params">el, binding, vnode</span>)</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> validateField = <span class="hljs-string">&#x27;&#x27;</span><br>      <span class="hljs-keyword">const</span> formItem = vnode.elm.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">if</span> (formItem) &#123;<br>        validateField = formItem.$options.propsData.prop<br>      &#125;<br>      <span class="hljs-keyword">const</span> form = vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">const</span> trimStr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> value = e.target.value<br>        <span class="hljs-keyword">if</span> (value) &#123;<br>          e.target.value = value.trim()<br>          e.target.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&#x27;input&#x27;</span>))<br>          <span class="hljs-keyword">if</span> (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(<span class="hljs-string">&#x27;blur&#x27;</span>, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
-<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
-<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Vue</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>在macOS上运用Crontab运行定时任务</title>
     <url>/p/11CFSV5.html</url>
     <content><![CDATA[<blockquote>
@@ -857,6 +727,35 @@
       </categories>
       <tags>
         <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[202006期] 有价值 iOS App</title>
+    <url>/p/2S9K9NA.html</url>
+    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
+<a id="more"></a>
+
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
+<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
+<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
+<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>Apple</category>
+      </categories>
+      <tags>
+        <tag>Netflix</tag>
       </tags>
   </entry>
   <entry>
@@ -963,35 +862,6 @@
       </tags>
   </entry>
   <entry>
-    <title>[202006期] 有价值 iOS App</title>
-    <url>/p/2S9K9NA.html</url>
-    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
-<a id="more"></a>
-
-<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
-<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
-<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
-<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>Apple</category>
-      </categories>
-      <tags>
-        <tag>Netflix</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CarKey功能预测及介绍</title>
     <url>/p/T5A9FS.html</url>
     <content><![CDATA[<p>苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。</p>
@@ -1074,6 +944,30 @@
 <p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
 <p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
 <p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>摘抄</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>请记住人生中的“三”</title>
+    <url>/p/18JYVC6.html</url>
+    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
+<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
+<a id="more"></a>
+
+<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
+<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
+<p>三样东西永不放弃:<br>童真、理想、希望</p>
+<p>三样东西最无常:<br>成功、财富、机遇</p>
+<p>三样东西最无价:<br>健康、善良、真情</p>
+<p>三样东西成就人:<br>天时、地利、人和</p>
+<p>三样东西要珍惜:<br>父母、家庭、健康</p>
+<p>三样东西助成功：<br>目标、方法、改进</p>
+<p>三样东西交朋友:<br>诚信、热情、互助</p>
+<p>三样东西把握好:<br>机会、工作、婚姻</p>
+<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
 ]]></content>
       <categories>
         <category>日常</category>
@@ -1219,30 +1113,6 @@
       <tags>
         <tag>Java</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>请记住人生中的“三”</title>
-    <url>/p/18JYVC6.html</url>
-    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
-<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
-<a id="more"></a>
-
-<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
-<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
-<p>三样东西永不放弃:<br>童真、理想、希望</p>
-<p>三样东西最无常:<br>成功、财富、机遇</p>
-<p>三样东西最无价:<br>健康、善良、真情</p>
-<p>三样东西成就人:<br>天时、地利、人和</p>
-<p>三样东西要珍惜:<br>父母、家庭、健康</p>
-<p>三样东西助成功：<br>目标、方法、改进</p>
-<p>三样东西交朋友:<br>诚信、热情、互助</p>
-<p>三样东西把握好:<br>机会、工作、婚姻</p>
-<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>摘抄</category>
-      </categories>
   </entry>
   <entry>
     <title>Netflix各国价格对比(2019)</title>
@@ -1590,6 +1460,136 @@
       </categories>
       <tags>
         <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>各种主键生成方法介绍以及生成优缺点对比</title>
+    <url>/p/34QH0JS.html</url>
+    <content><![CDATA[<p>一个系统各个表中必须要存在一列来存放唯一主键ID，并且如果这个系统是分布式的，有多个分布数据库还需要保证每个数据库中的id不能重复，这就要求需要唯一ID的特性：</p>
+<ol>
+<li>整个系统ID唯一</li>
+<li>ID是数字类型，而且是趋势递增的</li>
+<li>ID简短，查询效率快</li>
+</ol>
+<p>生成ID的方式有多种，大厂肯定用的没这么简单，但是咱们小系统用一下还是绰绰有余的，下面逐一介绍。</p>
+<a id="more"></a>
+
+<h1 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h1><p>这个是最大众的方案，直接用工具类方法生成一个uuid。</p>
+<p>优点：</p>
+<ol>
+<li>代码实现简单。</li>
+<li>本机生成，没有性能问题</li>
+<li>因为是全球唯一的ID，所以迁移数据容易</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>每次生成的ID是无序的，无法保证趋势递增</li>
+<li>UUID的字符串存储，查询效率慢</li>
+<li>存储空间大</li>
+<li>ID本事无业务含义，不可读</li>
+</ol>
+<p>应用场景：</p>
+<ol>
+<li>类似生成token令牌的场景</li>
+<li>不适用一些要求有趋势递增的ID场景</li>
+</ol>
+<h1 id="MySQL主键自增"><a href="#MySQL主键自增" class="headerlink" title="MySQL主键自增"></a>MySQL主键自增</h1><p>这个方法也是很普遍用到的，设置简单，利用了mysql的主键自增auto_increment，默认每次ID加1。</p>
+<p>优点：</p>
+<ol>
+<li>数字化，id递增</li>
+<li>查询效率高</li>
+<li>具有一定的业务可读</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>存在单点问题，如果mysql挂了，就没法生成iD了</li>
+<li>数据库压力大，高并发抗不住</li>
+</ol>
+<h1 id="MySQL多实例主键自增"><a href="#MySQL多实例主键自增" class="headerlink" title="MySQL多实例主键自增"></a>MySQL多实例主键自增</h1><p><img src="https://file.moetu.org/images/2020/01/10/a80b93ea7dbc4f4e9413b040765fc8686e33c8ad65de12fd.jpg" alt="MySQL多实例主键自增"></p>
+<p>每台的初始值分别为1,2,3…N，步长为N（这个案例步长为4）</p>
+<p>优点：解决了单点问题</p>
+<p>缺点：一旦把步长定好后，就无法扩容；而且单个数据库的压力大，数据库自身性能无法满足高并发</p>
+<p>应用场景：数据不需要扩容的场景</p>
+<h1 id="雪花snowflake算法"><a href="#雪花snowflake算法" class="headerlink" title="雪花snowflake算法"></a>雪花snowflake算法</h1><p>雪花算法生成64位的二进制正整数，然后转换成10进制的数。64位二进制数由如下部分组成：</p>
+<p><img src="https://file.moetu.org/images/2020/01/10/c7cc4ea5a0b842319d278aa2adcf1036d969dfd2c4c9b6ef.jpg" alt="雪花snowflake算法"></p>
+<ul>
+<li>1位标识符：始终是0</li>
+<li>41位时间戳：41位时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截 )得到的值，这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的</li>
+<li>10位机器标识码：可以部署在1024个节点，如果机器分机房（IDC）部署，这10位可以由 5位机房ID + 5位机器ID 组成</li>
+<li>12位序列：毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号</li>
+</ul>
+<p>实现方式Java版：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Twitter_Snowflake&lt;br&gt;</span><br><span class="hljs-comment"> * SnowFlake的结构如下(每部分用-分开):&lt;br&gt;</span><br><span class="hljs-comment"> * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000 &lt;br&gt;</span><br><span class="hljs-comment"> * 1位标识，由于long基本类型在Java中是带符号的，最高位是符号位，正数是0，负数是1，所以id一般是正数，最高位是0&lt;br&gt;</span><br><span class="hljs-comment"> * 41位时间截(毫秒级)，注意，41位时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截)</span><br><span class="hljs-comment"> * 得到的值），这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的（如下下面程序IdWorker类的startTime属性）。41位的时间截，可以使用69年，年T = (1L &lt;&lt; 41) / (1000L * 60 * 60 * 24 * 365) = 69&lt;br&gt;</span><br><span class="hljs-comment"> * 10位的数据机器位，可以部署在1024个节点，包括5位datacenterId和5位workerId&lt;br&gt;</span><br><span class="hljs-comment"> * 12位序列，毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号&lt;br&gt;</span><br><span class="hljs-comment"> * 加起来刚好64位，为一个Long型。&lt;br&gt;</span><br><span class="hljs-comment"> * SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，并且效率较高，经测试，SnowFlake每秒能够产生26万ID左右。</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SnowflakeIdWorker</span> </span>&#123;<br><br>	<span class="hljs-comment">// ==============================Fields===========================================</span><br>	<span class="hljs-comment">/** 开始时间截 (2015-01-01) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> twepoch = <span class="hljs-number">1420041600000L</span>;<br><br>	<span class="hljs-comment">/** 机器id所占的位数 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> workerIdBits = <span class="hljs-number">5L</span>;<br><br>	<span class="hljs-comment">/** 数据标识id所占的位数 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> datacenterIdBits = <span class="hljs-number">5L</span>;<br><br>	<span class="hljs-comment">/** 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> maxWorkerId = -<span class="hljs-number">1L</span> ^ (-<span class="hljs-number">1L</span> &lt;&lt; workerIdBits);<br><br>	<span class="hljs-comment">/** 支持的最大数据标识id，结果是31 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> maxDatacenterId = -<span class="hljs-number">1L</span> ^ (-<span class="hljs-number">1L</span> &lt;&lt; datacenterIdBits);<br><br>	<span class="hljs-comment">/** 序列在id中占的位数 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> sequenceBits = <span class="hljs-number">12L</span>;<br><br>	<span class="hljs-comment">/** 机器ID向左移12位 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> workerIdShift = sequenceBits;<br><br>	<span class="hljs-comment">/** 数据标识id向左移17位(12+5) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> datacenterIdShift = sequenceBits + workerIdBits;<br><br>	<span class="hljs-comment">/** 时间截向左移22位(5+5+12) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;<br><br>	<span class="hljs-comment">/** 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> sequenceMask = -<span class="hljs-number">1L</span> ^ (-<span class="hljs-number">1L</span> &lt;&lt; sequenceBits);<br><br>	<span class="hljs-comment">/** 工作机器ID(0~31) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> workerId;<br><br>	<span class="hljs-comment">/** 数据中心ID(0~31) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> datacenterId;<br><br>	<span class="hljs-comment">/** 毫秒内序列(0~4095) */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> sequence = <span class="hljs-number">0L</span>;<br><br>	<span class="hljs-comment">/** 上次生成ID的时间截 */</span><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> lastTimestamp = -<span class="hljs-number">1L</span>;<br><br>	<span class="hljs-comment">//==============================Constructors=====================================</span><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 构造函数</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> workerId 工作ID (0~31)</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> datacenterId 数据中心ID (0~31)</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SnowflakeIdWorker</span><span class="hljs-params">(<span class="hljs-keyword">long</span> workerId, <span class="hljs-keyword">long</span> datacenterId)</span> </span>&#123;<br>		<span class="hljs-keyword">if</span> (workerId &gt; maxWorkerId || workerId &lt; <span class="hljs-number">0</span>) &#123;<br>			<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(String.format(<span class="hljs-string">&quot;worker Id can&#x27;t be greater than %d or less than 0&quot;</span>, maxWorkerId));<br>		&#125;<br>		<span class="hljs-keyword">if</span> (datacenterId &gt; maxDatacenterId || datacenterId &lt; <span class="hljs-number">0</span>) &#123;<br>			<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(String.format(<span class="hljs-string">&quot;datacenter Id can&#x27;t be greater than %d or less than 0&quot;</span>, maxDatacenterId));<br>		&#125;<br>		<span class="hljs-keyword">this</span>.workerId = workerId;<br>		<span class="hljs-keyword">this</span>.datacenterId = datacenterId;<br>	&#125;<br><br>	<span class="hljs-comment">// ==============================Methods==========================================</span><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 获得下一个ID (该方法是线程安全的)</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span> SnowflakeId</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">long</span> <span class="hljs-title">nextId</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-keyword">long</span> timestamp = timeGen();<br><br>		<span class="hljs-comment">//如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常</span><br>		<span class="hljs-keyword">if</span> (timestamp &lt; lastTimestamp) &#123;<br>			<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<br>					String.format(<span class="hljs-string">&quot;Clock moved backwards.  Refusing to generate id for %d milliseconds&quot;</span>, lastTimestamp - timestamp));<br>		&#125;<br><br>		<span class="hljs-comment">//如果是同一时间生成的，则进行毫秒内序列</span><br>		<span class="hljs-keyword">if</span> (lastTimestamp == timestamp) &#123;<br>			sequence = (sequence + <span class="hljs-number">1</span>) &amp; sequenceMask;<br>			<span class="hljs-comment">//毫秒内序列溢出</span><br>			<span class="hljs-keyword">if</span> (sequence == <span class="hljs-number">0</span>) &#123;<br>				<span class="hljs-comment">//阻塞到下一个毫秒,获得新的时间戳</span><br>				timestamp = tilNextMillis(lastTimestamp);<br>			&#125;<br>		&#125;<br>		<span class="hljs-comment">//时间戳改变，毫秒内序列重置</span><br>		<span class="hljs-keyword">else</span> &#123;<br>			sequence = <span class="hljs-number">0L</span>;<br>		&#125;<br><br>		<span class="hljs-comment">//上次生成ID的时间截</span><br>		lastTimestamp = timestamp;<br><br>		<span class="hljs-comment">//移位并通过或运算拼到一起组成64位的ID</span><br>		<span class="hljs-keyword">return</span> ((timestamp - twepoch) &lt;&lt; timestampLeftShift) <span class="hljs-comment">//</span><br>				| (datacenterId &lt;&lt; datacenterIdShift) <span class="hljs-comment">//</span><br>				| (workerId &lt;&lt; workerIdShift) <span class="hljs-comment">//</span><br>				| sequence;<br>	&#125;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 阻塞到下一个毫秒，直到获得新的时间戳</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> lastTimestamp 上次生成ID的时间截</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span> 当前时间戳</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">long</span> <span class="hljs-title">tilNextMillis</span><span class="hljs-params">(<span class="hljs-keyword">long</span> lastTimestamp)</span> </span>&#123;<br>		<span class="hljs-keyword">long</span> timestamp = timeGen();<br>		<span class="hljs-keyword">while</span> (timestamp &lt;= lastTimestamp) &#123;<br>			timestamp = timeGen();<br>		&#125;<br>		<span class="hljs-keyword">return</span> timestamp;<br>	&#125;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 返回以毫秒为单位的当前时间</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span> 当前时间(毫秒)</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">long</span> <span class="hljs-title">timeGen</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-keyword">return</span> System.currentTimeMillis();<br>	&#125;<br><br>	<span class="hljs-comment">//==============================Test=============================================</span><br>	<span class="hljs-comment">/** 测试 */</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>		SnowflakeIdWorker idWorker = <span class="hljs-keyword">new</span> SnowflakeIdWorker(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++) &#123;<br>			<span class="hljs-keyword">long</span> id = idWorker.nextId();<br>			System.out.println(Long.toBinaryString(id));<br>			System.out.println(id);<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>优点：</p>
+<ol>
+<li>此方案每秒能够产生409.6万个ID，性能快</li>
+<li>时间戳在高位，自增序列在低位，整个ID是趋势递增的，按照时间有序递增</li>
+<li>灵活度高，可以根据业务需求，调整bit位的划分，满足不同的需求</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>依赖机器的时钟，如果服务器时钟回拨，会导致重复ID生成</li>
+</ol>
+<p>在分布式场景中，服务器时钟回拨会经常遇到，一般存在10ms之间的回拨；小伙伴们就说这点10ms，很短可以不考虑吧。但此算法就是建立在毫秒级别的生成方案，一旦回拨，就很有可能存在重复ID。</p>
+<h1 id="Redis生成方案"><a href="#Redis生成方案" class="headerlink" title="Redis生成方案"></a>Redis生成方案</h1><p>利用redis的incr原子性操作自增，一般算法为：年份 + 当天距当年第多少天 + 天数 + 小时 + redis自增</p>
+<p>优点：有序递增，可读性强</p>
+<p>缺点：占用带宽，每次要向redis进行请求</p>
+<blockquote>
+<p>参考：</p>
+<ol>
+<li><a href="https://www.toutiao.com/i6682195317716156942/">老顾聊技术-你想了解一线大厂的分布式唯一ID生成方案吗？</a></li>
+<li><a href="https://www.cnblogs.com/relucent/p/4955340.html">永夜微光-Twitter的分布式自增ID算法snowflake (Java版)</a></li>
+</ol>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>SQL</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>SQL</tag>
+        <tag>UUID</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Orcale日常记录</title>
+    <url>/p/3PN2K8A.html</url>
+    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
+<a id="more"></a>
+
+<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
+<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
+<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>SQL</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>SQL</tag>
+        <tag>Orcale</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Element输入框自动去除空格及校验</title>
+    <url>/p/2KGC076.html</url>
+    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
+<a id="more"></a>
+
+<p>可以自定义一个指令，代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br>Vue.directive(<span class="hljs-string">&#x27;trim&#x27;</span>, &#123;<br>  <span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params">el, binding, vnode</span>)</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> validateField = <span class="hljs-string">&#x27;&#x27;</span><br>      <span class="hljs-keyword">const</span> formItem = vnode.elm.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">if</span> (formItem) &#123;<br>        validateField = formItem.$options.propsData.prop<br>      &#125;<br>      <span class="hljs-keyword">const</span> form = vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">const</span> trimStr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> value = e.target.value<br>        <span class="hljs-keyword">if</span> (value) &#123;<br>          e.target.value = value.trim()<br>          e.target.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&#x27;input&#x27;</span>))<br>          <span class="hljs-keyword">if</span> (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(<span class="hljs-string">&#x27;blur&#x27;</span>, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
+<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
 </search>
