@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ES文件挂载</title>
+    <url>/p/PW04BF.html</url>
+    <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker exec -it test_es bash<br></code></pre></td></tr></table></figure>
+<p>找到配置文件所在位置：<code>/usr/share/elasticsearch/config</code> 下，可以看的配置文件：<code>elasticsearch.yml</code></p>
+<a id="more"></a>
+
+<p>拷贝配置文件到宿主机 <code>/opt/elasticsearch/</code> 目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker cp  test_es:/usr/share/elasticsearch/config/elasticsearch.yml  /opt/elasticsearch/<br></code></pre></td></tr></table></figure>
+<p>停止并且删除原来创建的容器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker stop test_es <br>docker rm  test_es<br></code></pre></td></tr></table></figure>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改 <code>/opt/elasticsearch/elasticsearch.yml</code> 配置文件</p>
+<p>将 <code>transport.host: 0.0.0.0</code> 前的#去掉后保存文件退出，其作用是允许任何ip地址访问elasticsearch。<br>开发测试阶段可以这么做，生产环境下指定具体的IP在<code>elasticsearch.yml</code>配置文件中添加如下跨域访问，方便下面的可视化连接工具连接。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cluster.name: &quot;docker-cluster&quot;<br>network.host: 0.0.0.0<br><br><span class="hljs-meta">#</span><span class="bash">开启跨域访问</span><br>http.cors.enabled: true<br>http.cors.allow-origin: &quot;*&quot;<br></code></pre></td></tr></table></figure>
+<h2 id="重新创建容器"><a href="#重新创建容器" class="headerlink" title="重新创建容器"></a>重新创建容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run -d --name=tensquare_elasticsearch -p 9200:9200 -p 9300:9300 -v  /opt/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="系统调优"><a href="#系统调优" class="headerlink" title="系统调优"></a>系统调优</h2><p>启动后发现启动失败了，这时什么原因呢？这与我们刚才修改的配置有关，因为 elasticsearch在启动的时候会进行一些检查，比如最多打开的文件的个数以及虚拟内存 区域数量等等，如果你放开了此配置，意味着需要打开更多的文件以及虚拟内存，所以 我们还需要系统调优。</p>
+<p>一共需要修改两处</p>
+<h3 id="修改-etc-security-limits-conf"><a href="#修改-etc-security-limits-conf" class="headerlink" title="修改 /etc/security/limits.conf"></a>修改 /etc/security/limits.conf</h3><p>添加如下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">* soft nofile 65536 <br>* hard nofile 65536<br></code></pre></td></tr></table></figure>
+<p>nofile是单个进程允许打开的最大文件个数<br>soft nofile 是软限制<br>hard nofile是硬限制</p>
+<h3 id="修改-etc-sysctl-conf"><a href="#修改-etc-sysctl-conf" class="headerlink" title="修改 /etc/sysctl.conf"></a>修改 /etc/sysctl.conf</h3><p>添加如下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>限制一个进程可以拥有的VMA(虚拟内存区域)的数量；执行下面命令 修改内核参数马上生效</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>重新启动虚拟机，再次启动容器，发现已经可以启动并远程访问</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ES镜像制作并启动</title>
+    <url>/p/10C2G1E.html</url>
+    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
+<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
+<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
+<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
+<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
+<p>在配置文件最下面，添加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>修改完成后，执行此命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>然后，重新启动elasticsearch，即可启动成功；</p>
+<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
+<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
+<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
+<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
+<p>均改为 512m</p>
+<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
+<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[Material Design] 尝试使用 Bottom Navigation</title>
     <url>/p/GJ0Q47.html</url>
     <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
@@ -74,76 +140,10 @@
         <category>Android</category>
       </categories>
       <tags>
+        <tag>Java</tag>
         <tag>Android</tag>
         <tag>Google</tag>
-        <tag>Java</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>ES镜像制作并启动</title>
-    <url>/p/10C2G1E.html</url>
-    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
-<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
-<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
-<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
-<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
-<p>在配置文件最下面，添加如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>修改完成后，执行此命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>然后，重新启动elasticsearch，即可启动成功；</p>
-<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
-<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
-<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
-<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
-<p>均改为 512m</p>
-<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
-<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Elasticsearch</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ES文件挂载</title>
-    <url>/p/PW04BF.html</url>
-    <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker exec -it test_es bash<br></code></pre></td></tr></table></figure>
-<p>找到配置文件所在位置：<code>/usr/share/elasticsearch/config</code> 下，可以看的配置文件：<code>elasticsearch.yml</code></p>
-<a id="more"></a>
-
-<p>拷贝配置文件到宿主机 <code>/opt/elasticsearch/</code> 目录下</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker cp  test_es:/usr/share/elasticsearch/config/elasticsearch.yml  /opt/elasticsearch/<br></code></pre></td></tr></table></figure>
-<p>停止并且删除原来创建的容器</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker stop test_es <br>docker rm  test_es<br></code></pre></td></tr></table></figure>
-<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改 <code>/opt/elasticsearch/elasticsearch.yml</code> 配置文件</p>
-<p>将 <code>transport.host: 0.0.0.0</code> 前的#去掉后保存文件退出，其作用是允许任何ip地址访问elasticsearch。<br>开发测试阶段可以这么做，生产环境下指定具体的IP在<code>elasticsearch.yml</code>配置文件中添加如下跨域访问，方便下面的可视化连接工具连接。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cluster.name: &quot;docker-cluster&quot;<br>network.host: 0.0.0.0<br><br><span class="hljs-meta">#</span><span class="bash">开启跨域访问</span><br>http.cors.enabled: true<br>http.cors.allow-origin: &quot;*&quot;<br></code></pre></td></tr></table></figure>
-<h2 id="重新创建容器"><a href="#重新创建容器" class="headerlink" title="重新创建容器"></a>重新创建容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run -d --name=tensquare_elasticsearch -p 9200:9200 -p 9300:9300 -v  /opt/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="系统调优"><a href="#系统调优" class="headerlink" title="系统调优"></a>系统调优</h2><p>启动后发现启动失败了，这时什么原因呢？这与我们刚才修改的配置有关，因为 elasticsearch在启动的时候会进行一些检查，比如最多打开的文件的个数以及虚拟内存 区域数量等等，如果你放开了此配置，意味着需要打开更多的文件以及虚拟内存，所以 我们还需要系统调优。</p>
-<p>一共需要修改两处</p>
-<h3 id="修改-etc-security-limits-conf"><a href="#修改-etc-security-limits-conf" class="headerlink" title="修改 /etc/security/limits.conf"></a>修改 /etc/security/limits.conf</h3><p>添加如下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">* soft nofile 65536 <br>* hard nofile 65536<br></code></pre></td></tr></table></figure>
-<p>nofile是单个进程允许打开的最大文件个数<br>soft nofile 是软限制<br>hard nofile是硬限制</p>
-<h3 id="修改-etc-sysctl-conf"><a href="#修改-etc-sysctl-conf" class="headerlink" title="修改 /etc/sysctl.conf"></a>修改 /etc/sysctl.conf</h3><p>添加如下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>限制一个进程可以拥有的VMA(虚拟内存区域)的数量；执行下面命令 修改内核参数马上生效</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>重新启动虚拟机，再次启动容器，发现已经可以启动并远程访问</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Elasticsearch</category>
-      </categories>
   </entry>
   <entry>
     <title>HomeKit初始化</title>
@@ -237,6 +237,49 @@
       </tags>
   </entry>
   <entry>
+    <title>JSP基本语法记录01</title>
+    <url>/p/3AB4DA.html</url>
+    <content><![CDATA[<p>最近项目上需要改老项目，巩固一下JSP方面的语法知识。</p>
+<a id="more"></a>
+
+<h1 id="JSP注释"><a href="#JSP注释" class="headerlink" title="JSP注释"></a>JSP注释</h1><p>JSP注释用于注释在程序开发过程中的开发提示，不会输出到浏览器端。<br>JSP注释的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%--JSP注释 --%&gt;<br></code></pre></td></tr></table></figure>
+<p>与JSP注释相似的是HTML注释，HTML注释的语法格式如下：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- HTML注释 --&gt;</span><br></code></pre></td></tr></table></figure>
+<p>HTML注释的内容会输出到浏览器端，在浏览器端查看网页源代码可以看到HTML注释的内容，而JSP注释的内容则查看不到。<br>下面是JSP注释和HTML注释的代码示例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP注释示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    注释示例<br>    &lt;!-- 增加JSP注释 --&gt;<br>    &lt;%--JSP注释 --%&gt;<br>    &lt;!-- 增加html注释 --&gt;<br>    &lt;!-- html注释 --&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>通过在浏览器端查看网页源代码可以看到html注释的内容可以看到，而JSP注释的内容则查看不到。如下图所示。</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/annotation8f234306e8e6514f.png" alt="annotation.png"></p>
+<h1 id="JSP声明"><a href="#JSP声明" class="headerlink" title="JSP声明"></a>JSP声明</h1><p>JSP声明用于声明变量和方法。JSP声明的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%!  JSP声明部分  %&gt;<br></code></pre></td></tr></table></figure>
+<p>下面看一个JSP声明的实例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP声明示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出count的值，然后再将count加1</span><br>        out.println(count++);<br>    %&gt;<br>    &lt;br/&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出info()方法的返回值</span><br>        out.println(info());<br>    %&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>在浏览器中测试该页面，可以看到正常输出了count 的值和info()方法的返回值，每次刷新页面，count的值就会加1。页面效果图如下（刷新许多次）：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/declare1ab0df224e6dad3d.png" alt="declare.png"></p>
+<h1 id="输出JSP表达式"><a href="#输出JSP表达式" class="headerlink" title="输出JSP表达式"></a>输出JSP表达式</h1><p>输出JSP表达式的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%=表达式%&gt;<br></code></pre></td></tr></table></figure>
+<p>下面是用表达式改写JSP声明的示例的页面代码，使用JSP表达式输出同样能达到上面的效果，代码如下：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP表达式示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;!-- 使用表达式输出变量的值 --&gt;<br>    &lt;%=count++%&gt;<br>    &lt;br/&gt;<br>    &lt;!-- 使用表达式输出方法的返回值 --&gt;<br>    &lt;%=info()%&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>页面效果如下：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/expression94586bd6a2b9a018.png" alt="expression.png"></p>
+<h1 id="JSP脚本"><a href="#JSP脚本" class="headerlink" title="JSP脚本"></a>JSP脚本</h1><p>JSP脚本是使用Java代码执行页面的控制，JSP脚本的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%  脚本语言代码 %&gt;<br></code></pre></td></tr></table></figure>
+<p>下面是一个使用Java脚本语言控制HTML中表格的示例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;脚本测试&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    &lt;table border=<span class="hljs-string">&quot;1px&quot;</span> cellspacing=<span class="hljs-string">&quot;0px&quot;</span> style=<span class="hljs-string">&quot;border-collapse:collapse&quot;</span> width=<span class="hljs-string">&quot;300px&quot;</span>&gt;<br>    &lt;!-- Java脚本 --&gt;<br>    &lt;%<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++) <br>    &#123;<br>    %&gt;<br>        &lt;!-- 上面的循环控制&lt;tr&gt;标签循环 --&gt;<br>        &lt;tr&gt;<br>            &lt;td&gt;循环值：&lt;/td&gt;<br>            &lt;td&gt;&lt;%=i %&gt;&lt;/td&gt;<br>        &lt;/tr&gt;<br>    &lt;%&#125; %&gt;<br>    &lt;/table&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>页面的效果如下图所示：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/scripte85aac144f3530f4.png" alt="script.png"></p>
+<p>上面就是JSP的四种基本语法，详细理解 这四种语法还需要有Servlet的知识，如JSP声明变量和方法，JSP声明的变量和方法会在该JSP页面对应的Servlet中有对应的声明，不是独立存在的，因为在Java中方法是不能独立存在的，方法的声明需要在类中声明。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>JSP</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JSP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用Gulp加速Hexo</title>
     <url>/p/8VNSFG.html</url>
     <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
@@ -302,49 +345,6 @@
       <tags>
         <tag>Java</tag>
         <tag>Gulp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JSP基本语法记录01</title>
-    <url>/p/3AB4DA.html</url>
-    <content><![CDATA[<p>最近项目上需要改老项目，巩固一下JSP方面的语法知识。</p>
-<a id="more"></a>
-
-<h1 id="JSP注释"><a href="#JSP注释" class="headerlink" title="JSP注释"></a>JSP注释</h1><p>JSP注释用于注释在程序开发过程中的开发提示，不会输出到浏览器端。<br>JSP注释的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%--JSP注释 --%&gt;<br></code></pre></td></tr></table></figure>
-<p>与JSP注释相似的是HTML注释，HTML注释的语法格式如下：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- HTML注释 --&gt;</span><br></code></pre></td></tr></table></figure>
-<p>HTML注释的内容会输出到浏览器端，在浏览器端查看网页源代码可以看到HTML注释的内容，而JSP注释的内容则查看不到。<br>下面是JSP注释和HTML注释的代码示例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP注释示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    注释示例<br>    &lt;!-- 增加JSP注释 --&gt;<br>    &lt;%--JSP注释 --%&gt;<br>    &lt;!-- 增加html注释 --&gt;<br>    &lt;!-- html注释 --&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>通过在浏览器端查看网页源代码可以看到html注释的内容可以看到，而JSP注释的内容则查看不到。如下图所示。</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/annotation8f234306e8e6514f.png" alt="annotation.png"></p>
-<h1 id="JSP声明"><a href="#JSP声明" class="headerlink" title="JSP声明"></a>JSP声明</h1><p>JSP声明用于声明变量和方法。JSP声明的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%!  JSP声明部分  %&gt;<br></code></pre></td></tr></table></figure>
-<p>下面看一个JSP声明的实例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP声明示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出count的值，然后再将count加1</span><br>        out.println(count++);<br>    %&gt;<br>    &lt;br/&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出info()方法的返回值</span><br>        out.println(info());<br>    %&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>在浏览器中测试该页面，可以看到正常输出了count 的值和info()方法的返回值，每次刷新页面，count的值就会加1。页面效果图如下（刷新许多次）：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/declare1ab0df224e6dad3d.png" alt="declare.png"></p>
-<h1 id="输出JSP表达式"><a href="#输出JSP表达式" class="headerlink" title="输出JSP表达式"></a>输出JSP表达式</h1><p>输出JSP表达式的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%=表达式%&gt;<br></code></pre></td></tr></table></figure>
-<p>下面是用表达式改写JSP声明的示例的页面代码，使用JSP表达式输出同样能达到上面的效果，代码如下：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP表达式示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;!-- 使用表达式输出变量的值 --&gt;<br>    &lt;%=count++%&gt;<br>    &lt;br/&gt;<br>    &lt;!-- 使用表达式输出方法的返回值 --&gt;<br>    &lt;%=info()%&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>页面效果如下：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/expression94586bd6a2b9a018.png" alt="expression.png"></p>
-<h1 id="JSP脚本"><a href="#JSP脚本" class="headerlink" title="JSP脚本"></a>JSP脚本</h1><p>JSP脚本是使用Java代码执行页面的控制，JSP脚本的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%  脚本语言代码 %&gt;<br></code></pre></td></tr></table></figure>
-<p>下面是一个使用Java脚本语言控制HTML中表格的示例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;脚本测试&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    &lt;table border=<span class="hljs-string">&quot;1px&quot;</span> cellspacing=<span class="hljs-string">&quot;0px&quot;</span> style=<span class="hljs-string">&quot;border-collapse:collapse&quot;</span> width=<span class="hljs-string">&quot;300px&quot;</span>&gt;<br>    &lt;!-- Java脚本 --&gt;<br>    &lt;%<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++) <br>    &#123;<br>    %&gt;<br>        &lt;!-- 上面的循环控制&lt;tr&gt;标签循环 --&gt;<br>        &lt;tr&gt;<br>            &lt;td&gt;循环值：&lt;/td&gt;<br>            &lt;td&gt;&lt;%=i %&gt;&lt;/td&gt;<br>        &lt;/tr&gt;<br>    &lt;%&#125; %&gt;<br>    &lt;/table&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>页面的效果如下图所示：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/scripte85aac144f3530f4.png" alt="script.png"></p>
-<p>上面就是JSP的四种基本语法，详细理解 这四种语法还需要有Servlet的知识，如JSP声明变量和方法，JSP声明的变量和方法会在该JSP页面对应的Servlet中有对应的声明，不是独立存在的，因为在Java中方法是不能独立存在的，方法的声明需要在类中声明。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>JSP</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>JSP</tag>
       </tags>
   </entry>
   <entry>
@@ -836,32 +836,22 @@
       </tags>
   </entry>
   <entry>
-    <title>[202006期] 有价值 iOS App</title>
-    <url>/p/2S9K9NA.html</url>
-    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
+    <title>Element输入框自动去除空格及校验</title>
+    <url>/p/2KGC076.html</url>
+    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
 <a id="more"></a>
 
-<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
-<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
-<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
-<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
+<p>可以自定义一个指令，代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br>Vue.directive(<span class="hljs-string">&#x27;trim&#x27;</span>, &#123;<br>  <span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params">el, binding, vnode</span>)</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> validateField = <span class="hljs-string">&#x27;&#x27;</span><br>      <span class="hljs-keyword">const</span> formItem = vnode.elm.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">if</span> (formItem) &#123;<br>        validateField = formItem.$options.propsData.prop<br>      &#125;<br>      <span class="hljs-keyword">const</span> form = vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">const</span> trimStr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> value = e.target.value<br>        <span class="hljs-keyword">if</span> (value) &#123;<br>          e.target.value = value.trim()<br>          e.target.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&#x27;input&#x27;</span>))<br>          <span class="hljs-keyword">if</span> (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(<span class="hljs-string">&#x27;blur&#x27;</span>, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
+<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
 ]]></content>
       <categories>
-        <category>日常</category>
-        <category>Apple</category>
+        <category>开发</category>
+        <category>Vue</category>
       </categories>
       <tags>
-        <tag>Netflix</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -968,6 +958,35 @@
       </tags>
   </entry>
   <entry>
+    <title>[202006期] 有价值 iOS App</title>
+    <url>/p/2S9K9NA.html</url>
+    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
+<a id="more"></a>
+
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
+<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
+<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
+<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>Apple</category>
+      </categories>
+      <tags>
+        <tag>Netflix</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CarKey功能预测及介绍</title>
     <url>/p/T5A9FS.html</url>
     <content><![CDATA[<p>苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。</p>
@@ -1015,64 +1034,6 @@
       <categories>
         <category>日常</category>
         <category>Apple</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Element输入框自动去除空格及校验</title>
-    <url>/p/2KGC076.html</url>
-    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
-<a id="more"></a>
-
-<p>可以自定义一个指令，代码如下</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br>Vue.directive(<span class="hljs-string">&#x27;trim&#x27;</span>, &#123;<br>  <span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params">el, binding, vnode</span>)</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> validateField = <span class="hljs-string">&#x27;&#x27;</span><br>      <span class="hljs-keyword">const</span> formItem = vnode.elm.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">if</span> (formItem) &#123;<br>        validateField = formItem.$options.propsData.prop<br>      &#125;<br>      <span class="hljs-keyword">const</span> form = vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">const</span> trimStr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> value = e.target.value<br>        <span class="hljs-keyword">if</span> (value) &#123;<br>          e.target.value = value.trim()<br>          e.target.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&#x27;input&#x27;</span>))<br>          <span class="hljs-keyword">if</span> (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(<span class="hljs-string">&#x27;blur&#x27;</span>, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
-<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
-<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Vue</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>真正的自律，就是战胜你自己</title>
-    <url>/p/ZAB5E7.html</url>
-    <content><![CDATA[<p>1</p>
-<p>问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。</p>
-<p>三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。</p>
-<p>他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。</p>
-<a id="more"></a>
-
-<p>不知你是否发现，很多人空有一颗求上进的心，但在实际生活中，却活得敷衍、潦草、不自律。他们一边痛恨自己总是拖延和懒散，一边又纵容自己，贪图片刻的满足和安逸。</p>
-<p>其实，<strong>人这一辈子就是战胜自己的过程。如果你管住了自己，就可以拥有更多的自由。如果你管不好自己，就只能被现实左右</strong>。</p>
-<p>2</p>
-<p>大概你也曾经历过无数个失败的自律计划。</p>
-<p>坚持早起，但第二天实在起不来，就放弃了。坚持读书，但刚读了几页还是忍不住看手机，就放弃了。坚持减肥，刚确立这个信念，但美食一出现又放弃了。</p>
-<p>放弃，其实很简单。只要你的思想稍微松动一下，就可以让自己轻松地逃避那些原本你不愿做的事。但想要坚持就太难了，因为你面对的困难和挫折，经受的挑战和诱惑实在太多了。</p>
-<p>人与人之间最大的差距就在于自律。优秀的人想要做成一件事，几乎是言出必行，说到即能做到。但很多人虽然也想改变自己，却很难克服自身的惰性。</p>
-<p>自律最难的地方，在于它没法一蹴而就。<strong>大多数时刻，你需要反复跟自己做斗争，需要对自己下狠手，需要对自己更严苛，不能给自己丝毫的犹豫和退路。</strong></p>
-<p>3</p>
-<p>人在什么时刻会意识到自律的重要性？</p>
-<p>大概不是在早晨睡到日上三竿时，也不是在深夜吃着炸鸡喝着啤酒时，更不是在一有空闲就盯着手机追剧时，而是当你发现自己的身材越来越胖、生活越来越无聊、人生越来越失去掌控时，才会感受到巨大的压力。</p>
-<p>人在什么时刻会意识到自律的好处？</p>
-<p>大概不是在寒冷的冬天逼着自己五点起床时，也不是在感到疲惫依旧锻炼身体时，更不是一个人在书房独自读书写作时，而是当你发现自己的身体越来越好、事业越来越有所成、生活越来越有趣时，为此感到无比欣慰。</p>
-<p>于不自律的人而言，轻松是暂时的，痛苦却是长久的。于自律的人来说，过程是痛苦的，结果却是令人满意的。</p>
-<p>记得网上有一个问题：“高度自律是一种什么体验”。有个回答是“不再被生活拖曳着前进，而是未来变得可控，一切有条不紊，想要的生活触手可及”。</p>
-<p>当你觉得管不住自己，想要偷懒、想要懈怠时，想一想自己理想的生活，大概就不会沉迷于安逸享乐。<strong>当你觉得坚持不下去，想要泄气、放弃时，想一想放任的后果，大概就有了自我约束的紧迫感。</strong></p>
-<p>4</p>
-<p>人人都渴望更出色，但无论做什么都没有捷径，都要做到自律。</p>
-<p>成绩比你好的人可能并没有比你更聪明，不过是在一日又一日的枯燥学业中，坚持不断地练题、背书、做笔记。</p>
-<p>身体比你好的人可能并不是天生体质好，而是在一天又一天的单调重复中，坚持不断地早睡、早起、多运动。</p>
-<p>文采比你好的人可能并不是有特殊的天赋，而是在一年又一年的平淡光阴里坚持不断地读书、沉淀和积累。</p>
-<p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
-<p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
-<p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>摘抄</category>
       </categories>
   </entry>
   <entry>
@@ -1214,6 +1175,45 @@
       <tags>
         <tag>Java</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>真正的自律，就是战胜你自己</title>
+    <url>/p/ZAB5E7.html</url>
+    <content><![CDATA[<p>1</p>
+<p>问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。</p>
+<p>三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。</p>
+<p>他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。</p>
+<a id="more"></a>
+
+<p>不知你是否发现，很多人空有一颗求上进的心，但在实际生活中，却活得敷衍、潦草、不自律。他们一边痛恨自己总是拖延和懒散，一边又纵容自己，贪图片刻的满足和安逸。</p>
+<p>其实，<strong>人这一辈子就是战胜自己的过程。如果你管住了自己，就可以拥有更多的自由。如果你管不好自己，就只能被现实左右</strong>。</p>
+<p>2</p>
+<p>大概你也曾经历过无数个失败的自律计划。</p>
+<p>坚持早起，但第二天实在起不来，就放弃了。坚持读书，但刚读了几页还是忍不住看手机，就放弃了。坚持减肥，刚确立这个信念，但美食一出现又放弃了。</p>
+<p>放弃，其实很简单。只要你的思想稍微松动一下，就可以让自己轻松地逃避那些原本你不愿做的事。但想要坚持就太难了，因为你面对的困难和挫折，经受的挑战和诱惑实在太多了。</p>
+<p>人与人之间最大的差距就在于自律。优秀的人想要做成一件事，几乎是言出必行，说到即能做到。但很多人虽然也想改变自己，却很难克服自身的惰性。</p>
+<p>自律最难的地方，在于它没法一蹴而就。<strong>大多数时刻，你需要反复跟自己做斗争，需要对自己下狠手，需要对自己更严苛，不能给自己丝毫的犹豫和退路。</strong></p>
+<p>3</p>
+<p>人在什么时刻会意识到自律的重要性？</p>
+<p>大概不是在早晨睡到日上三竿时，也不是在深夜吃着炸鸡喝着啤酒时，更不是在一有空闲就盯着手机追剧时，而是当你发现自己的身材越来越胖、生活越来越无聊、人生越来越失去掌控时，才会感受到巨大的压力。</p>
+<p>人在什么时刻会意识到自律的好处？</p>
+<p>大概不是在寒冷的冬天逼着自己五点起床时，也不是在感到疲惫依旧锻炼身体时，更不是一个人在书房独自读书写作时，而是当你发现自己的身体越来越好、事业越来越有所成、生活越来越有趣时，为此感到无比欣慰。</p>
+<p>于不自律的人而言，轻松是暂时的，痛苦却是长久的。于自律的人来说，过程是痛苦的，结果却是令人满意的。</p>
+<p>记得网上有一个问题：“高度自律是一种什么体验”。有个回答是“不再被生活拖曳着前进，而是未来变得可控，一切有条不紊，想要的生活触手可及”。</p>
+<p>当你觉得管不住自己，想要偷懒、想要懈怠时，想一想自己理想的生活，大概就不会沉迷于安逸享乐。<strong>当你觉得坚持不下去，想要泄气、放弃时，想一想放任的后果，大概就有了自我约束的紧迫感。</strong></p>
+<p>4</p>
+<p>人人都渴望更出色，但无论做什么都没有捷径，都要做到自律。</p>
+<p>成绩比你好的人可能并没有比你更聪明，不过是在一日又一日的枯燥学业中，坚持不断地练题、背书、做笔记。</p>
+<p>身体比你好的人可能并不是天生体质好，而是在一天又一天的单调重复中，坚持不断地早睡、早起、多运动。</p>
+<p>文采比你好的人可能并不是有特殊的天赋，而是在一年又一年的平淡光阴里坚持不断地读书、沉淀和积累。</p>
+<p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
+<p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
+<p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>摘抄</category>
+      </categories>
   </entry>
   <entry>
     <title>请记住人生中的“三”</title>

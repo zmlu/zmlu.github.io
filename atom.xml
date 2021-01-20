@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Jacob&#39;s Notes</title>
-  <icon>https://zmlu.me/img/logo.png</icon>
+  <icon>https://zmlu.github.io/img/logo.png</icon>
   <subtitle>记录·分享</subtitle>
-  <link href="https://zmlu.me/atom.xml" rel="self"/>
+  <link href="https://zmlu.github.io/atom.xml" rel="self"/>
   
-  <link href="https://zmlu.me/"/>
+  <link href="https://zmlu.github.io/"/>
   <updated>2021-01-20T01:57:33.491Z</updated>
-  <id>https://zmlu.me/</id>
+  <id>https://zmlu.github.io/</id>
   
   <author>
     <name>Jacob</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Element输入框自动去除空格及校验</title>
-    <link href="https://zmlu.me/p/2KGC076.html"/>
-    <id>https://zmlu.me/p/2KGC076.html</id>
+    <link href="https://zmlu.github.io/p/2KGC076.html"/>
+    <id>https://zmlu.github.io/p/2KGC076.html</id>
     <published>2021-01-19T16:00:00.000Z</published>
     <updated>2021-01-20T01:57:33.491Z</updated>
     
@@ -28,19 +28,19 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Vue" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Vue/"/>
+    <category term="Vue" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Vue/"/>
     
     
-    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    <category term="Java" scheme="https://zmlu.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>使用Scrapy抓取百度热点新闻</title>
-    <link href="https://zmlu.me/p/QHV65K.html"/>
-    <id>https://zmlu.me/p/QHV65K.html</id>
+    <link href="https://zmlu.github.io/p/QHV65K.html"/>
+    <id>https://zmlu.github.io/p/QHV65K.html</id>
     <published>2020-07-01T16:00:00.000Z</published>
     <updated>2020-07-16T02:56:24.000Z</updated>
     
@@ -50,19 +50,19 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Python" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Python/"/>
+    <category term="Python" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Python/"/>
     
     
-    <category term="Python" scheme="https://zmlu.me/tags/Python/"/>
+    <category term="Python" scheme="https://zmlu.github.io/tags/Python/"/>
     
   </entry>
   
   <entry>
     <title>CarKey功能预测及介绍</title>
-    <link href="https://zmlu.me/p/T5A9FS.html"/>
-    <id>https://zmlu.me/p/T5A9FS.html</id>
+    <link href="https://zmlu.github.io/p/T5A9FS.html"/>
+    <id>https://zmlu.github.io/p/T5A9FS.html</id>
     <published>2020-06-16T16:00:00.000Z</published>
     <updated>2020-06-17T06:52:50.000Z</updated>
     
@@ -71,17 +71,17 @@
     
     
     
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
     
-    <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
+    <category term="Apple" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
     
     
   </entry>
   
   <entry>
     <title>[202006期] 有价值 iOS App</title>
-    <link href="https://zmlu.me/p/2S9K9NA.html"/>
-    <id>https://zmlu.me/p/2S9K9NA.html</id>
+    <link href="https://zmlu.github.io/p/2S9K9NA.html"/>
+    <id>https://zmlu.github.io/p/2S9K9NA.html</id>
     <published>2020-06-10T16:00:00.000Z</published>
     <updated>2020-06-11T07:14:00.000Z</updated>
     
@@ -90,19 +90,19 @@
     
     
     
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
     
-    <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
+    <category term="Apple" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
     
     
-    <category term="Netflix" scheme="https://zmlu.me/tags/Netflix/"/>
+    <category term="Netflix" scheme="https://zmlu.github.io/tags/Netflix/"/>
     
   </entry>
   
   <entry>
     <title>ES文件挂载</title>
-    <link href="https://zmlu.me/p/PW04BF.html"/>
-    <id>https://zmlu.me/p/PW04BF.html</id>
+    <link href="https://zmlu.github.io/p/PW04BF.html"/>
+    <id>https://zmlu.github.io/p/PW04BF.html</id>
     <published>2020-06-09T16:00:00.000Z</published>
     <updated>2020-07-16T02:56:24.000Z</updated>
     
@@ -113,17 +113,17 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Elasticsearch" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
+    <category term="Elasticsearch" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
     
     
   </entry>
   
   <entry>
     <title>iOS 14 新功能预料大合集</title>
-    <link href="https://zmlu.me/p/2RSHAR.html"/>
-    <id>https://zmlu.me/p/2RSHAR.html</id>
+    <link href="https://zmlu.github.io/p/2RSHAR.html"/>
+    <id>https://zmlu.github.io/p/2RSHAR.html</id>
     <published>2020-06-09T16:00:00.000Z</published>
     <updated>2020-06-10T09:25:58.000Z</updated>
     
@@ -132,23 +132,23 @@
     
     
     
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
     
-    <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
+    <category term="Apple" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
     
     
-    <category term="Android" scheme="https://zmlu.me/tags/Android/"/>
+    <category term="Android" scheme="https://zmlu.github.io/tags/Android/"/>
     
-    <category term="HomeKit" scheme="https://zmlu.me/tags/HomeKit/"/>
+    <category term="HomeKit" scheme="https://zmlu.github.io/tags/HomeKit/"/>
     
-    <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
+    <category term="Mac" scheme="https://zmlu.github.io/tags/Mac/"/>
     
   </entry>
   
   <entry>
     <title>Python切片</title>
-    <link href="https://zmlu.me/p/253PZX0.html"/>
-    <id>https://zmlu.me/p/253PZX0.html</id>
+    <link href="https://zmlu.github.io/p/253PZX0.html"/>
+    <id>https://zmlu.github.io/p/253PZX0.html</id>
     <published>2020-06-08T16:00:00.000Z</published>
     <updated>2020-06-09T06:35:30.000Z</updated>
     
@@ -157,19 +157,19 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Python" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Python/"/>
+    <category term="Python" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Python/"/>
     
     
-    <category term="Python" scheme="https://zmlu.me/tags/Python/"/>
+    <category term="Python" scheme="https://zmlu.github.io/tags/Python/"/>
     
   </entry>
   
   <entry>
     <title>ES镜像制作并启动</title>
-    <link href="https://zmlu.me/p/10C2G1E.html"/>
-    <id>https://zmlu.me/p/10C2G1E.html</id>
+    <link href="https://zmlu.github.io/p/10C2G1E.html"/>
+    <id>https://zmlu.github.io/p/10C2G1E.html</id>
     <published>2020-05-18T16:00:00.000Z</published>
     <updated>2020-07-16T02:56:24.000Z</updated>
     
@@ -179,19 +179,19 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Elasticsearch" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
+    <category term="Elasticsearch" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
     
     
-    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    <category term="Java" scheme="https://zmlu.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>运用Live Template加快写代码速度</title>
-    <link href="https://zmlu.me/p/1W7RVXA.html"/>
-    <id>https://zmlu.me/p/1W7RVXA.html</id>
+    <link href="https://zmlu.github.io/p/1W7RVXA.html"/>
+    <id>https://zmlu.github.io/p/1W7RVXA.html</id>
     <published>2020-05-10T16:00:00.000Z</published>
     <updated>2020-05-11T08:21:10.000Z</updated>
     
@@ -200,19 +200,19 @@
     
     
     
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
     
-    <category term="技巧" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%8A%80%E5%B7%A7/"/>
+    <category term="技巧" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/%E6%8A%80%E5%B7%A7/"/>
     
     
-    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    <category term="Java" scheme="https://zmlu.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>理解 JavaScript 的 async、await</title>
-    <link href="https://zmlu.me/p/3Q3X94C.html"/>
-    <id>https://zmlu.me/p/3Q3X94C.html</id>
+    <link href="https://zmlu.github.io/p/3Q3X94C.html"/>
+    <id>https://zmlu.github.io/p/3Q3X94C.html</id>
     <published>2020-04-26T16:00:00.000Z</published>
     <updated>2020-04-27T03:32:32.000Z</updated>
     
@@ -221,19 +221,19 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Javascript" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Javascript/"/>
+    <category term="Javascript" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Javascript/"/>
     
     
-    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    <category term="Java" scheme="https://zmlu.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>Python在全局代理下安装包报错</title>
-    <link href="https://zmlu.me/p/1E56RCW.html"/>
-    <id>https://zmlu.me/p/1E56RCW.html</id>
+    <link href="https://zmlu.github.io/p/1E56RCW.html"/>
+    <id>https://zmlu.github.io/p/1E56RCW.html</id>
     <published>2020-03-24T16:00:00.000Z</published>
     <updated>2020-03-25T09:03:32.000Z</updated>
     
@@ -244,21 +244,21 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Python" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Python/"/>
+    <category term="Python" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Python/"/>
     
     
-    <category term="Python" scheme="https://zmlu.me/tags/Python/"/>
+    <category term="Python" scheme="https://zmlu.github.io/tags/Python/"/>
     
-    <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
+    <category term="Mac" scheme="https://zmlu.github.io/tags/Mac/"/>
     
   </entry>
   
   <entry>
     <title>在macOS上运用Crontab运行定时任务</title>
-    <link href="https://zmlu.me/p/11CFSV5.html"/>
-    <id>https://zmlu.me/p/11CFSV5.html</id>
+    <link href="https://zmlu.github.io/p/11CFSV5.html"/>
+    <id>https://zmlu.github.io/p/11CFSV5.html</id>
     <published>2020-03-18T16:00:00.000Z</published>
     <updated>2020-03-19T06:24:46.000Z</updated>
     
@@ -271,19 +271,19 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="macOS" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/macOS/"/>
+    <category term="macOS" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/macOS/"/>
     
     
-    <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
+    <category term="Mac" scheme="https://zmlu.github.io/tags/Mac/"/>
     
   </entry>
   
   <entry>
     <title>「翻译」Java 14带来了许多新功能</title>
-    <link href="https://zmlu.me/p/2305442.html"/>
-    <id>https://zmlu.me/p/2305442.html</id>
+    <link href="https://zmlu.github.io/p/2305442.html"/>
+    <id>https://zmlu.github.io/p/2305442.html</id>
     <published>2020-03-17T16:00:00.000Z</published>
     <updated>2020-03-19T02:53:08.000Z</updated>
     
@@ -300,19 +300,19 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Java" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Java/"/>
+    <category term="Java" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Java/"/>
     
     
-    <category term="总结" scheme="https://zmlu.me/tags/%E6%80%BB%E7%BB%93/"/>
+    <category term="总结" scheme="https://zmlu.github.io/tags/%E6%80%BB%E7%BB%93/"/>
     
   </entry>
   
   <entry>
     <title>Git设置代理</title>
-    <link href="https://zmlu.me/p/35NJX8Y.html"/>
-    <id>https://zmlu.me/p/35NJX8Y.html</id>
+    <link href="https://zmlu.github.io/p/35NJX8Y.html"/>
+    <id>https://zmlu.github.io/p/35NJX8Y.html</id>
     <published>2020-03-09T16:00:00.000Z</published>
     <updated>2020-03-19T02:21:32.000Z</updated>
     
@@ -322,19 +322,19 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Git" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Git/"/>
+    <category term="Git" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Git/"/>
     
     
-    <category term="加速" scheme="https://zmlu.me/tags/%E5%8A%A0%E9%80%9F/"/>
+    <category term="加速" scheme="https://zmlu.github.io/tags/%E5%8A%A0%E9%80%9F/"/>
     
   </entry>
   
   <entry>
     <title>Mac提示安装包已损坏的解决方法</title>
-    <link href="https://zmlu.me/p/2H0WSE.html"/>
-    <id>https://zmlu.me/p/2H0WSE.html</id>
+    <link href="https://zmlu.github.io/p/2H0WSE.html"/>
+    <id>https://zmlu.github.io/p/2H0WSE.html</id>
     <published>2020-01-20T16:00:00.000Z</published>
     <updated>2020-03-07T08:21:02.000Z</updated>
     
@@ -347,19 +347,19 @@
     
     
     
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
     
-    <category term="收藏" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%94%B6%E8%97%8F/"/>
+    <category term="收藏" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/%E6%94%B6%E8%97%8F/"/>
     
     
-    <category term="总结" scheme="https://zmlu.me/tags/%E6%80%BB%E7%BB%93/"/>
+    <category term="总结" scheme="https://zmlu.github.io/tags/%E6%80%BB%E7%BB%93/"/>
     
   </entry>
   
   <entry>
     <title>真正的自律，就是战胜你自己</title>
-    <link href="https://zmlu.me/p/ZAB5E7.html"/>
-    <id>https://zmlu.me/p/ZAB5E7.html</id>
+    <link href="https://zmlu.github.io/p/ZAB5E7.html"/>
+    <id>https://zmlu.github.io/p/ZAB5E7.html</id>
     <published>2020-01-15T16:00:00.000Z</published>
     <updated>2020-03-07T08:22:34.000Z</updated>
     
@@ -371,17 +371,17 @@
     
     
     
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
     
-    <category term="摘抄" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%91%98%E6%8A%84/"/>
+    <category term="摘抄" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/%E6%91%98%E6%8A%84/"/>
     
     
   </entry>
   
   <entry>
     <title>请记住人生中的“三”</title>
-    <link href="https://zmlu.me/p/18JYVC6.html"/>
-    <id>https://zmlu.me/p/18JYVC6.html</id>
+    <link href="https://zmlu.github.io/p/18JYVC6.html"/>
+    <id>https://zmlu.github.io/p/18JYVC6.html</id>
     <published>2020-01-15T16:00:00.000Z</published>
     <updated>2020-03-19T02:23:54.000Z</updated>
     
@@ -391,17 +391,17 @@
     
     
     
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
     
-    <category term="摘抄" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%91%98%E6%8A%84/"/>
+    <category term="摘抄" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/%E6%91%98%E6%8A%84/"/>
     
     
   </entry>
   
   <entry>
     <title>各种主键生成方法介绍以及生成优缺点对比</title>
-    <link href="https://zmlu.me/p/34QH0JS.html"/>
-    <id>https://zmlu.me/p/34QH0JS.html</id>
+    <link href="https://zmlu.github.io/p/34QH0JS.html"/>
+    <id>https://zmlu.github.io/p/34QH0JS.html</id>
     <published>2020-01-09T16:00:00.000Z</published>
     <updated>2020-03-19T02:23:40.000Z</updated>
     
@@ -416,23 +416,23 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="SQL" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/SQL/"/>
+    <category term="SQL" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/SQL/"/>
     
     
-    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
+    <category term="Java" scheme="https://zmlu.github.io/tags/Java/"/>
     
-    <category term="SQL" scheme="https://zmlu.me/tags/SQL/"/>
+    <category term="SQL" scheme="https://zmlu.github.io/tags/SQL/"/>
     
-    <category term="UUID" scheme="https://zmlu.me/tags/UUID/"/>
+    <category term="UUID" scheme="https://zmlu.github.io/tags/UUID/"/>
     
   </entry>
   
   <entry>
     <title>Netflix各国价格对比(2019)</title>
-    <link href="https://zmlu.me/p/2ZVKR9E.html"/>
-    <id>https://zmlu.me/p/2ZVKR9E.html</id>
+    <link href="https://zmlu.github.io/p/2ZVKR9E.html"/>
+    <id>https://zmlu.github.io/p/2ZVKR9E.html</id>
     <published>2020-01-07T16:00:00.000Z</published>
     <updated>2020-03-19T02:24:08.000Z</updated>
     
@@ -445,19 +445,19 @@
     
     
     
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
     
-    <category term="收藏" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/%E6%94%B6%E8%97%8F/"/>
+    <category term="收藏" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/%E6%94%B6%E8%97%8F/"/>
     
     
-    <category term="Netflix" scheme="https://zmlu.me/tags/Netflix/"/>
+    <category term="Netflix" scheme="https://zmlu.github.io/tags/Netflix/"/>
     
   </entry>
   
   <entry>
     <title>实现浏览器WebP图片自适应加载</title>
-    <link href="https://zmlu.me/p/3MDAQPQ.html"/>
-    <id>https://zmlu.me/p/3MDAQPQ.html</id>
+    <link href="https://zmlu.github.io/p/3MDAQPQ.html"/>
+    <id>https://zmlu.github.io/p/3MDAQPQ.html</id>
     <published>2020-01-05T16:00:00.000Z</published>
     <updated>2020-03-19T02:23:16.000Z</updated>
     
@@ -467,12 +467,12 @@
     
     
     
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
     
-    <category term="Nginx" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Nginx/"/>
+    <category term="Nginx" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Nginx/"/>
     
     
-    <category term="WebP" scheme="https://zmlu.me/tags/WebP/"/>
+    <category term="WebP" scheme="https://zmlu.github.io/tags/WebP/"/>
     
   </entry>
   
