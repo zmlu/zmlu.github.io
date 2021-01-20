@@ -6,7 +6,7 @@
   <link href="https://zmlu.me/atom.xml" rel="self"/>
   
   <link href="https://zmlu.me/"/>
-  <updated>2021-01-20T01:55:51.018Z</updated>
+  <updated>2021-01-20T01:57:33.491Z</updated>
   <id>https://zmlu.me/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://zmlu.me/p/2KGC076.html"/>
     <id>https://zmlu.me/p/2KGC076.html</id>
     <published>2021-01-19T16:00:00.000Z</published>
-    <updated>2021-01-20T01:55:51.018Z</updated>
+    <updated>2021-01-20T01:57:33.491Z</updated>
     
     
     <summary type="html">&lt;p&gt;有的时候需要用输入框输入数据，但是需要数据去除前后空格&lt;/p&gt;</summary>
@@ -32,6 +32,8 @@
     
     <category term="Vue" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Vue/"/>
     
+    
+    <category term="Java" scheme="https://zmlu.me/tags/Java/"/>
     
   </entry>
   
@@ -98,27 +100,6 @@
   </entry>
   
   <entry>
-    <title>ES文件挂载</title>
-    <link href="https://zmlu.me/p/PW04BF.html"/>
-    <id>https://zmlu.me/p/PW04BF.html</id>
-    <published>2020-06-09T16:00:00.000Z</published>
-    <updated>2020-07-16T02:56:24.000Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;文件挂载前准备&quot;&gt;&lt;a href=&quot;#文件挂载前准备&quot; class=&quot;headerlink&quot; title=&quot;文件挂载前准备&quot;&gt;&lt;/a&gt;文件挂载前准备&lt;/h2&gt;&lt;p&gt;进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;docker exec -it test_es bash&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;找到配置文件所在位置：&lt;code&gt;/usr/share/elasticsearch/config&lt;/code&gt; 下，可以看的配置文件：&lt;code&gt;elasticsearch.yml&lt;/code&gt;&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    <category term="Elasticsearch" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
-    
-    
-  </entry>
-  
-  <entry>
     <title>iOS 14 新功能预料大合集</title>
     <link href="https://zmlu.me/p/2RSHAR.html"/>
     <id>https://zmlu.me/p/2RSHAR.html</id>
@@ -140,6 +121,27 @@
     <category term="Android" scheme="https://zmlu.me/tags/Android/"/>
     
     <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ES文件挂载</title>
+    <link href="https://zmlu.me/p/PW04BF.html"/>
+    <id>https://zmlu.me/p/PW04BF.html</id>
+    <published>2020-06-09T16:00:00.000Z</published>
+    <updated>2020-07-16T02:56:24.000Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;文件挂载前准备&quot;&gt;&lt;a href=&quot;#文件挂载前准备&quot; class=&quot;headerlink&quot; title=&quot;文件挂载前准备&quot;&gt;&lt;/a&gt;文件挂载前准备&lt;/h2&gt;&lt;p&gt;进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;docker exec -it test_es bash&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;找到配置文件所在位置：&lt;code&gt;/usr/share/elasticsearch/config&lt;/code&gt; 下，可以看的配置文件：&lt;code&gt;elasticsearch.yml&lt;/code&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Elasticsearch" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
+    
     
   </entry>
   
