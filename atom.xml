@@ -100,31 +100,6 @@
   </entry>
   
   <entry>
-    <title>iOS 14 新功能预料大合集</title>
-    <link href="https://zmlu.me/p/2RSHAR.html"/>
-    <id>https://zmlu.me/p/2RSHAR.html</id>
-    <published>2020-06-09T16:00:00.000Z</published>
-    <updated>2020-06-10T09:25:58.000Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;iOS14还有几天就能与大家在WWDC20(6月22日)上见面了，苹果一直在加利福尼亚的库比蒂诺总部研发该系统，并且适用设备据说与iOS13相同。本文汇总并且根据功能分类了“自古以来”有关iOS14新功能的爆料。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
-    
-    <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
-    
-    
-    <category term="HomeKit" scheme="https://zmlu.me/tags/HomeKit/"/>
-    
-    <category term="Android" scheme="https://zmlu.me/tags/Android/"/>
-    
-    <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
-    
-  </entry>
-  
-  <entry>
     <title>ES文件挂载</title>
     <link href="https://zmlu.me/p/PW04BF.html"/>
     <id>https://zmlu.me/p/PW04BF.html</id>
@@ -142,6 +117,31 @@
     
     <category term="Elasticsearch" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Elasticsearch/"/>
     
+    
+  </entry>
+  
+  <entry>
+    <title>iOS 14 新功能预料大合集</title>
+    <link href="https://zmlu.me/p/2RSHAR.html"/>
+    <id>https://zmlu.me/p/2RSHAR.html</id>
+    <published>2020-06-09T16:00:00.000Z</published>
+    <updated>2020-06-10T09:25:58.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;iOS14还有几天就能与大家在WWDC20(6月22日)上见面了，苹果一直在加利福尼亚的库比蒂诺总部研发该系统，并且适用设备据说与iOS13相同。本文汇总并且根据功能分类了“自古以来”有关iOS14新功能的爆料。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
+    
+    
+    <category term="Android" scheme="https://zmlu.me/tags/Android/"/>
+    
+    <category term="HomeKit" scheme="https://zmlu.me/tags/HomeKit/"/>
+    
+    <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
     
   </entry>
   
