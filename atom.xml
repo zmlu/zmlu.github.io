@@ -6,7 +6,7 @@
   <link href="https://zmlu.github.io/atom.xml" rel="self"/>
   
   <link href="https://zmlu.github.io/"/>
-  <updated>2021-01-20T01:57:33.491Z</updated>
+  <updated>2021-01-20T02:40:22.417Z</updated>
   <id>https://zmlu.github.io/</id>
   
   <author>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>Element输入框自动去除空格及校验</title>
-    <link href="https://zmlu.github.io/p/2kgc076.html"/>
-    <id>https://zmlu.github.io/p/2kgc076.html</id>
+    <link href="https://zmlu.github.io/p/2KGC076.html"/>
+    <id>https://zmlu.github.io/p/2KGC076.html</id>
     <published>2021-01-19T16:00:00.000Z</published>
-    <updated>2021-01-20T01:57:33.491Z</updated>
+    <updated>2021-01-20T02:40:22.417Z</updated>
     
     
     <summary type="html">&lt;p&gt;有的时候需要用输入框输入数据，但是需要数据去除前后空格&lt;/p&gt;</summary>
@@ -39,10 +39,10 @@
   
   <entry>
     <title>使用Scrapy抓取百度热点新闻</title>
-    <link href="https://zmlu.github.io/p/qhv65k.html"/>
-    <id>https://zmlu.github.io/p/qhv65k.html</id>
+    <link href="https://zmlu.github.io/p/QHV65K.html"/>
+    <id>https://zmlu.github.io/p/QHV65K.html</id>
     <published>2020-07-01T16:00:00.000Z</published>
-    <updated>2020-07-16T02:56:24.000Z</updated>
+    <updated>2021-01-20T02:40:22.744Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;安装Scrapy&quot;&gt;&lt;a href=&quot;#安装Scrapy&quot; class=&quot;headerlink&quot; title=&quot;安装Scrapy&quot;&gt;&lt;/a&gt;安装Scrapy&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;pip install Scrapy&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -61,10 +61,10 @@
   
   <entry>
     <title>CarKey功能预测及介绍</title>
-    <link href="https://zmlu.github.io/p/t5a9fs.html"/>
-    <id>https://zmlu.github.io/p/t5a9fs.html</id>
+    <link href="https://zmlu.github.io/p/T5A9FS.html"/>
+    <id>https://zmlu.github.io/p/T5A9FS.html</id>
     <published>2020-06-16T16:00:00.000Z</published>
-    <updated>2020-06-17T06:52:50.000Z</updated>
+    <updated>2021-01-20T02:40:21.946Z</updated>
     
     
     <summary type="html">&lt;p&gt;苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。&lt;/p&gt;</summary>
@@ -80,10 +80,10 @@
   
   <entry>
     <title>[202006期] 有价值 iOS App</title>
-    <link href="https://zmlu.github.io/p/2s9k9na.html"/>
-    <id>https://zmlu.github.io/p/2s9k9na.html</id>
+    <link href="https://zmlu.github.io/p/2S9K9NA.html"/>
+    <id>https://zmlu.github.io/p/2S9K9NA.html</id>
     <published>2020-06-10T16:00:00.000Z</published>
-    <updated>2020-06-11T07:14:00.000Z</updated>
+    <updated>2021-01-20T02:40:22.232Z</updated>
     
     
     <summary type="html">&lt;p&gt;AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。&lt;/p&gt;</summary>
@@ -101,10 +101,10 @@
   
   <entry>
     <title>ES文件挂载</title>
-    <link href="https://zmlu.github.io/p/pw04bf.html"/>
-    <id>https://zmlu.github.io/p/pw04bf.html</id>
+    <link href="https://zmlu.github.io/p/PW04BF.html"/>
+    <id>https://zmlu.github.io/p/PW04BF.html</id>
     <published>2020-06-09T16:00:00.000Z</published>
-    <updated>2020-07-16T02:56:24.000Z</updated>
+    <updated>2021-01-20T02:40:22.733Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;文件挂载前准备&quot;&gt;&lt;a href=&quot;#文件挂载前准备&quot; class=&quot;headerlink&quot; title=&quot;文件挂载前准备&quot;&gt;&lt;/a&gt;文件挂载前准备&lt;/h2&gt;&lt;p&gt;进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：&lt;/p&gt;
@@ -122,10 +122,10 @@
   
   <entry>
     <title>iOS 14 新功能预料大合集</title>
-    <link href="https://zmlu.github.io/p/2rshar.html"/>
-    <id>https://zmlu.github.io/p/2rshar.html</id>
+    <link href="https://zmlu.github.io/p/2RSHAR.html"/>
+    <id>https://zmlu.github.io/p/2RSHAR.html</id>
     <published>2020-06-09T16:00:00.000Z</published>
-    <updated>2020-06-10T09:25:58.000Z</updated>
+    <updated>2021-01-20T02:40:22.701Z</updated>
     
     
     <summary type="html">&lt;p&gt;iOS14还有几天就能与大家在WWDC20(6月22日)上见面了，苹果一直在加利福尼亚的库比蒂诺总部研发该系统，并且适用设备据说与iOS13相同。本文汇总并且根据功能分类了“自古以来”有关iOS14新功能的爆料。&lt;/p&gt;</summary>
@@ -137,20 +137,20 @@
     <category term="Apple" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
     
     
+    <category term="Android" scheme="https://zmlu.github.io/tags/Android/"/>
+    
     <category term="HomeKit" scheme="https://zmlu.github.io/tags/HomeKit/"/>
     
     <category term="Mac" scheme="https://zmlu.github.io/tags/Mac/"/>
-    
-    <category term="Android" scheme="https://zmlu.github.io/tags/Android/"/>
     
   </entry>
   
   <entry>
     <title>Python切片</title>
-    <link href="https://zmlu.github.io/p/253pzx0.html"/>
-    <id>https://zmlu.github.io/p/253pzx0.html</id>
+    <link href="https://zmlu.github.io/p/253PZX0.html"/>
+    <id>https://zmlu.github.io/p/253PZX0.html</id>
     <published>2020-06-08T16:00:00.000Z</published>
-    <updated>2020-06-09T06:35:30.000Z</updated>
+    <updated>2021-01-20T02:40:22.507Z</updated>
     
     
     <summary type="html">&lt;p&gt;记录下Python五个高级特性，分别是切片、迭代、列表生成式、生成器、迭代器，记录切片学习的笔记。&lt;/p&gt;</summary>
@@ -168,10 +168,10 @@
   
   <entry>
     <title>ES镜像制作并启动</title>
-    <link href="https://zmlu.github.io/p/10c2g1e.html"/>
-    <id>https://zmlu.github.io/p/10c2g1e.html</id>
+    <link href="https://zmlu.github.io/p/10C2G1E.html"/>
+    <id>https://zmlu.github.io/p/10C2G1E.html</id>
     <published>2020-05-18T16:00:00.000Z</published>
-    <updated>2020-07-16T02:56:24.000Z</updated>
+    <updated>2021-01-20T02:40:22.166Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;拉取镜像及相关配置&quot;&gt;&lt;a href=&quot;#拉取镜像及相关配置&quot; class=&quot;headerlink&quot; title=&quot;拉取镜像及相关配置&quot;&gt;&lt;/a&gt;拉取镜像及相关配置&lt;/h1&gt;&lt;h2 id=&quot;拉取镜像&quot;&gt;&lt;a href=&quot;#拉取镜像&quot; class=&quot;headerlink&quot; title=&quot;拉取镜像&quot;&gt;&lt;/a&gt;拉取镜像&lt;/h2&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs shell&quot;&gt;docker pull elasticsearch:6.8.3&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -190,10 +190,10 @@
   
   <entry>
     <title>运用Live Template加快写代码速度</title>
-    <link href="https://zmlu.github.io/p/1w7rvxa.html"/>
-    <id>https://zmlu.github.io/p/1w7rvxa.html</id>
+    <link href="https://zmlu.github.io/p/1W7RVXA.html"/>
+    <id>https://zmlu.github.io/p/1W7RVXA.html</id>
     <published>2020-05-10T16:00:00.000Z</published>
-    <updated>2020-05-11T08:21:10.000Z</updated>
+    <updated>2021-01-20T02:40:22.749Z</updated>
     
     
     <summary type="html">&lt;p&gt;用IDEA写代码的时候往往会重复性的写一段类似或者一样的代码，让人懊恼不已。&lt;br&gt;IDEA自带了个Live Template功能，不仅有许多自带的快捷写代码的功能，而且还可以自定义属于自己的Live Template。&lt;/p&gt;</summary>
@@ -211,10 +211,10 @@
   
   <entry>
     <title>理解 JavaScript 的 async、await</title>
-    <link href="https://zmlu.github.io/p/3q3x94c.html"/>
-    <id>https://zmlu.github.io/p/3q3x94c.html</id>
+    <link href="https://zmlu.github.io/p/3Q3X94C.html"/>
+    <id>https://zmlu.github.io/p/3Q3X94C.html</id>
     <published>2020-04-26T16:00:00.000Z</published>
-    <updated>2020-04-27T03:32:32.000Z</updated>
+    <updated>2021-01-20T02:40:22.496Z</updated>
     
     
     <summary type="html">&lt;p&gt;任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。&lt;/p&gt;</summary>
@@ -232,10 +232,10 @@
   
   <entry>
     <title>Python在全局代理下安装包报错</title>
-    <link href="https://zmlu.github.io/p/1e56rcw.html"/>
-    <id>https://zmlu.github.io/p/1e56rcw.html</id>
+    <link href="https://zmlu.github.io/p/1E56RCW.html"/>
+    <id>https://zmlu.github.io/p/1E56RCW.html</id>
     <published>2020-03-24T16:00:00.000Z</published>
-    <updated>2020-03-25T09:03:32.000Z</updated>
+    <updated>2021-01-20T02:40:22.452Z</updated>
     
     
     <summary type="html">&lt;p&gt;之前配置小飞机的时候，在我的mac上把终端设置了&lt;code&gt;ALL_PROXY&lt;/code&gt;属性，让全局代理。&lt;br&gt;不过在使用Python安装模块的时候报错了。&lt;/p&gt;
@@ -257,10 +257,10 @@
   
   <entry>
     <title>在macOS上运用Crontab运行定时任务</title>
-    <link href="https://zmlu.github.io/p/11cfsv5.html"/>
-    <id>https://zmlu.github.io/p/11cfsv5.html</id>
+    <link href="https://zmlu.github.io/p/11CFSV5.html"/>
+    <id>https://zmlu.github.io/p/11CFSV5.html</id>
     <published>2020-03-18T16:00:00.000Z</published>
-    <updated>2020-03-19T06:24:46.000Z</updated>
+    <updated>2021-01-20T02:40:22.444Z</updated>
     
     
     <summary type="html">&lt;blockquote&gt;
@@ -285,7 +285,7 @@
     <link href="https://zmlu.github.io/p/2305442.html"/>
     <id>https://zmlu.github.io/p/2305442.html</id>
     <published>2020-03-17T16:00:00.000Z</published>
-    <updated>2020-03-19T02:53:08.000Z</updated>
+    <updated>2021-01-20T02:40:22.739Z</updated>
     
     
     <summary type="html">&lt;p&gt;Java 14包含比前两个发行版更多的新功能-其中大多数旨在简化编程开发工作。&lt;/p&gt;
@@ -305,16 +305,18 @@
     <category term="Java" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Java/"/>
     
     
+    <category term="Java" scheme="https://zmlu.github.io/tags/Java/"/>
+    
     <category term="总结" scheme="https://zmlu.github.io/tags/%E6%80%BB%E7%BB%93/"/>
     
   </entry>
   
   <entry>
     <title>Git设置代理</title>
-    <link href="https://zmlu.github.io/p/35njx8y.html"/>
-    <id>https://zmlu.github.io/p/35njx8y.html</id>
+    <link href="https://zmlu.github.io/p/35NJX8Y.html"/>
+    <id>https://zmlu.github.io/p/35NJX8Y.html</id>
     <published>2020-03-09T16:00:00.000Z</published>
-    <updated>2020-03-19T02:21:32.000Z</updated>
+    <updated>2021-01-20T02:40:22.692Z</updated>
     
     
     <summary type="html">&lt;p&gt;git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速&lt;/p&gt;
@@ -333,10 +335,10 @@
   
   <entry>
     <title>Mac提示安装包已损坏的解决方法</title>
-    <link href="https://zmlu.github.io/p/2h0wse.html"/>
-    <id>https://zmlu.github.io/p/2h0wse.html</id>
+    <link href="https://zmlu.github.io/p/2H0WSE.html"/>
+    <id>https://zmlu.github.io/p/2H0WSE.html</id>
     <published>2020-01-20T16:00:00.000Z</published>
-    <updated>2020-03-07T08:21:02.000Z</updated>
+    <updated>2021-01-20T02:40:22.709Z</updated>
     
     
     <summary type="html">&lt;p&gt;从网上下载的软件安装包，经常提示：&lt;/p&gt;
@@ -358,10 +360,10 @@
   
   <entry>
     <title>真正的自律，就是战胜你自己</title>
-    <link href="https://zmlu.github.io/p/zab5e7.html"/>
-    <id>https://zmlu.github.io/p/zab5e7.html</id>
+    <link href="https://zmlu.github.io/p/ZAB5E7.html"/>
+    <id>https://zmlu.github.io/p/ZAB5E7.html</id>
     <published>2020-01-15T16:00:00.000Z</published>
-    <updated>2020-03-07T08:22:34.000Z</updated>
+    <updated>2021-01-20T02:40:22.727Z</updated>
     
     
     <summary type="html">&lt;p&gt;1&lt;/p&gt;
@@ -380,10 +382,10 @@
   
   <entry>
     <title>请记住人生中的“三”</title>
-    <link href="https://zmlu.github.io/p/18jyvc6.html"/>
-    <id>https://zmlu.github.io/p/18jyvc6.html</id>
+    <link href="https://zmlu.github.io/p/18JYVC6.html"/>
+    <id>https://zmlu.github.io/p/18JYVC6.html</id>
     <published>2020-01-15T16:00:00.000Z</published>
-    <updated>2020-03-19T02:23:54.000Z</updated>
+    <updated>2021-01-20T02:40:22.535Z</updated>
     
     
     <summary type="html">&lt;p&gt;【男人三大责任】&lt;br&gt;让父母骄傲，&lt;br&gt;让自己的妻子幸福，&lt;br&gt;保持高贵的灵魂&lt;/p&gt;
@@ -400,10 +402,10 @@
   
   <entry>
     <title>各种主键生成方法介绍以及生成优缺点对比</title>
-    <link href="https://zmlu.github.io/p/34qh0js.html"/>
-    <id>https://zmlu.github.io/p/34qh0js.html</id>
+    <link href="https://zmlu.github.io/p/34QH0JS.html"/>
+    <id>https://zmlu.github.io/p/34QH0JS.html</id>
     <published>2020-01-09T16:00:00.000Z</published>
-    <updated>2020-03-19T02:23:40.000Z</updated>
+    <updated>2021-01-20T02:40:21.939Z</updated>
     
     
     <summary type="html">&lt;p&gt;一个系统各个表中必须要存在一列来存放唯一主键ID，并且如果这个系统是分布式的，有多个分布数据库还需要保证每个数据库中的id不能重复，这就要求需要唯一ID的特性：&lt;/p&gt;
@@ -431,10 +433,10 @@
   
   <entry>
     <title>Netflix各国价格对比(2019)</title>
-    <link href="https://zmlu.github.io/p/2zvkr9e.html"/>
-    <id>https://zmlu.github.io/p/2zvkr9e.html</id>
+    <link href="https://zmlu.github.io/p/2ZVKR9E.html"/>
+    <id>https://zmlu.github.io/p/2ZVKR9E.html</id>
     <published>2020-01-07T16:00:00.000Z</published>
-    <updated>2020-03-19T02:24:08.000Z</updated>
+    <updated>2021-01-20T02:40:22.766Z</updated>
     
     
     <summary type="html">&lt;p&gt;先上个简介：&lt;br&gt;Netflix是一家美国公司，在美国、加拿大提供互联网随选流媒体播放，定制DVD、蓝光光碟在线出租业务。该公司成立于1997年，总部位于加利福尼亚州洛斯盖图，1999年开始订阅服务。2009年，该公司可提供多达10万部DVD电影，并有1千万的订户。2007年2月25日，Netflix宣布已经售出第10亿份DVD。&lt;/p&gt;
@@ -456,10 +458,10 @@
   
   <entry>
     <title>实现浏览器WebP图片自适应加载</title>
-    <link href="https://zmlu.github.io/p/3mdaqpq.html"/>
-    <id>https://zmlu.github.io/p/3mdaqpq.html</id>
+    <link href="https://zmlu.github.io/p/3MDAQPQ.html"/>
+    <id>https://zmlu.github.io/p/3MDAQPQ.html</id>
     <published>2020-01-05T16:00:00.000Z</published>
-    <updated>2020-03-19T02:23:16.000Z</updated>
+    <updated>2021-01-20T02:40:21.972Z</updated>
     
     
     <summary type="html">&lt;p&gt;让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。&lt;/p&gt;
