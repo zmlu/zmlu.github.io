@@ -80,6 +80,39 @@
       </tags>
   </entry>
   <entry>
+    <title>gitignore文件不起作用</title>
+    <url>/p/TSMFKX.html</url>
+    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
+<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git设置代理</title>
+    <url>/p/35NJX8Y.html</url>
+    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
+<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
+<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
+<p>显示如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
+<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>加速</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ES镜像制作并启动</title>
     <url>/p/10C2G1E.html</url>
     <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
@@ -144,39 +177,6 @@
         <category>开发</category>
         <category>Elasticsearch</category>
       </categories>
-  </entry>
-  <entry>
-    <title>gitignore文件不起作用</title>
-    <url>/p/TSMFKX.html</url>
-    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
-<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git设置代理</title>
-    <url>/p/35NJX8Y.html</url>
-    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
-<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
-<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
-<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
-<p>显示如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
-<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>加速</tag>
-      </tags>
   </entry>
   <entry>
     <title>使用Gulp加速Hexo</title>
@@ -514,22 +514,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Composer多线程安装、更新包方法</title>
-    <url>/p/3PKQ4GE.html</url>
-    <content><![CDATA[<p>Composer通过更换国内镜像源之后，发现安装和更新都很快了，但是由于是单线程下载，有时候还是慢的出奇，能不能在安装更新的时候使用多线程来下载依赖呢？</p>
-<p>有一款Composer包可以实现此功能————<code>prestissimo</code>。</p>
-<p>Github地址：<a href="https://github.com/hirak/prestissimo">hirak/prestissimo</a></p>
-<a id="more"></a>
-
-<h1 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer global require hirak/prestissimo<br></code></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p><code>composer install/update</code> 任何需要大量安装依赖的情景，都会自动生效。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>PHP</category>
-      </categories>
-  </entry>
-  <entry>
     <title>理解 JavaScript 的 async、await</title>
     <url>/p/3Q3X94C.html</url>
     <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
@@ -590,29 +574,20 @@
       </tags>
   </entry>
   <entry>
-    <title>Composer安装、更新速度慢问题解决</title>
-    <url>/p/2ZHKMM0.html</url>
-    <content><![CDATA[<p>今天想在自己的服务器上安装一个论坛软件，需要用到php的Composer来安装，无奈很慢，贴出自己的解决方法。</p>
-<p>通过更换国内镜像源的方式来加快速度，我使用的是阿里的镜像源，还不错，挺快的。</p>
+    <title>Composer多线程安装、更新包方法</title>
+    <url>/p/3PKQ4GE.html</url>
+    <content><![CDATA[<p>Composer通过更换国内镜像源之后，发现安装和更新都很快了，但是由于是单线程下载，有时候还是慢的出奇，能不能在安装更新的时候使用多线程来下载依赖呢？</p>
+<p>有一款Composer包可以实现此功能————<code>prestissimo</code>。</p>
+<p>Github地址：<a href="https://github.com/hirak/prestissimo">hirak/prestissimo</a></p>
 <a id="more"></a>
 
-<h1 id="全局配置（推荐）"><a href="#全局配置（推荐）" class="headerlink" title="全局配置（推荐）"></a>全局配置（推荐）</h1><p>所有项目都会使用该镜像地址：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/<br></code></pre></td></tr></table></figure>
-<p>取消配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer config -g --unset repos.packagist<br></code></pre></td></tr></table></figure>
-<h1 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h1><p>仅修改当前工程配置，仅当前工程可使用该镜像地址：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer config repo.packagist composer https://mirrors.aliyun.com/composer/<br></code></pre></td></tr></table></figure>
-<p>取消配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer config --unset repos.packagist<br></code></pre></td></tr></table></figure>
+<h1 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer global require hirak/prestissimo<br></code></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p><code>composer install/update</code> 任何需要大量安装依赖的情景，都会自动生效。</p>
 ]]></content>
       <categories>
         <category>开发</category>
         <category>PHP</category>
       </categories>
-      <tags>
-        <tag>Composer</tag>
-        <tag>PHP</tag>
-      </tags>
   </entry>
   <entry>
     <title>Python在全局代理下安装包报错</title>
@@ -670,27 +645,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Orcale日常记录</title>
-    <url>/p/3PN2K8A.html</url>
-    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
-<a id="more"></a>
-
-<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
-<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
-<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
-<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>SQL</category>
-      </categories>
-      <tags>
-        <tag>Mac</tag>
-        <tag>Orcale</tag>
-        <tag>SQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用Scrapy抓取百度热点新闻</title>
     <url>/p/QHV65K.html</url>
     <content><![CDATA[<h2 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install Scrapy<br></code></pre></td></tr></table></figure>
@@ -711,6 +665,27 @@
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Orcale日常记录</title>
+    <url>/p/3PN2K8A.html</url>
+    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
+<a id="more"></a>
+
+<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
+<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
+<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>SQL</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>Orcale</tag>
+        <tag>SQL</tag>
       </tags>
   </entry>
   <entry>
@@ -801,38 +776,6 @@
         <tag>Java</tag>
         <tag>SQL</tag>
         <tag>UUID</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在macOS上运用Crontab运行定时任务</title>
-    <url>/p/11CFSV5.html</url>
-    <content><![CDATA[<blockquote>
-<p>在电脑上运行脚本固然好，但是如果能定时运行，那最好了。</p>
-</blockquote>
-<p>通过创建Crontab，可以在macOS上运行定时任务！让我们做一个示例。</p>
-<p>假设您要运行一个名为<code>work.sh</code>的脚本，该脚本可以为您完成一些工作——脚本实际上运行了什么不重要。 但是你每天要花费几分钟来运行这个脚本，大大浪费了时间，这完全可以交给定时任务来完成。</p>
-<a id="more"></a>
-
-<h1 id="第一步：确保脚本正常"><a href="#第一步：确保脚本正常" class="headerlink" title="第一步：确保脚本正常"></a>第一步：确保脚本正常</h1><p>首先，确保<code>work.sh</code>能正常运行，并且把它放在一个固定的地方，比如，我就放在了<code>~/.script</code>目录下。</p>
-<h1 id="第二步：配置定时任务"><a href="#第二步：配置定时任务" class="headerlink" title="第二步：配置定时任务"></a>第二步：配置定时任务</h1><p>然后，启动终端（Terminal），运行命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">crontab -e<br></code></pre></td></tr></table></figure>
-<p>会为你用<code>vim</code>打开一个文本，如果你之前没有配置过定时任务，那文本内容应该是空的，只有一个行号”1”。</p>
-<p>然后按<code>i</code>进入<code>vim</code>的编辑模式，输入cron表达式和要执行的命令。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* * * * * command<br></code></pre></td></tr></table></figure>
-<p>比如：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">0,15,30,45 * * * * cd ~/.scripts &amp;&amp; ./work.sh<br></code></pre></td></tr></table></figure>
-<h1 id="第三步：保存、测试"><a href="#第三步：保存、测试" class="headerlink" title="第三步：保存、测试"></a>第三步：保存、测试</h1><p>最后，按<code>esc</code>退出到<code>vim</code>的命令模式，输入命令<code>wq!</code>保存退出。然后等待定时任务执行，查看结果。</p>
-<h1 id="附录：Cron表达式"><a href="#附录：Cron表达式" class="headerlink" title="附录：Cron表达式"></a>附录：Cron表达式</h1><figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* * * * *<br></code></pre></td></tr></table></figure>
-<p>解释：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* - 分钟 (0-59)<br>* - 小时 (0-23)<br>* - 天 (1-31)<br>* - 月 (1-12)<br>* - 星期 (0-6, 0 是星期天)<br>(从左到右边)<br></code></pre></td></tr></table></figure>
-<p>可以通过<a href="https://crontab.guru/">Crontab.guru</a>生成Cron表达式</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>macOS</category>
-      </categories>
-      <tags>
-        <tag>Mac</tag>
       </tags>
   </entry>
   <entry>
@@ -939,6 +882,38 @@
       </tags>
   </entry>
   <entry>
+    <title>在macOS上运用Crontab运行定时任务</title>
+    <url>/p/11CFSV5.html</url>
+    <content><![CDATA[<blockquote>
+<p>在电脑上运行脚本固然好，但是如果能定时运行，那最好了。</p>
+</blockquote>
+<p>通过创建Crontab，可以在macOS上运行定时任务！让我们做一个示例。</p>
+<p>假设您要运行一个名为<code>work.sh</code>的脚本，该脚本可以为您完成一些工作——脚本实际上运行了什么不重要。 但是你每天要花费几分钟来运行这个脚本，大大浪费了时间，这完全可以交给定时任务来完成。</p>
+<a id="more"></a>
+
+<h1 id="第一步：确保脚本正常"><a href="#第一步：确保脚本正常" class="headerlink" title="第一步：确保脚本正常"></a>第一步：确保脚本正常</h1><p>首先，确保<code>work.sh</code>能正常运行，并且把它放在一个固定的地方，比如，我就放在了<code>~/.script</code>目录下。</p>
+<h1 id="第二步：配置定时任务"><a href="#第二步：配置定时任务" class="headerlink" title="第二步：配置定时任务"></a>第二步：配置定时任务</h1><p>然后，启动终端（Terminal），运行命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">crontab -e<br></code></pre></td></tr></table></figure>
+<p>会为你用<code>vim</code>打开一个文本，如果你之前没有配置过定时任务，那文本内容应该是空的，只有一个行号”1”。</p>
+<p>然后按<code>i</code>进入<code>vim</code>的编辑模式，输入cron表达式和要执行的命令。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* * * * * command<br></code></pre></td></tr></table></figure>
+<p>比如：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">0,15,30,45 * * * * cd ~/.scripts &amp;&amp; ./work.sh<br></code></pre></td></tr></table></figure>
+<h1 id="第三步：保存、测试"><a href="#第三步：保存、测试" class="headerlink" title="第三步：保存、测试"></a>第三步：保存、测试</h1><p>最后，按<code>esc</code>退出到<code>vim</code>的命令模式，输入命令<code>wq!</code>保存退出。然后等待定时任务执行，查看结果。</p>
+<h1 id="附录：Cron表达式"><a href="#附录：Cron表达式" class="headerlink" title="附录：Cron表达式"></a>附录：Cron表达式</h1><figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* * * * *<br></code></pre></td></tr></table></figure>
+<p>解释：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* - 分钟 (0-59)<br>* - 小时 (0-23)<br>* - 天 (1-31)<br>* - 月 (1-12)<br>* - 星期 (0-6, 0 是星期天)<br>(从左到右边)<br></code></pre></td></tr></table></figure>
+<p>可以通过<a href="https://crontab.guru/">Crontab.guru</a>生成Cron表达式</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>macOS</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[202006期] 有价值 iOS App</title>
     <url>/p/2S9K9NA.html</url>
     <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
@@ -1018,30 +993,6 @@
       </categories>
   </entry>
   <entry>
-    <title>请记住人生中的“三”</title>
-    <url>/p/18JYVC6.html</url>
-    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
-<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
-<a id="more"></a>
-
-<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
-<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
-<p>三样东西永不放弃:<br>童真、理想、希望</p>
-<p>三样东西最无常:<br>成功、财富、机遇</p>
-<p>三样东西最无价:<br>健康、善良、真情</p>
-<p>三样东西成就人:<br>天时、地利、人和</p>
-<p>三样东西要珍惜:<br>父母、家庭、健康</p>
-<p>三样东西助成功：<br>目标、方法、改进</p>
-<p>三样东西交朋友:<br>诚信、热情、互助</p>
-<p>三样东西把握好:<br>机会、工作、婚姻</p>
-<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>摘抄</category>
-      </categories>
-  </entry>
-  <entry>
     <title>真正的自律，就是战胜你自己</title>
     <url>/p/ZAB5E7.html</url>
     <content><![CDATA[<p>1</p>
@@ -1081,28 +1032,143 @@
       </categories>
   </entry>
   <entry>
-    <title>Mac提示安装包已损坏的解决方法</title>
-    <url>/p/2H0WSE.html</url>
-    <content><![CDATA[<p>从网上下载的软件安装包，经常提示：</p>
-<blockquote>
-<p>xxx已损坏，无法打开。您应该将它移到废纸篓。</p>
-</blockquote>
-<p>现在总结下解决方法。</p>
+    <title>运用Live Template加快写代码速度</title>
+    <url>/p/1W7RVXA.html</url>
+    <content><![CDATA[<p>用IDEA写代码的时候往往会重复性的写一段类似或者一样的代码，让人懊恼不已。<br>IDEA自带了个Live Template功能，不仅有许多自带的快捷写代码的功能，而且还可以自定义属于自己的Live Template。</p>
 <a id="more"></a>
 
-<h1 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h1><p>在<strong>系统偏好设置 - 安全与隐私 - 通用标签</strong>中选择来自任何来源选项。</p>
-<h1 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h1><p>如果没有来自任何来源选项，打开终端执行</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo spctl --master-disable<br></code></pre></td></tr></table></figure>
-<h1 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h1><p>如果方法一和方法二都没有效果，在终端中执行</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo xattr -r -d com.apple.quarantine /path/to/app<br></code></pre></td></tr></table></figure>
-<p>其中 <code>/path/to/app</code> 是app所在的路径，比如XMind ZEN.app就是</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo xattr -r -d com.apple.quarantine /Applications/XMind\ ZEN.app<br></code></pre></td></tr></table></figure>]]></content>
+<h1 id="自定义命令"><a href="#自定义命令" class="headerlink" title="自定义命令"></a>自定义命令</h1><p>可以自定义一些命令。<br>打开IDEA的设置，找到Live Template，右侧添加，可以先添加一个自己的分组，比如我添加了一个<code>My Live</code>的分组，再添加具体的配置</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/WX20200511-1557582xe4befa839a2b5629.png" alt="设置中的Live Template"></p>
+<p>变量用<code>$$</code>包裹，IDEA就知道这是个变量了，变量可以在右下角的<code>Edit variables</code>中赋值</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/WX20200511-1601432x2ec5b3a8f51453e1.png" alt="Edit variables"></p>
+<p>其中，<code>Expression</code>列可以为变量设置一个计算方法，比如<code>className()</code>说明<code>CLASS</code>变量为当前类名，也可以在<code>Default value</code>上指定一个默认值。<br>最后一列如果勾选的话，使用的时候如果这个变量计算出值了则不提示用户进行输入赋值。</p>
+<p>以下是我自己使用的一些例子</p>
+<h2 id="logger定义"><a href="#logger定义" class="headerlink" title="logger定义"></a>logger定义</h2><p>Template text</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger($CLASS$.class);<br></code></pre></td></tr></table></figure>
+<p>Variables</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Expression</th>
+<th align="center">Default value</th>
+<th align="center">Skip if defined</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>CLASS</code></td>
+<td align="center"><code>className()</code></td>
+<td align="center"></td>
+<td align="center">☑️</td>
+</tr>
+</tbody></table>
+<p>效果</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/jlogddfa0f987151730e.gif" alt="logger定义"></p>
+<h2 id="返回ModelAndView"><a href="#返回ModelAndView" class="headerlink" title="返回ModelAndView"></a>返回ModelAndView</h2><p>Template text</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/$NAME$.html&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView $NAME$(HttpServletRequest request, HttpServletResponse response) &#123;<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 开始****************&quot;</span>);<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 结束****************&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$NAME$/$NAME$&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Variables</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Expression</th>
+<th align="center">Default value</th>
+<th align="center">Skip if defined</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>NAME</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>CLASS</code></td>
+<td align="center"><code>className()</code></td>
+<td align="center"></td>
+<td align="center">☑️</td>
+</tr>
+</tbody></table>
+<p>效果</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/jmv3bb39f360ca29f14.gif" alt="返回ModelAndView"></p>
+<h2 id="返回ModelAndView-有url参数"><a href="#返回ModelAndView-有url参数" class="headerlink" title="返回ModelAndView(有url参数)"></a>返回ModelAndView(有url参数)</h2><p>Template text</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/$NAME$/&#123;$PATHVARIABLE$&#125;.html&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView $NAME$(<span class="hljs-meta">@PathVariable(&quot;$PATHVARIABLE$&quot;)</span> String $PATHVARIABLE$, HttpServletRequest request, HttpServletResponse response) &#123;<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 开始****************&quot;</span>);<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 结束****************&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$NAME$/$NAME$&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Variables</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Expression</th>
+<th align="center">Default value</th>
+<th align="center">Skip if defined</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>NAME</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>PATHVARIABLE</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>CLASS</code></td>
+<td align="center"><code>className()</code></td>
+<td align="center"></td>
+<td align="center">☑️</td>
+</tr>
+</tbody></table>
+<p>效果</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/jmvpfad58786086a271b.gif" alt="返回ModelAndView(有url参数)"></p>
+<h2 id="新建Controller"><a href="#新建Controller" class="headerlink" title="新建Controller"></a>新建Controller</h2><p>Template text</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $<span class="hljs-title">ControllerName</span>$<span class="hljs-title">Controller</span> </span>&#123;<br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger($ControllerName$Controller.class);<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * $viewName$</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-meta">@RequestMapping(&quot;/$viewName$.html&quot;)</span><br>	<span class="hljs-keyword">public</span> ModelAndView $viewName$(HttpServletRequest request, HttpServletResponse response) &#123;<br>		logger.info(<span class="hljs-string">&quot;****************$ControllerName$Controller:$viewName$ 开始****************&quot;</span>);<br>		logger.info(<span class="hljs-string">&quot;****************$ControllerName$Controller:$viewName$ 结束****************&quot;</span>);<br>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$viewName$/$viewName$&quot;</span>);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Variables</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Expression</th>
+<th align="center">Default value</th>
+<th align="center">Skip if defined</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>ControllerName</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>viewName</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>效果</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/jctlvdd24a5491428c46e.gif" alt="新建Controller"></p>
+<h1 id="自带命令"><a href="#自带命令" class="headerlink" title="自带命令"></a>自带命令</h1><p>也可以使用自带命令来模板式地补全语句，如遍历循环语句（for、foreach）、使用 String.format() 包裹一个字符串、使用类型转化包裹一个表达式、根据判（非）空或者其它判别语句生成 if 语句、用 instanceOf 生成分支判断语句等。<br>使用的方式也很简单，就是在一个表达式后按下点号 . ，然后输入一些提示或者在列表中选择一个候选项，常见的候选项下面会给出 GIF 演示。</p>
+<h2 id="var-声明"><a href="#var-声明" class="headerlink" title="var 声明"></a>var 声明</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325105809880cf9e5e79b2d0c9e2.gif" alt="var 声明"></p>
+<h2 id="null-判空"><a href="#null-判空" class="headerlink" title="null 判空"></a>null 判空</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251127382722662ffb5d6bb703d.gif" alt="null 判空"></p>
+<h2 id="notnull-判非空"><a href="#notnull-判非空" class="headerlink" title="notnull 判非空"></a>notnull 判非空</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325112825345d5bc93049265eda2.gif" alt="notnull 判非空"></p>
+<h2 id="nn-判非空"><a href="#nn-判非空" class="headerlink" title="nn 判非空"></a>nn 判非空</h2><p><img src="https://file.moetu.org/images/2020/05/11/2019032511285338147f7c09312c94c65.gif" alt="nn 判非空"></p>
+<h2 id="for-遍历"><a href="#for-遍历" class="headerlink" title="for 遍历"></a>for 遍历</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325112942270eab8ea6c5343be88.gif" alt="for 遍历"></p>
+<h2 id="fori-带索引的遍历"><a href="#fori-带索引的遍历" class="headerlink" title="fori 带索引的遍历"></a>fori 带索引的遍历</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113005808f636bed94c14a7db.gif" alt="fori 带索引的遍历"></p>
+<h2 id="not-取反"><a href="#not-取反" class="headerlink" title="not 取反"></a>not 取反</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251130255555422d0425fb8cd2.gif" alt="not 取反"></p>
+<h2 id="if-条件判断"><a href="#if-条件判断" class="headerlink" title="if 条件判断"></a>if 条件判断</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251130436fb7d2d7090921a58.gif" alt="if 条件判断"></p>
+<h2 id="cast-强转"><a href="#cast-强转" class="headerlink" title="cast 强转"></a>cast 强转</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113102357ed50cc72af92ad69.gif" alt="cast 强转"></p>
+<h2 id="return-返回值"><a href="#return-返回值" class="headerlink" title="return 返回值"></a>return 返回值</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113139614f62e07bd5e20fae7.gif" alt="return 返回值"></p>
+]]></content>
       <categories>
         <category>日常</category>
-        <category>收藏</category>
+        <category>技巧</category>
       </categories>
       <tags>
-        <tag>总结</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -1429,143 +1495,77 @@
       </tags>
   </entry>
   <entry>
-    <title>运用Live Template加快写代码速度</title>
-    <url>/p/1W7RVXA.html</url>
-    <content><![CDATA[<p>用IDEA写代码的时候往往会重复性的写一段类似或者一样的代码，让人懊恼不已。<br>IDEA自带了个Live Template功能，不仅有许多自带的快捷写代码的功能，而且还可以自定义属于自己的Live Template。</p>
+    <title>请记住人生中的“三”</title>
+    <url>/p/18JYVC6.html</url>
+    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
+<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
 <a id="more"></a>
 
-<h1 id="自定义命令"><a href="#自定义命令" class="headerlink" title="自定义命令"></a>自定义命令</h1><p>可以自定义一些命令。<br>打开IDEA的设置，找到Live Template，右侧添加，可以先添加一个自己的分组，比如我添加了一个<code>My Live</code>的分组，再添加具体的配置</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/WX20200511-1557582xe4befa839a2b5629.png" alt="设置中的Live Template"></p>
-<p>变量用<code>$$</code>包裹，IDEA就知道这是个变量了，变量可以在右下角的<code>Edit variables</code>中赋值</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/WX20200511-1601432x2ec5b3a8f51453e1.png" alt="Edit variables"></p>
-<p>其中，<code>Expression</code>列可以为变量设置一个计算方法，比如<code>className()</code>说明<code>CLASS</code>变量为当前类名，也可以在<code>Default value</code>上指定一个默认值。<br>最后一列如果勾选的话，使用的时候如果这个变量计算出值了则不提示用户进行输入赋值。</p>
-<p>以下是我自己使用的一些例子</p>
-<h2 id="logger定义"><a href="#logger定义" class="headerlink" title="logger定义"></a>logger定义</h2><p>Template text</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger($CLASS$.class);<br></code></pre></td></tr></table></figure>
-<p>Variables</p>
-<table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Expression</th>
-<th align="center">Default value</th>
-<th align="center">Skip if defined</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>CLASS</code></td>
-<td align="center"><code>className()</code></td>
-<td align="center"></td>
-<td align="center">☑️</td>
-</tr>
-</tbody></table>
-<p>效果</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/jlogddfa0f987151730e.gif" alt="logger定义"></p>
-<h2 id="返回ModelAndView"><a href="#返回ModelAndView" class="headerlink" title="返回ModelAndView"></a>返回ModelAndView</h2><p>Template text</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/$NAME$.html&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView $NAME$(HttpServletRequest request, HttpServletResponse response) &#123;<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 开始****************&quot;</span>);<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 结束****************&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$NAME$/$NAME$&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>Variables</p>
-<table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Expression</th>
-<th align="center">Default value</th>
-<th align="center">Skip if defined</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>NAME</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>CLASS</code></td>
-<td align="center"><code>className()</code></td>
-<td align="center"></td>
-<td align="center">☑️</td>
-</tr>
-</tbody></table>
-<p>效果</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/jmv3bb39f360ca29f14.gif" alt="返回ModelAndView"></p>
-<h2 id="返回ModelAndView-有url参数"><a href="#返回ModelAndView-有url参数" class="headerlink" title="返回ModelAndView(有url参数)"></a>返回ModelAndView(有url参数)</h2><p>Template text</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/$NAME$/&#123;$PATHVARIABLE$&#125;.html&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView $NAME$(<span class="hljs-meta">@PathVariable(&quot;$PATHVARIABLE$&quot;)</span> String $PATHVARIABLE$, HttpServletRequest request, HttpServletResponse response) &#123;<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 开始****************&quot;</span>);<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 结束****************&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$NAME$/$NAME$&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>Variables</p>
-<table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Expression</th>
-<th align="center">Default value</th>
-<th align="center">Skip if defined</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>NAME</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>PATHVARIABLE</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>CLASS</code></td>
-<td align="center"><code>className()</code></td>
-<td align="center"></td>
-<td align="center">☑️</td>
-</tr>
-</tbody></table>
-<p>效果</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/jmvpfad58786086a271b.gif" alt="返回ModelAndView(有url参数)"></p>
-<h2 id="新建Controller"><a href="#新建Controller" class="headerlink" title="新建Controller"></a>新建Controller</h2><p>Template text</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $<span class="hljs-title">ControllerName</span>$<span class="hljs-title">Controller</span> </span>&#123;<br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger($ControllerName$Controller.class);<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * $viewName$</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-meta">@RequestMapping(&quot;/$viewName$.html&quot;)</span><br>	<span class="hljs-keyword">public</span> ModelAndView $viewName$(HttpServletRequest request, HttpServletResponse response) &#123;<br>		logger.info(<span class="hljs-string">&quot;****************$ControllerName$Controller:$viewName$ 开始****************&quot;</span>);<br>		logger.info(<span class="hljs-string">&quot;****************$ControllerName$Controller:$viewName$ 结束****************&quot;</span>);<br>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$viewName$/$viewName$&quot;</span>);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>Variables</p>
-<table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Expression</th>
-<th align="center">Default value</th>
-<th align="center">Skip if defined</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>ControllerName</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>viewName</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-<p>效果</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/jctlvdd24a5491428c46e.gif" alt="新建Controller"></p>
-<h1 id="自带命令"><a href="#自带命令" class="headerlink" title="自带命令"></a>自带命令</h1><p>也可以使用自带命令来模板式地补全语句，如遍历循环语句（for、foreach）、使用 String.format() 包裹一个字符串、使用类型转化包裹一个表达式、根据判（非）空或者其它判别语句生成 if 语句、用 instanceOf 生成分支判断语句等。<br>使用的方式也很简单，就是在一个表达式后按下点号 . ，然后输入一些提示或者在列表中选择一个候选项，常见的候选项下面会给出 GIF 演示。</p>
-<h2 id="var-声明"><a href="#var-声明" class="headerlink" title="var 声明"></a>var 声明</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325105809880cf9e5e79b2d0c9e2.gif" alt="var 声明"></p>
-<h2 id="null-判空"><a href="#null-判空" class="headerlink" title="null 判空"></a>null 判空</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251127382722662ffb5d6bb703d.gif" alt="null 判空"></p>
-<h2 id="notnull-判非空"><a href="#notnull-判非空" class="headerlink" title="notnull 判非空"></a>notnull 判非空</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325112825345d5bc93049265eda2.gif" alt="notnull 判非空"></p>
-<h2 id="nn-判非空"><a href="#nn-判非空" class="headerlink" title="nn 判非空"></a>nn 判非空</h2><p><img src="https://file.moetu.org/images/2020/05/11/2019032511285338147f7c09312c94c65.gif" alt="nn 判非空"></p>
-<h2 id="for-遍历"><a href="#for-遍历" class="headerlink" title="for 遍历"></a>for 遍历</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325112942270eab8ea6c5343be88.gif" alt="for 遍历"></p>
-<h2 id="fori-带索引的遍历"><a href="#fori-带索引的遍历" class="headerlink" title="fori 带索引的遍历"></a>fori 带索引的遍历</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113005808f636bed94c14a7db.gif" alt="fori 带索引的遍历"></p>
-<h2 id="not-取反"><a href="#not-取反" class="headerlink" title="not 取反"></a>not 取反</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251130255555422d0425fb8cd2.gif" alt="not 取反"></p>
-<h2 id="if-条件判断"><a href="#if-条件判断" class="headerlink" title="if 条件判断"></a>if 条件判断</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251130436fb7d2d7090921a58.gif" alt="if 条件判断"></p>
-<h2 id="cast-强转"><a href="#cast-强转" class="headerlink" title="cast 强转"></a>cast 强转</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113102357ed50cc72af92ad69.gif" alt="cast 强转"></p>
-<h2 id="return-返回值"><a href="#return-返回值" class="headerlink" title="return 返回值"></a>return 返回值</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113139614f62e07bd5e20fae7.gif" alt="return 返回值"></p>
+<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
+<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
+<p>三样东西永不放弃:<br>童真、理想、希望</p>
+<p>三样东西最无常:<br>成功、财富、机遇</p>
+<p>三样东西最无价:<br>健康、善良、真情</p>
+<p>三样东西成就人:<br>天时、地利、人和</p>
+<p>三样东西要珍惜:<br>父母、家庭、健康</p>
+<p>三样东西助成功：<br>目标、方法、改进</p>
+<p>三样东西交朋友:<br>诚信、热情、互助</p>
+<p>三样东西把握好:<br>机会、工作、婚姻</p>
+<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
 ]]></content>
       <categories>
         <category>日常</category>
-        <category>技巧</category>
+        <category>摘抄</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Mac提示安装包已损坏的解决方法</title>
+    <url>/p/2H0WSE.html</url>
+    <content><![CDATA[<p>从网上下载的软件安装包，经常提示：</p>
+<blockquote>
+<p>xxx已损坏，无法打开。您应该将它移到废纸篓。</p>
+</blockquote>
+<p>现在总结下解决方法。</p>
+<a id="more"></a>
+
+<h1 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h1><p>在<strong>系统偏好设置 - 安全与隐私 - 通用标签</strong>中选择来自任何来源选项。</p>
+<h1 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h1><p>如果没有来自任何来源选项，打开终端执行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo spctl --master-disable<br></code></pre></td></tr></table></figure>
+<h1 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h1><p>如果方法一和方法二都没有效果，在终端中执行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo xattr -r -d com.apple.quarantine /path/to/app<br></code></pre></td></tr></table></figure>
+<p>其中 <code>/path/to/app</code> 是app所在的路径，比如XMind ZEN.app就是</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo xattr -r -d com.apple.quarantine /Applications/XMind\ ZEN.app<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>日常</category>
+        <category>收藏</category>
       </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Composer安装、更新速度慢问题解决</title>
+    <url>/p/2ZHKMM0.html</url>
+    <content><![CDATA[<p>今天想在自己的服务器上安装一个论坛软件，需要用到php的Composer来安装，无奈很慢，贴出自己的解决方法。</p>
+<p>通过更换国内镜像源的方式来加快速度，我使用的是阿里的镜像源，还不错，挺快的。</p>
+<a id="more"></a>
+
+<h1 id="全局配置（推荐）"><a href="#全局配置（推荐）" class="headerlink" title="全局配置（推荐）"></a>全局配置（推荐）</h1><p>所有项目都会使用该镜像地址：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/<br></code></pre></td></tr></table></figure>
+<p>取消配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer config -g --unset repos.packagist<br></code></pre></td></tr></table></figure>
+<h1 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h1><p>仅修改当前工程配置，仅当前工程可使用该镜像地址：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer config repo.packagist composer https://mirrors.aliyun.com/composer/<br></code></pre></td></tr></table></figure>
+<p>取消配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer config --unset repos.packagist<br></code></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>PHP</category>
+      </categories>
+      <tags>
+        <tag>Composer</tag>
+        <tag>PHP</tag>
       </tags>
   </entry>
 </search>
