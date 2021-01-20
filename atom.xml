@@ -137,11 +137,11 @@
     <category term="Apple" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
     
     
-    <category term="Android" scheme="https://zmlu.github.io/tags/Android/"/>
-    
     <category term="HomeKit" scheme="https://zmlu.github.io/tags/HomeKit/"/>
     
     <category term="Mac" scheme="https://zmlu.github.io/tags/Mac/"/>
+    
+    <category term="Android" scheme="https://zmlu.github.io/tags/Android/"/>
     
   </entry>
   
