@@ -1,6 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ES文件挂载</title>
+    <url>/p/PW04BF.html</url>
+    <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker exec -it test_es bash<br></code></pre></td></tr></table></figure>
+<p>找到配置文件所在位置：<code>/usr/share/elasticsearch/config</code> 下，可以看的配置文件：<code>elasticsearch.yml</code></p>
+<a id="more"></a>
+
+<p>拷贝配置文件到宿主机 <code>/opt/elasticsearch/</code> 目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker cp  test_es:/usr/share/elasticsearch/config/elasticsearch.yml  /opt/elasticsearch/<br></code></pre></td></tr></table></figure>
+<p>停止并且删除原来创建的容器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker stop test_es <br>docker rm  test_es<br></code></pre></td></tr></table></figure>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改 <code>/opt/elasticsearch/elasticsearch.yml</code> 配置文件</p>
+<p>将 <code>transport.host: 0.0.0.0</code> 前的#去掉后保存文件退出，其作用是允许任何ip地址访问elasticsearch。<br>开发测试阶段可以这么做，生产环境下指定具体的IP在<code>elasticsearch.yml</code>配置文件中添加如下跨域访问，方便下面的可视化连接工具连接。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cluster.name: &quot;docker-cluster&quot;<br>network.host: 0.0.0.0<br><br><span class="hljs-meta">#</span><span class="bash">开启跨域访问</span><br>http.cors.enabled: true<br>http.cors.allow-origin: &quot;*&quot;<br></code></pre></td></tr></table></figure>
+<h2 id="重新创建容器"><a href="#重新创建容器" class="headerlink" title="重新创建容器"></a>重新创建容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run -d --name=tensquare_elasticsearch -p 9200:9200 -p 9300:9300 -v  /opt/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="系统调优"><a href="#系统调优" class="headerlink" title="系统调优"></a>系统调优</h2><p>启动后发现启动失败了，这时什么原因呢？这与我们刚才修改的配置有关，因为 elasticsearch在启动的时候会进行一些检查，比如最多打开的文件的个数以及虚拟内存 区域数量等等，如果你放开了此配置，意味着需要打开更多的文件以及虚拟内存，所以 我们还需要系统调优。</p>
+<p>一共需要修改两处</p>
+<h3 id="修改-etc-security-limits-conf"><a href="#修改-etc-security-limits-conf" class="headerlink" title="修改 /etc/security/limits.conf"></a>修改 /etc/security/limits.conf</h3><p>添加如下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">* soft nofile 65536 <br>* hard nofile 65536<br></code></pre></td></tr></table></figure>
+<p>nofile是单个进程允许打开的最大文件个数<br>soft nofile 是软限制<br>hard nofile是硬限制</p>
+<h3 id="修改-etc-sysctl-conf"><a href="#修改-etc-sysctl-conf" class="headerlink" title="修改 /etc/sysctl.conf"></a>修改 /etc/sysctl.conf</h3><p>添加如下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>限制一个进程可以拥有的VMA(虚拟内存区域)的数量；执行下面命令 修改内核参数马上生效</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>重新启动虚拟机，再次启动容器，发现已经可以启动并远程访问</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ES镜像制作并启动</title>
+    <url>/p/10C2G1E.html</url>
+    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
+<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
+<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
+<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
+<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
+<p>在配置文件最下面，添加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>修改完成后，执行此命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>然后，重新启动elasticsearch，即可启动成功；</p>
+<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
+<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
+<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
+<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
+<p>均改为 512m</p>
+<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
+<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HomeKit初始化</title>
+    <url>/p/3XS9TP7.html</url>
+    <content><![CDATA[<p>前段时间搬家，需要插排，买了个米家的只能插排，感觉用手机控制很方便。看到苹果有自己的Home App来管理智能家居，想试试米家的智能设备能不能接入苹果的HomeKit。首先需要先搭建一个HomeKit服务器。</p>
+<a id="more"></a>
+
+<h1 id="安装Node-js和npm"><a href="#安装Node-js和npm" class="headerlink" title="安装Node.js和npm"></a>安装Node.js和npm</h1><p>Node.js v10.x:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Using Ubuntu</span><br>curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -<br>sudo apt-get install -y nodejs<br><br><span class="hljs-meta">#</span><span class="bash"> Using Debian, as root</span><br>curl -sL https://deb.nodesource.com/setup_10.x | bash -<br>apt-get install -y nodejs<br></code></pre></td></tr></table></figure>
+<h1 id="安装编译组件"><a href="#安装编译组件" class="headerlink" title="安装编译组件"></a>安装编译组件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo apt-get install libavahi-compat-libdnssd-dev<br>sudo apt-get install build-essential libtool<br></code></pre></td></tr></table></figure>
+<h1 id="安装HomeBridge"><a href="#安装HomeBridge" class="headerlink" title="安装HomeBridge"></a>安装HomeBridge</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm install -g --unsafe-perm homebridge<br></code></pre></td></tr></table></figure>
+<h1 id="添加HomeBridge配置文件"><a href="#添加HomeBridge配置文件" class="headerlink" title="添加HomeBridge配置文件"></a>添加HomeBridge配置文件</h1><p>进入目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cd ~/.homebridge/<br></code></pre></td></tr></table></figure>
+<p>创建文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim config.json<br></code></pre></td></tr></table></figure>
+<p>添加：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;bridge&quot;</span>: &#123;<br>        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;Homebridge&quot;</span>,<br>        <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;CC:22:3D:E3:CE:30&quot;</span>,<br>        <span class="hljs-attr">&quot;port&quot;</span>: <span class="hljs-number">51826</span>,<br>        <span class="hljs-attr">&quot;pin&quot;</span>: <span class="hljs-string">&quot;031-45-154&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>保存并退出：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">wq!<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>HomeKit</category>
+      </categories>
+      <tags>
+        <tag>HomeKit</tag>
+        <tag>米家</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HomeKit添加米家智能插线板</title>
+    <url>/p/141WYMG.html</url>
+    <content><![CDATA[<p>之前搭建了个HomeKit服务器，还没有接入米家的插线板，现在试试能不能让米家设备接入苹果的HomeKit，用手机的Home软件就能控制米家插线板。</p>
+<a id="more"></a>
+
+<h1 id="安装homebridge-mi-outlet插件"><a href="#安装homebridge-mi-outlet插件" class="headerlink" title="安装homebridge-mi-outlet插件"></a>安装<code>homebridge-mi-outlet</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install homebridge-mi-outlet<br></code></pre></td></tr></table></figure>
+<h1 id="安装miio插件"><a href="#安装miio插件" class="headerlink" title="安装miio插件"></a>安装<code>miio</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install miio<br></code></pre></td></tr></table></figure>
+<h1 id="用miio插件发现小米智能插线板"><a href="#用miio插件发现小米智能插线板" class="headerlink" title="用miio插件发现小米智能插线板"></a>用<code>miio</code>插件发现小米智能插线板</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">miio discover<br></code></pre></td></tr></table></figure>
+<p>可以看到<code>Model info：zhimi.powerstrip.v2</code>就是米家智能插线板，将下放的Address和Token记下来：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Address：192.168.xxx.xxx<br>Token：21a98556732d471e2764cxxxxxxb1ee1<br></code></pre></td></tr></table></figure>
+<h1 id="修改HomeBridge的config-json文件"><a href="#修改HomeBridge的config-json文件" class="headerlink" title="修改HomeBridge的config.json文件"></a>修改HomeBridge的<code>config.json</code>文件</h1><p>在<code>bridge</code>节点后面添加所需的<code>platforms</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;platforms&quot;</span>: [&#123;<br>        <span class="hljs-attr">&quot;platform&quot;</span>: <span class="hljs-string">&quot;MiOutletPlatform&quot;</span>,<br>            <span class="hljs-attr">&quot;deviceCfgs&quot;</span>: [&#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBase&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBaseWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchUSBName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchUSBDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiIntelligencePinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboardWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;]<br>    &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>其中<code>type</code>代表的硬件：</p>
+<ul>
+<li>米家智能插座基础版: <code>MiPlugBase</code></li>
+<li>米家智能插座USB版: <code>MiPlugBaseWithUSB</code></li>
+<li>米家智能插线板: <code>MiIntelligencePinboard</code></li>
+<li>青米智能插线板五孔位版: <code>MiQingPinboard</code></li>
+<li>青米智能插线板USB版: <code>MiQingPinboardWithUSB</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>HomeKit</category>
+      </categories>
+      <tags>
+        <tag>HomeKit</tag>
+        <tag>米家</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git设置代理</title>
+    <url>/p/35NJX8Y.html</url>
+    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
+<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
+<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
+<p>显示如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
+<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>加速</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gitignore文件不起作用</title>
+    <url>/p/TSMFKX.html</url>
+    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
+<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用Gulp加速Hexo</title>
+    <url>/p/8VNSFG.html</url>
+    <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
+<h1 id="安装Gulp到Hexo博客"><a href="#安装Gulp到Hexo博客" class="headerlink" title="安装Gulp到Hexo博客"></a>安装Gulp到Hexo博客</h1><p>参见文章：<a href="https://luzhoumin.com/p/14jcgnp.html">安装Gulp</a></p>
+<p>进入hexo博客的根目录（public文件夹所在的目录），安装一些必要的组件。</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp gulp-babel gulp-clean-css gulp-htmlclean gulp-htmlmin gulp-uglify @babel/core @babel/preset-env @babel/register<br></code></pre></td></tr></table></figure>
+<h1 id="新建-babelrc"><a href="#新建-babelrc" class="headerlink" title="新建.babelrc"></a>新建.babelrc</h1><p>依然在hexo博客根目录下新建.babelrc文件</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;presets&quot;</span>: [ <span class="hljs-string">&quot;@babel/preset-env&quot;</span> ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h1><p>在hexo博客根目录下新建gulpfile.js文件，内容如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);<br><span class="hljs-keyword">var</span> babel = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-babel&#x27;</span>);<br><span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>);<br><span class="hljs-keyword">var</span> cleanCSS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-clean-css&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlmin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlmin&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlclean = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlclean&#x27;</span>);<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * css</span><br><span class="hljs-comment"> */</span><br>gulp.task(<span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.css&#x27;</span>)<br>			.pipe(cleanCSS())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-js&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src([<span class="hljs-string">&#x27;./public/**/*.js&#x27;</span>, <span class="hljs-string">&#x27;!./public/**/*.min.js&#x27;</span>])<br>			.pipe(babel())<br>			.pipe(uglify())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.html&#x27;</span>)<br>			.pipe(htmlclean())<br>			.pipe(htmlmin(&#123;<br>				removeComments: <span class="hljs-literal">true</span>,<br>				minifyJS: <span class="hljs-literal">true</span>,<br>				minifyCSS: <span class="hljs-literal">true</span>,<br>				minifyURLs: <span class="hljs-literal">true</span>,<br>			&#125;))<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,gulp.parallel(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-string">&#x27;minify-js&#x27;</span>));<br></code></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>执行完<code>hexo g</code>产生编译文件后，再手动执行执行<code>gulp</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[15:03:44] Using gulpfile E:\dev\hexoBlog\gulpfile.js<br>[15:03:44] Starting &#x27;default&#x27;...<br>[15:03:44] Starting &#x27;minify-html&#x27;...<br>[15:03:44] Starting &#x27;minify-css&#x27;...<br>[15:03:44] Starting &#x27;minify-js&#x27;...<br>[15:03:47] Finished &#x27;minify-css&#x27; after 3.52 s<br>[15:03:48] Finished &#x27;minify-html&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;minify-js&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;default&#x27; after 4.63 s<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Gulp</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Gulp</tag>
+        <tag>Hexo</tag>
+        <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装Gulp</title>
+    <url>/p/14JCGNP.html</url>
+    <content><![CDATA[<p>记录一下安装Gulp的过程，参考官方文档，参考地址见文章末尾。</p>
+<p>如果你先前将gulp安装到全局环境中了，请执行<code>npm rm --global gulp</code>将<code>gulp</code>删除再继续以下操作。更多信息请参考<a href="https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467">Sip</a>。</p>
+<a id="more"></a>
+
+<h1 id="检查-node、npm-和-npx-是否正确安装"><a href="#检查-node、npm-和-npx-是否正确安装" class="headerlink" title="检查 node、npm 和 npx 是否正确安装"></a>检查 node、npm 和 npx 是否正确安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">node --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-node-version-command.png" alt="Output:v8.11.1"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-npm-version-command.png" alt="Output:5.6.0"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-npx-version-command.png" alt="Output:9.7.1"></p>
+<p>如果上述工具还没安装，请参考<a href="https://nodejs.org/en/">这里</a>。</p>
+<h1 id="安装-gulp-命令行工具"><a href="#安装-gulp-命令行工具" class="headerlink" title="安装 gulp 命令行工具"></a>安装 gulp 命令行工具</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --global gulp-cli<br></code></pre></td></tr></table></figure>
+<h1 id="创建项目目录并进入"><a href="#创建项目目录并进入" class="headerlink" title="创建项目目录并进入"></a>创建项目目录并进入</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx mkdirp my-project<br>cd my-project<br></code></pre></td></tr></table></figure>
+<h1 id="在项目目录下创建-package-json-文件"><a href="#在项目目录下创建-package-json-文件" class="headerlink" title="在项目目录下创建 package.json 文件"></a>在项目目录下创建 package.json 文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm init<br></code></pre></td></tr></table></figure>
+<p>上述命令将指引你设置项目名、版本、描述信息等。</p>
+<h1 id="安装-gulp，作为开发时依赖项"><a href="#安装-gulp，作为开发时依赖项" class="headerlink" title="安装 gulp，作为开发时依赖项"></a>安装 gulp，作为开发时依赖项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp<br></code></pre></td></tr></table></figure>
+<h1 id="检查-gulp-版本"><a href="#检查-gulp-版本" class="headerlink" title="检查 gulp 版本"></a>检查 gulp 版本</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp --version<br></code></pre></td></tr></table></figure>
+<p>确保输出与下面的屏幕截图匹配，否则你可能需要执行本指南中的上述步骤。</p>
+<p><img src="https://gulpjs.com/img/docs-gulp-version-command.png" alt="Output: CLI version 2.0.1 &amp; Local version 4.0.0"></p>
+<h1 id="创建-gulpfile-文件"><a href="#创建-gulpfile-文件" class="headerlink" title="创建 gulpfile 文件"></a>创建 gulpfile 文件</h1><p>利用任何文本编辑器在项目大的根目录下创建一个名为 gulpfile.js 的文件，并在文件中输入以下内容：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultTask</span>(<span class="hljs-params">cb</span>) </span>&#123;<br>  <span class="hljs-comment">// place code for your default task here</span><br>  cb();<br>&#125;<br><br><span class="hljs-built_in">exports</span>.default = defaultTask<br></code></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在项目根目录下执行 gulp 命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp<br></code></pre></td></tr></table></figure>
+<p>如需运行多个任务（task），可以执行<code>gulp &lt;task&gt; &lt;othertask&gt;</code>。</p>
+<h1 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h1><p>默认任务（task）将执行，因为任务为空，因此没有实际动作。</p>
+<p><img src="https://gulpjs.com/img/docs-gulp-command.png" alt="Output:Starting default &amp; Finished default"></p>
+<blockquote>
+<p>参考： <a href="https://gulpjs.com/docs/en/getting-started/quick-start">Gulp Quick Start</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Gulp</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Gulp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[Material Design] 尝试使用 Bottom Navigation</title>
     <url>/p/GJ0Q47.html</url>
     <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
@@ -74,234 +299,9 @@
         <category>Android</category>
       </categories>
       <tags>
+        <tag>Java</tag>
         <tag>Android</tag>
         <tag>Google</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ES镜像制作并启动</title>
-    <url>/p/10C2G1E.html</url>
-    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
-<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
-<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
-<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
-<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
-<p>在配置文件最下面，添加如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>修改完成后，执行此命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>然后，重新启动elasticsearch，即可启动成功；</p>
-<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
-<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
-<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
-<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
-<p>均改为 512m</p>
-<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
-<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Elasticsearch</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ES文件挂载</title>
-    <url>/p/PW04BF.html</url>
-    <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker exec -it test_es bash<br></code></pre></td></tr></table></figure>
-<p>找到配置文件所在位置：<code>/usr/share/elasticsearch/config</code> 下，可以看的配置文件：<code>elasticsearch.yml</code></p>
-<a id="more"></a>
-
-<p>拷贝配置文件到宿主机 <code>/opt/elasticsearch/</code> 目录下</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker cp  test_es:/usr/share/elasticsearch/config/elasticsearch.yml  /opt/elasticsearch/<br></code></pre></td></tr></table></figure>
-<p>停止并且删除原来创建的容器</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker stop test_es <br>docker rm  test_es<br></code></pre></td></tr></table></figure>
-<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改 <code>/opt/elasticsearch/elasticsearch.yml</code> 配置文件</p>
-<p>将 <code>transport.host: 0.0.0.0</code> 前的#去掉后保存文件退出，其作用是允许任何ip地址访问elasticsearch。<br>开发测试阶段可以这么做，生产环境下指定具体的IP在<code>elasticsearch.yml</code>配置文件中添加如下跨域访问，方便下面的可视化连接工具连接。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cluster.name: &quot;docker-cluster&quot;<br>network.host: 0.0.0.0<br><br><span class="hljs-meta">#</span><span class="bash">开启跨域访问</span><br>http.cors.enabled: true<br>http.cors.allow-origin: &quot;*&quot;<br></code></pre></td></tr></table></figure>
-<h2 id="重新创建容器"><a href="#重新创建容器" class="headerlink" title="重新创建容器"></a>重新创建容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run -d --name=tensquare_elasticsearch -p 9200:9200 -p 9300:9300 -v  /opt/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="系统调优"><a href="#系统调优" class="headerlink" title="系统调优"></a>系统调优</h2><p>启动后发现启动失败了，这时什么原因呢？这与我们刚才修改的配置有关，因为 elasticsearch在启动的时候会进行一些检查，比如最多打开的文件的个数以及虚拟内存 区域数量等等，如果你放开了此配置，意味着需要打开更多的文件以及虚拟内存，所以 我们还需要系统调优。</p>
-<p>一共需要修改两处</p>
-<h3 id="修改-etc-security-limits-conf"><a href="#修改-etc-security-limits-conf" class="headerlink" title="修改 /etc/security/limits.conf"></a>修改 /etc/security/limits.conf</h3><p>添加如下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">* soft nofile 65536 <br>* hard nofile 65536<br></code></pre></td></tr></table></figure>
-<p>nofile是单个进程允许打开的最大文件个数<br>soft nofile 是软限制<br>hard nofile是硬限制</p>
-<h3 id="修改-etc-sysctl-conf"><a href="#修改-etc-sysctl-conf" class="headerlink" title="修改 /etc/sysctl.conf"></a>修改 /etc/sysctl.conf</h3><p>添加如下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>限制一个进程可以拥有的VMA(虚拟内存区域)的数量；执行下面命令 修改内核参数马上生效</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>重新启动虚拟机，再次启动容器，发现已经可以启动并远程访问</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Elasticsearch</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>gitignore文件不起作用</title>
-    <url>/p/TSMFKX.html</url>
-    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
-<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git设置代理</title>
-    <url>/p/35NJX8Y.html</url>
-    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
-<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
-<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
-<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
-<p>显示如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
-<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>加速</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用Gulp加速Hexo</title>
-    <url>/p/8VNSFG.html</url>
-    <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
-<h1 id="安装Gulp到Hexo博客"><a href="#安装Gulp到Hexo博客" class="headerlink" title="安装Gulp到Hexo博客"></a>安装Gulp到Hexo博客</h1><p>参见文章：<a href="https://luzhoumin.com/p/14jcgnp.html">安装Gulp</a></p>
-<p>进入hexo博客的根目录（public文件夹所在的目录），安装一些必要的组件。</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp gulp-babel gulp-clean-css gulp-htmlclean gulp-htmlmin gulp-uglify @babel/core @babel/preset-env @babel/register<br></code></pre></td></tr></table></figure>
-<h1 id="新建-babelrc"><a href="#新建-babelrc" class="headerlink" title="新建.babelrc"></a>新建.babelrc</h1><p>依然在hexo博客根目录下新建.babelrc文件</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;presets&quot;</span>: [ <span class="hljs-string">&quot;@babel/preset-env&quot;</span> ]<br>&#125;<br></code></pre></td></tr></table></figure>
-<h1 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h1><p>在hexo博客根目录下新建gulpfile.js文件，内容如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);<br><span class="hljs-keyword">var</span> babel = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-babel&#x27;</span>);<br><span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>);<br><span class="hljs-keyword">var</span> cleanCSS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-clean-css&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlmin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlmin&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlclean = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlclean&#x27;</span>);<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * css</span><br><span class="hljs-comment"> */</span><br>gulp.task(<span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.css&#x27;</span>)<br>			.pipe(cleanCSS())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-js&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src([<span class="hljs-string">&#x27;./public/**/*.js&#x27;</span>, <span class="hljs-string">&#x27;!./public/**/*.min.js&#x27;</span>])<br>			.pipe(babel())<br>			.pipe(uglify())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.html&#x27;</span>)<br>			.pipe(htmlclean())<br>			.pipe(htmlmin(&#123;<br>				removeComments: <span class="hljs-literal">true</span>,<br>				minifyJS: <span class="hljs-literal">true</span>,<br>				minifyCSS: <span class="hljs-literal">true</span>,<br>				minifyURLs: <span class="hljs-literal">true</span>,<br>			&#125;))<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,gulp.parallel(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-string">&#x27;minify-js&#x27;</span>));<br></code></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>执行完<code>hexo g</code>产生编译文件后，再手动执行执行<code>gulp</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[15:03:44] Using gulpfile E:\dev\hexoBlog\gulpfile.js<br>[15:03:44] Starting &#x27;default&#x27;...<br>[15:03:44] Starting &#x27;minify-html&#x27;...<br>[15:03:44] Starting &#x27;minify-css&#x27;...<br>[15:03:44] Starting &#x27;minify-js&#x27;...<br>[15:03:47] Finished &#x27;minify-css&#x27; after 3.52 s<br>[15:03:48] Finished &#x27;minify-html&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;minify-js&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;default&#x27; after 4.63 s<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Gulp</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Gulp</tag>
-        <tag>Hexo</tag>
-        <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安装Gulp</title>
-    <url>/p/14JCGNP.html</url>
-    <content><![CDATA[<p>记录一下安装Gulp的过程，参考官方文档，参考地址见文章末尾。</p>
-<p>如果你先前将gulp安装到全局环境中了，请执行<code>npm rm --global gulp</code>将<code>gulp</code>删除再继续以下操作。更多信息请参考<a href="https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467">Sip</a>。</p>
-<a id="more"></a>
-
-<h1 id="检查-node、npm-和-npx-是否正确安装"><a href="#检查-node、npm-和-npx-是否正确安装" class="headerlink" title="检查 node、npm 和 npx 是否正确安装"></a>检查 node、npm 和 npx 是否正确安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">node --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-node-version-command.png" alt="Output:v8.11.1"></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-npm-version-command.png" alt="Output:5.6.0"></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-npx-version-command.png" alt="Output:9.7.1"></p>
-<p>如果上述工具还没安装，请参考<a href="https://nodejs.org/en/">这里</a>。</p>
-<h1 id="安装-gulp-命令行工具"><a href="#安装-gulp-命令行工具" class="headerlink" title="安装 gulp 命令行工具"></a>安装 gulp 命令行工具</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --global gulp-cli<br></code></pre></td></tr></table></figure>
-<h1 id="创建项目目录并进入"><a href="#创建项目目录并进入" class="headerlink" title="创建项目目录并进入"></a>创建项目目录并进入</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx mkdirp my-project<br>cd my-project<br></code></pre></td></tr></table></figure>
-<h1 id="在项目目录下创建-package-json-文件"><a href="#在项目目录下创建-package-json-文件" class="headerlink" title="在项目目录下创建 package.json 文件"></a>在项目目录下创建 package.json 文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm init<br></code></pre></td></tr></table></figure>
-<p>上述命令将指引你设置项目名、版本、描述信息等。</p>
-<h1 id="安装-gulp，作为开发时依赖项"><a href="#安装-gulp，作为开发时依赖项" class="headerlink" title="安装 gulp，作为开发时依赖项"></a>安装 gulp，作为开发时依赖项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp<br></code></pre></td></tr></table></figure>
-<h1 id="检查-gulp-版本"><a href="#检查-gulp-版本" class="headerlink" title="检查 gulp 版本"></a>检查 gulp 版本</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp --version<br></code></pre></td></tr></table></figure>
-<p>确保输出与下面的屏幕截图匹配，否则你可能需要执行本指南中的上述步骤。</p>
-<p><img src="https://gulpjs.com/img/docs-gulp-version-command.png" alt="Output: CLI version 2.0.1 &amp; Local version 4.0.0"></p>
-<h1 id="创建-gulpfile-文件"><a href="#创建-gulpfile-文件" class="headerlink" title="创建 gulpfile 文件"></a>创建 gulpfile 文件</h1><p>利用任何文本编辑器在项目大的根目录下创建一个名为 gulpfile.js 的文件，并在文件中输入以下内容：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultTask</span>(<span class="hljs-params">cb</span>) </span>&#123;<br>  <span class="hljs-comment">// place code for your default task here</span><br>  cb();<br>&#125;<br><br><span class="hljs-built_in">exports</span>.default = defaultTask<br></code></pre></td></tr></table></figure>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在项目根目录下执行 gulp 命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp<br></code></pre></td></tr></table></figure>
-<p>如需运行多个任务（task），可以执行<code>gulp &lt;task&gt; &lt;othertask&gt;</code>。</p>
-<h1 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h1><p>默认任务（task）将执行，因为任务为空，因此没有实际动作。</p>
-<p><img src="https://gulpjs.com/img/docs-gulp-command.png" alt="Output:Starting default &amp; Finished default"></p>
-<blockquote>
-<p>参考： <a href="https://gulpjs.com/docs/en/getting-started/quick-start">Gulp Quick Start</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Gulp</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Gulp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HomeKit初始化</title>
-    <url>/p/3XS9TP7.html</url>
-    <content><![CDATA[<p>前段时间搬家，需要插排，买了个米家的只能插排，感觉用手机控制很方便。看到苹果有自己的Home App来管理智能家居，想试试米家的智能设备能不能接入苹果的HomeKit。首先需要先搭建一个HomeKit服务器。</p>
-<a id="more"></a>
-
-<h1 id="安装Node-js和npm"><a href="#安装Node-js和npm" class="headerlink" title="安装Node.js和npm"></a>安装Node.js和npm</h1><p>Node.js v10.x:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Using Ubuntu</span><br>curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -<br>sudo apt-get install -y nodejs<br><br><span class="hljs-meta">#</span><span class="bash"> Using Debian, as root</span><br>curl -sL https://deb.nodesource.com/setup_10.x | bash -<br>apt-get install -y nodejs<br></code></pre></td></tr></table></figure>
-<h1 id="安装编译组件"><a href="#安装编译组件" class="headerlink" title="安装编译组件"></a>安装编译组件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo apt-get install libavahi-compat-libdnssd-dev<br>sudo apt-get install build-essential libtool<br></code></pre></td></tr></table></figure>
-<h1 id="安装HomeBridge"><a href="#安装HomeBridge" class="headerlink" title="安装HomeBridge"></a>安装HomeBridge</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm install -g --unsafe-perm homebridge<br></code></pre></td></tr></table></figure>
-<h1 id="添加HomeBridge配置文件"><a href="#添加HomeBridge配置文件" class="headerlink" title="添加HomeBridge配置文件"></a>添加HomeBridge配置文件</h1><p>进入目录：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cd ~/.homebridge/<br></code></pre></td></tr></table></figure>
-<p>创建文件：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim config.json<br></code></pre></td></tr></table></figure>
-<p>添加：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;bridge&quot;</span>: &#123;<br>        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;Homebridge&quot;</span>,<br>        <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;CC:22:3D:E3:CE:30&quot;</span>,<br>        <span class="hljs-attr">&quot;port&quot;</span>: <span class="hljs-number">51826</span>,<br>        <span class="hljs-attr">&quot;pin&quot;</span>: <span class="hljs-string">&quot;031-45-154&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>保存并退出：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">wq!<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>HomeKit</category>
-      </categories>
-      <tags>
-        <tag>HomeKit</tag>
-        <tag>米家</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HomeKit添加米家智能插线板</title>
-    <url>/p/141WYMG.html</url>
-    <content><![CDATA[<p>之前搭建了个HomeKit服务器，还没有接入米家的插线板，现在试试能不能让米家设备接入苹果的HomeKit，用手机的Home软件就能控制米家插线板。</p>
-<a id="more"></a>
-
-<h1 id="安装homebridge-mi-outlet插件"><a href="#安装homebridge-mi-outlet插件" class="headerlink" title="安装homebridge-mi-outlet插件"></a>安装<code>homebridge-mi-outlet</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install homebridge-mi-outlet<br></code></pre></td></tr></table></figure>
-<h1 id="安装miio插件"><a href="#安装miio插件" class="headerlink" title="安装miio插件"></a>安装<code>miio</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install miio<br></code></pre></td></tr></table></figure>
-<h1 id="用miio插件发现小米智能插线板"><a href="#用miio插件发现小米智能插线板" class="headerlink" title="用miio插件发现小米智能插线板"></a>用<code>miio</code>插件发现小米智能插线板</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">miio discover<br></code></pre></td></tr></table></figure>
-<p>可以看到<code>Model info：zhimi.powerstrip.v2</code>就是米家智能插线板，将下放的Address和Token记下来：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Address：192.168.xxx.xxx<br>Token：21a98556732d471e2764cxxxxxxb1ee1<br></code></pre></td></tr></table></figure>
-<h1 id="修改HomeBridge的config-json文件"><a href="#修改HomeBridge的config-json文件" class="headerlink" title="修改HomeBridge的config.json文件"></a>修改HomeBridge的<code>config.json</code>文件</h1><p>在<code>bridge</code>节点后面添加所需的<code>platforms</code>：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;platforms&quot;</span>: [&#123;<br>        <span class="hljs-attr">&quot;platform&quot;</span>: <span class="hljs-string">&quot;MiOutletPlatform&quot;</span>,<br>            <span class="hljs-attr">&quot;deviceCfgs&quot;</span>: [&#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBase&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBaseWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchUSBName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchUSBDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiIntelligencePinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboardWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;]<br>    &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>其中<code>type</code>代表的硬件：</p>
-<ul>
-<li>米家智能插座基础版: <code>MiPlugBase</code></li>
-<li>米家智能插座USB版: <code>MiPlugBaseWithUSB</code></li>
-<li>米家智能插线板: <code>MiIntelligencePinboard</code></li>
-<li>青米智能插线板五孔位版: <code>MiQingPinboard</code></li>
-<li>青米智能插线板USB版: <code>MiQingPinboardWithUSB</code></li>
-</ul>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>HomeKit</category>
-      </categories>
-      <tags>
-        <tag>HomeKit</tag>
-        <tag>米家</tag>
       </tags>
   </entry>
   <entry>
@@ -670,27 +670,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Orcale日常记录</title>
-    <url>/p/3PN2K8A.html</url>
-    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
-<a id="more"></a>
-
-<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
-<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
-<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
-<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>SQL</category>
-      </categories>
-      <tags>
-        <tag>Mac</tag>
-        <tag>Orcale</tag>
-        <tag>SQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用Scrapy抓取百度热点新闻</title>
     <url>/p/QHV65K.html</url>
     <content><![CDATA[<h2 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install Scrapy<br></code></pre></td></tr></table></figure>
@@ -711,6 +690,27 @@
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Orcale日常记录</title>
+    <url>/p/3PN2K8A.html</url>
+    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
+<a id="more"></a>
+
+<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
+<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
+<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>SQL</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>Orcale</tag>
+        <tag>SQL</tag>
       </tags>
   </entry>
   <entry>
@@ -802,6 +802,22 @@
         <tag>SQL</tag>
         <tag>UUID</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Element输入框自动去除空格及校验</title>
+    <url>/p/2KGC076.html</url>
+    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
+<a id="more"></a>
+
+<p>可以自定义一个指令，代码如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><code class="hljs vue">import Vue from &#39;vue&#39;<br><br>Vue.directive(&#39;trim&#39;, &#123;<br>  bind(el, binding, vnode) &#123;<br>    setTimeout(() &#x3D;&gt; &#123;<br>      let validateField &#x3D; &#39;&#39;<br>      const formItem &#x3D; vnode.elm.parentNode.parentNode.__vue__<br>      if (formItem) &#123;<br>        validateField &#x3D; formItem.$options.propsData.prop<br>      &#125;<br>      const form &#x3D; vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      const trimStr &#x3D; function(e) &#123;<br>        const value &#x3D; e.target.value<br>        if (value) &#123;<br>          e.target.value &#x3D; value.trim()<br>          e.target.dispatchEvent(new CustomEvent(&#39;input&#39;))<br>          if (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(&#39;blur&#39;, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
+<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Vue</category>
+      </categories>
   </entry>
   <entry>
     <title>在macOS上运用Crontab运行定时任务</title>
@@ -933,38 +949,9 @@
         <category>Apple</category>
       </categories>
       <tags>
-        <tag>Android</tag>
         <tag>HomeKit</tag>
+        <tag>Android</tag>
         <tag>Mac</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>[202006期] 有价值 iOS App</title>
-    <url>/p/2S9K9NA.html</url>
-    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
-<a id="more"></a>
-
-<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
-<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
-<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
-<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>Apple</category>
-      </categories>
-      <tags>
-        <tag>Netflix</tag>
       </tags>
   </entry>
   <entry>
@@ -1155,6 +1142,35 @@
       </categories>
       <tags>
         <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[202006期] 有价值 iOS App</title>
+    <url>/p/2S9K9NA.html</url>
+    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
+<a id="more"></a>
+
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
+<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
+<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
+<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>Apple</category>
+      </categories>
+      <tags>
+        <tag>Netflix</tag>
       </tags>
   </entry>
   <entry>

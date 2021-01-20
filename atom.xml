@@ -6,7 +6,7 @@
   <link href="https://zmlu.me/atom.xml" rel="self"/>
   
   <link href="https://zmlu.me/"/>
-  <updated>2020-07-16T02:56:24.000Z</updated>
+  <updated>2021-01-20T01:55:51.018Z</updated>
   <id>https://zmlu.me/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Element输入框自动去除空格及校验</title>
+    <link href="https://zmlu.me/p/2KGC076.html"/>
+    <id>https://zmlu.me/p/2KGC076.html</id>
+    <published>2021-01-19T16:00:00.000Z</published>
+    <updated>2021-01-20T01:55:51.018Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;有的时候需要用输入框输入数据，但是需要数据去除前后空格&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    <category term="Vue" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Vue/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>使用Scrapy抓取百度热点新闻</title>
@@ -116,9 +135,9 @@
     <category term="Apple" scheme="https://zmlu.me/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
     
     
-    <category term="Android" scheme="https://zmlu.me/tags/Android/"/>
-    
     <category term="HomeKit" scheme="https://zmlu.me/tags/HomeKit/"/>
+    
+    <category term="Android" scheme="https://zmlu.me/tags/Android/"/>
     
     <category term="Mac" scheme="https://zmlu.me/tags/Mac/"/>
     
@@ -450,30 +469,6 @@
     
     <category term="Nginx" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Nginx/"/>
     
-    
-    <category term="WebP" scheme="https://zmlu.me/tags/WebP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
-    <link href="https://zmlu.me/p/2JJ2AE2.html"/>
-    <id>https://zmlu.me/p/2JJ2AE2.html</id>
-    <published>2020-01-02T16:00:00.000Z</published>
-    <updated>2020-03-19T02:23:08.000Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。&lt;/p&gt;
-&lt;p&gt;Google推出了一种图片格式: WebP (&lt;a href=&quot;https://developers.google.com/speed/webp/&quot;&gt;Google官方网址&lt;/a&gt;)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="开发" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    <category term="Nginx" scheme="https://zmlu.me/categories/%E5%BC%80%E5%8F%91/Nginx/"/>
-    
-    
-    <category term="Google" scheme="https://zmlu.me/tags/Google/"/>
     
     <category term="WebP" scheme="https://zmlu.me/tags/WebP/"/>
     
