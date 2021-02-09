@@ -1,82 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>[Material Design] 尝试使用 Bottom Navigation</title>
-    <url>/p/GJ0Q47.html</url>
-    <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
-<p>Material Design的一些重要功能包括系统字体Roboto的升级版本，同时颜色更鲜艳，动画效果更突出。谷歌的想法是让谷歌平台上的开发者掌握这个新框架，从而让所有应用就有统一的外观，就像是苹果向开发者提出的设计原则一样。</p>
-<p>一直感觉Material Design设计很是好看，尤其是底部的导航栏，简约的图标以及透明的背景。决定自己体验一把。</p>
+    <title>ES镜像制作并启动</title>
+    <url>/p/10C2G1E.html</url>
+    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
 <a id="more"></a>
 
-<p>先上效果图：</p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-14bd1b8c91c5f8b99.gif" alt="效果图"></p>
-<h1 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h1><p>Bottom Navigation经常用于底部导航栏。不过它所包含的标签页不应过多也不应该过少，<a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a>中表示，标签页的个数在3-5个左右合适。</p>
-<h1 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h1><h2 id="在Module的build-gradle中添加如下代码"><a href="#在Module的build-gradle中添加如下代码" class="headerlink" title="在Module的build.gradle中添加如下代码"></a>在Module的build.gradle中添加如下代码</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">compile &#x27;com.roughike:bottom-bar:2.0.2&#x27;<br></code></pre></td></tr></table></figure>
-<p>实现Bottom Navigation功能，比较好用的是第三方的BottomBar库，截止2017.1.8，最新的版本是2.0.2，如果需要最新版，请访问 <a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></p>
-<h2 id="在res下新建类型为xml的xml文件夹"><a href="#在res下新建类型为xml的xml文件夹" class="headerlink" title="在res下新建类型为xml的xml文件夹"></a>在res下新建类型为xml的xml文件夹</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-27a8c62661b42fd13.png"></p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/20210120100350.png"></p>
-<h2 id="在xml文件夹下新建bottombar-tabs-xml文件"><a href="#在xml文件夹下新建bottombar-tabs-xml文件" class="headerlink" title="在xml文件夹下新建bottombar_tabs.xml文件"></a>在xml文件夹下新建bottombar_tabs.xml文件</h2><p>res/xml/bottombar_tabs.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">PreferenceScreen</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">tabs</span>&gt;</span><br>        &lt;tab<br>            id=&quot;@+id/tab_one&quot;<br>            icon=&quot;@drawable/ic_3d_rotation_white_24dp&quot;<br>            title=&quot;财务&quot;<br>            barColorWhenSelected=&quot;#865242&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_two&quot;<br>            icon=&quot;@drawable/ic_account_balance_white_24dp&quot;<br>            title=&quot;群组&quot;<br>            barColorWhenSelected=&quot;#268434&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_three&quot;<br>            icon=&quot;@drawable/ic_accessibility_white_24dp&quot;<br>            title=&quot;朋友&quot;<br>            barColorWhenSelected=&quot;#8b2099&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">tabs</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">PreferenceScreen</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<p><code>barColorWhenSelected</code>属性控制着当这个Tab被选择时，BottomBar的整体颜色。<code>inActiveColor</code>属性是这个Tab未激活时图片的颜色。与之相对应的<code>activeColor</code>属性，则是控制着激活时的图片颜色。</p>
-<h2 id="activity-main-xml"><a href="#activity-main-xml" class="headerlink" title="activity_main.xml"></a>activity_main.xml</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">RelativeLayout</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:app</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:tools</span>=<span class="hljs-string">&quot;http://schemas.android.com/tools&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/activity_main&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingBottom</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingLeft</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingRight</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingTop</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">tools:context</span>=<span class="hljs-string">&quot;me.luzhoumin.bottomnavigation.MainActivity&quot;</span>&gt;</span><br><br>    &lt;com.roughike.bottombar.BottomBar<br>        android:id=&quot;@+id/bottomBar&quot;<br>        android:layout_width=&quot;match_parent&quot;<br>        android:layout_height=&quot;60dp&quot;<br>        android:layout_alignParentBottom=&quot;true&quot;<br>        app:bb_tabXmlResource=&quot;@xml/bottombar_tabs&quot;<br>        app:bb_behavior=&quot;underNavbar&quot;<br>        app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>        app:bb_activeTabAlpha=&quot;1&quot;<br>        app:bb_showShadow=&quot;true&quot;/&gt;<br><br>    &lt;TextView<br>        android:id=&quot;@+id/textview&quot;<br>        android:layout_width=&quot;wrap_content&quot;<br>        android:layout_height=&quot;wrap_content&quot;<br>        android:textSize=&quot;36sp&quot;<br>        android:text=&quot;Hello World!&quot;<br>        android:layout_alignParentTop=&quot;true&quot;<br>        android:layout_alignParentStart=&quot;true&quot;<br>        android:layout_marginTop=&quot;51dp&quot; /&gt;<br><br><span class="hljs-tag">&lt;/<span class="hljs-name">RelativeLayout</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<p><code>app:bb_tabXmlResource</code>指向的是第三步建的xml文件，里面有每个Tab的属性。</p>
-<h2 id="MainActivity-java"><a href="#MainActivity-java" class="headerlink" title="MainActivity.java"></a>MainActivity.java</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> android.support.annotation.IdRes;<br><span class="hljs-keyword">import</span> android.support.v7.app.AppCompatActivity;<br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> android.widget.TextView;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBar;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBarTab;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabReselectListener;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabSelectListener;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AppCompatActivity</span> </span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> </span>&#123;<br>        <span class="hljs-keyword">super</span>.onCreate(savedInstanceState);<br>        setContentView(R.layout.activity_main);<br>        <span class="hljs-comment">//获取Bottom Bar组件</span><br>        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);<br>        <span class="hljs-comment">//获取用来显示的TextView组件</span><br>        <span class="hljs-keyword">final</span> TextView tv = (TextView) findViewById(R.id.textview);<br>        <span class="hljs-comment">//设置Bottom Bar的选择监听器</span><br>        bottomBar.setOnTabSelectListener(<span class="hljs-keyword">new</span> OnTabSelectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_group 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Bottom Bar的重复选择监听器</span><br>        bottomBar.setOnTabReselectListener(<span class="hljs-keyword">new</span> OnTabReselectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabReSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_two 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 再次被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Tab的Badge</span><br>        BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_two);<br>        nearby.setBadgeCount(<span class="hljs-number">5</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="修改主题样式"><a href="#修改主题样式" class="headerlink" title="修改主题样式"></a>修改主题样式</h2><p>res/values/styles.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Base application theme. --&gt;</span><br>    <span class="hljs-comment">&lt;!--修改主题为无ActionBar--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;AppTheme&quot;</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">&quot;Theme.AppCompat.Light.NoActionBar&quot;</span>&gt;</span><br><span class="xml">        <span class="hljs-comment">&lt;!-- Customize your theme here. --&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-comment">&lt;!--添加--&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:navigationBarColor&quot;</span>&gt;</span>@android:color/transparent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowTranslucentNavigation&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowDrawsSystemBarBackgrounds&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<h1 id="BottomBar-API"><a href="#BottomBar-API" class="headerlink" title="BottomBar API"></a>BottomBar API</h1><h2 id="For-the-BottomBar"><a href="#For-the-BottomBar" class="headerlink" title="For the BottomBar"></a>For the BottomBar</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;com.roughike.bottombar.BottomBar<br>    android:id=&quot;@+id/bottomBar&quot;<br>    android:layout_width=&quot;match_parent&quot;<br>    android:layout_height=&quot;60dp&quot;<br>    android:layout_alignParentBottom=&quot;true&quot;<br>    app:bb_tabXmlResource=&quot;@xml/bottombar_tabs_three&quot;<br>    app:bb_tabletMode=&quot;true&quot;<br>    app:bb_behavior=&quot;shifting|shy|underNavbar&quot;<br>    app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>    app:bb_activeTabAlpha=&quot;1&quot;<br>    app:bb_inActiveTabColor=&quot;#222222&quot;<br>    app:bb_activeTabColor=&quot;@color/colorPrimary&quot;<br>    app:bb_titleTextAppearance=&quot;@style/MyTextAppearance&quot;<br>    app:bb_titleTypeFace=&quot;fonts/MySuperDuperFont.ttf&quot;<br>    app:bb_showShadow=&quot;true&quot; /&gt;<br></code></pre></td></tr></table></figure>
-<p><strong>bb_tabXmlResource</strong></p>
-<p>the XML Resource id for your tabs, that reside in values/xml/</p>
-<p><strong>bb_tabletMode</strong></p>
-<p>if you want the BottomBar to behave differently for tablets. There’s an example of this in the sample project!</p>
-<p><strong>bb_behavior</strong></p>
-<ul>
-<li><code>shifting</code>: the selected tab is wider than the rest.</li>
-<li><code>shy</code>: put the BottomBar inside a CoordinatorLayout and it’ll automatically hide on scroll!</li>
-<li><code>underNavbar</code>: draw the BottomBar under the navBar!</li>
-</ul>
-<p><strong>bb_inActiveTabAlpha</strong></p>
-<p>the alpha value for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_activeTabAlpha</strong></p>
-<p>the alpha value for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_inActiveTabColor</strong></p>
-<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_activeTabColor</strong></p>
-<p>the color for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_badgeBackgroundColor</strong></p>
-<p>the background color for any Badges in this BottomBar.</p>
-<p><strong>bb_titleTextAppearance</strong></p>
-<p>custom textAppearance for the titles</p>
-<p><strong>bb_titleTypeFace</strong></p>
-<p>path for your custom font file, such as <code>fonts/MySuperDuperFont.ttf</code>. In that case your font path would look like <code>src/main/assets/fonts/MySuperDuperFont.ttf</code>, but you only need to provide <code>fonts/MySuperDuperFont.ttf</code>, as the asset folder will be auto-filled for you.</p>
-<p><strong>bb_showShadow</strong></p>
-<p>controls whether the shadow is shown or hidden, defaults to true.</p>
-<h2 id="For-the-tabs"><a href="#For-the-tabs" class="headerlink" title="For the tabs"></a>For the tabs</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;tab<br>    id=&quot;@+id/tab_recents&quot;<br>    title=&quot;Recents&quot;<br>    icon=&quot;@drawable/empty_icon&quot;<br>    inActiveColor=&quot;#00FF00&quot;<br>    activeColor=&quot;#FF0000&quot;<br>    barColorWhenSelected=&quot;#FF0000&quot;<br>    badgeBackgroundColor=&quot;#FF0000&quot; /&gt;<br></code></pre></td></tr></table></figure>
-<p><strong>inActiveColor</strong></p>
-<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>activeColor</strong></p>
-<p>the color for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>barColorWhenSelected</strong></p>
-<p>the color that the whole BottomBar should be when selected this tab.</p>
-<p><strong>badgeBackgroundColor</strong></p>
-<p>the background color for any Badges in this tab.</p>
-<h1 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h1><ul>
-<li>Tab的图标必须是<strong>全透明、纯黑、24dp、Padding = 0dp</strong>，而且最好所有分辨密度的图片都要有，否则图标会很大或者很小，影响显示效果。</li>
-<li>如果想保持在屏幕最底部，记得在布局xml的<code>&lt;com.roughike.bottombar.BottomBar&gt;</code>标签中添加属性<code>android:layout_alignParentBottom=&quot;true&quot;</code>，并且做好第六步工作。</li>
-</ul>
-<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
-<li><a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a></li>
-<li><a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></li>
-</ul>
-<h1 id="与FloatingActionButton和SnackBar合作的效果"><a href="#与FloatingActionButton和SnackBar合作的效果" class="headerlink" title="与FloatingActionButton和SnackBar合作的效果"></a>与FloatingActionButton和SnackBar合作的效果</h1><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-4368fd9376e31ff43.gif"></p>
-]]></content>
+<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
+<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
+<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
+<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
+<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
+<p>在配置文件最下面，添加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>修改完成后，执行此命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>然后，重新启动elasticsearch，即可启动成功；</p>
+<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
+<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
+<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
+<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
+<p>均改为 512m</p>
+<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
+<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>开发</category>
-        <category>Android</category>
+        <category>Elasticsearch</category>
       </categories>
       <tags>
-        <tag>Material Design</tag>
-        <tag>Android</tag>
-        <tag>Google</tag>
         <tag>Java</tag>
       </tags>
   </entry>
@@ -113,37 +67,61 @@
       </categories>
   </entry>
   <entry>
-    <title>ES镜像制作并启动</title>
-    <url>/p/10C2G1E.html</url>
-    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+    <title>HomeKit初始化</title>
+    <url>/p/3XS9TP7.html</url>
+    <content><![CDATA[<p>前段时间搬家，需要插排，买了个米家的只能插排，感觉用手机控制很方便。看到苹果有自己的Home App来管理智能家居，想试试米家的智能设备能不能接入苹果的HomeKit。首先需要先搭建一个HomeKit服务器。</p>
 <a id="more"></a>
 
-<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
-<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
-<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
-<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
-<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
-<p>在配置文件最下面，添加如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>修改完成后，执行此命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>然后，重新启动elasticsearch，即可启动成功；</p>
-<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
-<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
-<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
-<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
-<p>均改为 512m</p>
-<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
-<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
+<h1 id="安装Node-js和npm"><a href="#安装Node-js和npm" class="headerlink" title="安装Node.js和npm"></a>安装Node.js和npm</h1><p>Node.js v10.x:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Using Ubuntu</span><br>curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -<br>sudo apt-get install -y nodejs<br><br><span class="hljs-meta">#</span><span class="bash"> Using Debian, as root</span><br>curl -sL https://deb.nodesource.com/setup_10.x | bash -<br>apt-get install -y nodejs<br></code></pre></td></tr></table></figure>
+<h1 id="安装编译组件"><a href="#安装编译组件" class="headerlink" title="安装编译组件"></a>安装编译组件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo apt-get install libavahi-compat-libdnssd-dev<br>sudo apt-get install build-essential libtool<br></code></pre></td></tr></table></figure>
+<h1 id="安装HomeBridge"><a href="#安装HomeBridge" class="headerlink" title="安装HomeBridge"></a>安装HomeBridge</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm install -g --unsafe-perm homebridge<br></code></pre></td></tr></table></figure>
+<h1 id="添加HomeBridge配置文件"><a href="#添加HomeBridge配置文件" class="headerlink" title="添加HomeBridge配置文件"></a>添加HomeBridge配置文件</h1><p>进入目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cd ~/.homebridge/<br></code></pre></td></tr></table></figure>
+<p>创建文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim config.json<br></code></pre></td></tr></table></figure>
+<p>添加：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;bridge&quot;</span>: &#123;<br>        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;Homebridge&quot;</span>,<br>        <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;CC:22:3D:E3:CE:30&quot;</span>,<br>        <span class="hljs-attr">&quot;port&quot;</span>: <span class="hljs-number">51826</span>,<br>        <span class="hljs-attr">&quot;pin&quot;</span>: <span class="hljs-string">&quot;031-45-154&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>保存并退出：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">wq!<br></code></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>开发</category>
-        <category>Elasticsearch</category>
+        <category>HomeKit</category>
       </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>HomeKit</tag>
+        <tag>米家</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HomeKit添加米家智能插线板</title>
+    <url>/p/141WYMG.html</url>
+    <content><![CDATA[<p>之前搭建了个HomeKit服务器，还没有接入米家的插线板，现在试试能不能让米家设备接入苹果的HomeKit，用手机的Home软件就能控制米家插线板。</p>
+<a id="more"></a>
+
+<h1 id="安装homebridge-mi-outlet插件"><a href="#安装homebridge-mi-outlet插件" class="headerlink" title="安装homebridge-mi-outlet插件"></a>安装<code>homebridge-mi-outlet</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install homebridge-mi-outlet<br></code></pre></td></tr></table></figure>
+<h1 id="安装miio插件"><a href="#安装miio插件" class="headerlink" title="安装miio插件"></a>安装<code>miio</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install miio<br></code></pre></td></tr></table></figure>
+<h1 id="用miio插件发现小米智能插线板"><a href="#用miio插件发现小米智能插线板" class="headerlink" title="用miio插件发现小米智能插线板"></a>用<code>miio</code>插件发现小米智能插线板</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">miio discover<br></code></pre></td></tr></table></figure>
+<p>可以看到<code>Model info：zhimi.powerstrip.v2</code>就是米家智能插线板，将下放的Address和Token记下来：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Address：192.168.xxx.xxx<br>Token：21a98556732d471e2764cxxxxxxb1ee1<br></code></pre></td></tr></table></figure>
+<h1 id="修改HomeBridge的config-json文件"><a href="#修改HomeBridge的config-json文件" class="headerlink" title="修改HomeBridge的config.json文件"></a>修改HomeBridge的<code>config.json</code>文件</h1><p>在<code>bridge</code>节点后面添加所需的<code>platforms</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;platforms&quot;</span>: [&#123;<br>        <span class="hljs-attr">&quot;platform&quot;</span>: <span class="hljs-string">&quot;MiOutletPlatform&quot;</span>,<br>            <span class="hljs-attr">&quot;deviceCfgs&quot;</span>: [&#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBase&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBaseWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchUSBName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchUSBDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiIntelligencePinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboardWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;]<br>    &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>其中<code>type</code>代表的硬件：</p>
+<ul>
+<li>米家智能插座基础版: <code>MiPlugBase</code></li>
+<li>米家智能插座USB版: <code>MiPlugBaseWithUSB</code></li>
+<li>米家智能插线板: <code>MiIntelligencePinboard</code></li>
+<li>青米智能插线板五孔位版: <code>MiQingPinboard</code></li>
+<li>青米智能插线板USB版: <code>MiQingPinboardWithUSB</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>HomeKit</category>
+      </categories>
+      <tags>
+        <tag>HomeKit</tag>
+        <tag>米家</tag>
       </tags>
   </entry>
   <entry>
@@ -291,155 +269,6 @@
       </tags>
   </entry>
   <entry>
-    <title>「翻译」Java 14带来了许多新功能</title>
-    <url>/p/2305442.html</url>
-    <content><![CDATA[<p>Java 14包含比前两个发行版更多的新功能-其中大多数旨在简化编程开发工作。</p>
-<p>Java 14计划于3月17日发布。版本14包含的<a href="https://openjdk.java.net/projects/jdk/14/">JEP</a>（Java Enhancement Proposals）比Java 12和13的总和还多。 那么，对于每天编写和维护代码的Java开发人员来说，最重要的是什么呢？</p>
-<p>在本文中，我研究了以下主要方面：</p>
-<ul>
-<li>改进的<code>switch</code>表达式，该表达式最初在Java 12和Java 13中作为预览出现，现在已完全成为Java 14的一部分</li>
-<li>新增<code>instanceof</code>的模式匹配（语法糖）</li>
-<li>增强的<code>NullPointerExceptions</code>提示（JVM功能）</li>
-</ul>
-<p>如果您阅读本文并尝试在代码库中使用其中的某些功能，建议您通过<a href="mailto:amber-dev@openjdk.java.net">向Java团队提供反馈</a>来分享您的经验。 这样，您就有机会为Java的发展做出贡献。</p>
-<a id="more"></a>
-
-<h1 id="switch-表达式"><a href="#switch-表达式" class="headerlink" title="switch 表达式"></a>switch 表达式</h1><p>在Java 14中，switch 表达式被保留变为正式版本。</p>
-<p>在早期版本中，switch 表达式是Beta功能。 提醒一下，将特征指定为 Beta 以收集反馈，并且根据反馈可能会更改甚至删除这些特征。 但预计大多数最终将在 Java 中被保留下来。</p>
-<p>新的 switch 表达式的优点让出bug的几率降低。 作为一个刷新示例，switch表达式现在可以利用箭头语法，例如在以下示例中：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> log = <span class="hljs-keyword">switch</span> (event) &#123;<br>    <span class="hljs-keyword">case</span> PLAY -&gt; <span class="hljs-string">&quot;User has triggered the play button&quot;</span>;<br>    <span class="hljs-keyword">case</span> STOP, PAUSE -&gt; <span class="hljs-string">&quot;User needs a break&quot;</span>;<br>    <span class="hljs-keyword">default</span> -&gt; &#123;<br>        String message = event.toString();<br>        LocalDateTime now = LocalDateTime.now();<br>        yield <span class="hljs-string">&quot;Unknown event &quot;</span> + message + <br>              <span class="hljs-string">&quot; logged on &quot;</span> + now;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
-<h1 id="Text-Block-Beta"><a href="#Text-Block-Beta" class="headerlink" title="Text Block (Beta)"></a>Text Block (Beta)</h1><p>Java 13引入了<code>Text Block</code>作为Beta功能。 <code>Text Block</code>使使用多行字符串文字更加容易。 此功能在Java 14将是第二个版本的Beta功能，并进行了一些调整。 作为回顾，编写带有许多字符串连接和转义序列的代码以提供适当的多行文本格式非常普遍。 下面的代码显示了HTML格式的示例：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String html = <span class="hljs-string">&quot;&lt;HTML&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t&quot;</span> + <span class="hljs-string">&quot;&lt;BODY&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t\t&quot;</span> + <span class="hljs-string">&quot;&lt;H1&gt;\&quot;Java 14 is here!\&quot;&lt;/H1&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t&quot;</span> + <span class="hljs-string">&quot;&lt;/BODY&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n&quot;</span> + <span class="hljs-string">&quot;&lt;/HTML&gt;&quot;</span>;<br></code></pre></td></tr></table></figure>
-<p>使用<code>Text Block</code>，您可以简化此过程并使用界定<code>Text Block</code>开头和结尾的三个引号来编写更优雅的代码：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String html = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">&lt;HTML&gt;</span><br><span class="hljs-string">  &lt;BODY&gt;</span><br><span class="hljs-string">    &lt;H1&gt;&quot;</span>Java <span class="hljs-number">14</span> is here!<span class="hljs-string">&quot;&lt;/H1&gt;</span><br><span class="hljs-string">  &lt;/BODY&gt;</span><br><span class="hljs-string">&lt;/HTML&gt;&quot;</span><span class="hljs-string">&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
-<p>与普通字符串文字相比，<code>Text Block</code>还提供了更高的表达能力。</p>
-<p>Java 14中添加了两个新的转义序列。首先，您可以使用新的<code>\s</code>转义序列表示单个空格。 其次，您可以使用反斜杠<code>\</code>来禁止在行尾插入新行字符。 当您想分隔很长的行以简化<code>Text Block</code>内的可读性时，这很有用。</p>
-<p>例如，当前处理多行字符串的方法是：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String literal = <br>         <span class="hljs-string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing &quot;</span> +<br>         <span class="hljs-string">&quot;elit, sed do eiusmod tempor incididunt ut labore &quot;</span> +<br>         <span class="hljs-string">&quot;et dolore magna aliqua.&quot;</span>;<br></code></pre></td></tr></table></figure>
-<p>使用<code>Text Block</code>中的<code>\</code>转义序列，可以表示如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String text = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">    Lorem ipsum dolor sit amet, consectetur adipiscing \</span><br><span class="hljs-string">    elit, sed do eiusmod tempor incididunt ut labore \</span><br><span class="hljs-string">    et dolore magna aliqua.\</span><br><span class="hljs-string">    &quot;</span><span class="hljs-string">&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
-<h1 id="instanceof-的模式匹配-Beta"><a href="#instanceof-的模式匹配-Beta" class="headerlink" title="instanceof 的模式匹配 (Beta)"></a>instanceof 的模式匹配 (Beta)</h1><p>Java 14引入了该Beta功能，该功能有助于消除对在有条件的<code>instanceof</code>检查之前进行显式强制转换的需求。 例如，考虑以下代码：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> Group) &#123;<br>  Group group = (Group) obj;<br><br>  <span class="hljs-comment">// use group specific methods</span><br>  <span class="hljs-keyword">var</span> entries = group.getEntries();<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>可以使用<code>instanceof</code>的模式匹配功能将其重构为：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> Group group) &#123;<br>  <span class="hljs-keyword">var</span> entries = group.getEntries();<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>由于条件检查断言<code>obj</code>是<code>Group</code>类型，为什么还要在第一个代码段中把<code>obj</code>强制转换为<code>Group</code>类型？ 这可能会增加错误几率。`</p>
-<p>较短的语法将删除典型Java程序中的许多强制转换。 （2011年一项提出相关语言功能的研究报告指出，所有演员表中约有24％遵循条件语句中的<code>instanceof</code>。）</p>
-<p>JEP 305涵盖了此更改，并从Joshua Bloch的Effective Java书中指出了一个示例，该示例通过以下相等方法进行说明：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123; <br>    <span class="hljs-keyword">return</span> (o <span class="hljs-keyword">instanceof</span> CaseInsensitiveString) &amp;&amp; <br>            ((CaseInsensitiveString) o).s.equalsIgnoreCase(s); <br>&#125;<br></code></pre></td></tr></table></figure>
-<p>通过删除对CaseInsensitiveString的冗余显式转换，可以将前面的代码简化为以下形式：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123; <br>    <span class="hljs-keyword">return</span> (o <span class="hljs-keyword">instanceof</span> CaseInsensitiveString cis) &amp;&amp;<br>            cis.s.equalsIgnoreCase(s); <br>&#125;<br></code></pre></td></tr></table></figure>
-<p>这是一个有趣的预览功能，因为它为更广泛的模式匹配打开了大门。 模式匹配的思想是为语言功能提供方便的语法，以根据某些条件提取对象的成分。 <code>instanceof</code>运算符就是这种情况，因为条件是类型检查，并且提取操作正在调用适当的方法或访问特定字段。</p>
-<p>换句话说，此预览功能仅仅是个开始，您可以期待一种语言功能，它可以帮助进一步减少冗长性，从而减少错误的可能性。</p>
-<h1 id="record-修饰符-Beta"><a href="#record-修饰符-Beta" class="headerlink" title="record 修饰符 (Beta)"></a>record 修饰符 (Beta)</h1><p>本次更新中还有另一种Beta功能：<code>record</code>修饰符。 像到目前为止提出的其他想法一样，此功能遵循减少Java冗长并帮助开发人员编写更简洁的代码的趋势。 记录集中在某些域类上，这些类仅用于将数据存储在字段中，并且不声明任何自定义行为。</p>
-<p>为了直接解决问题，用一个简单的类<code>BankTransaction</code>进行举例，该类使用三个字段对交易进行建模：<code>date</code>，<code>amount</code>和<code>description</code>。 声明类时，您需要担心多个问题：</p>
-<ul>
-<li>构造方法</li>
-<li><code>Getter</code> 方法</li>
-<li><code>toString()</code> 方法</li>
-<li><code>hashCode()</code> 和 <code>equals()</code> 方法</li>
-</ul>
-<p>此类组件的代码通常由IDE自动生成，并占用大量空间。 这是<code>BankTransaction</code>类的完整生成的实现：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BankTransaction</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> LocalDate date;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> amount;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String description;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BankTransaction</span><span class="hljs-params">(<span class="hljs-keyword">final</span> LocalDate date, </span></span><br><span class="hljs-function"><span class="hljs-params">                           <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> amount, </span></span><br><span class="hljs-function"><span class="hljs-params">                           <span class="hljs-keyword">final</span> String description)</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>.date = date;<br>        <span class="hljs-keyword">this</span>.amount = amount;<br>        <span class="hljs-keyword">this</span>.description = description;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> LocalDate <span class="hljs-title">date</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> date;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">amount</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> amount;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">description</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> description;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;BankTransaction&#123;&quot;</span> +<br>                <span class="hljs-string">&quot;date=&quot;</span> + date +<br>                <span class="hljs-string">&quot;, amount=&quot;</span> + amount +<br>                <span class="hljs-string">&quot;, description=&#x27;&quot;</span> + description + <span class="hljs-string">&#x27;\&#x27;&#x27;</span> +<br>                <span class="hljs-string">&#x27;&#125;&#x27;</span>;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> == o) <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>        <span class="hljs-keyword">if</span> (o == <span class="hljs-keyword">null</span> || getClass() != o.getClass()) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>        BankTransaction that = (BankTransaction) o;<br>        <span class="hljs-keyword">return</span> Double.compare(that.amount, amount) == <span class="hljs-number">0</span> &amp;&amp;<br>                date.equals(that.date) &amp;&amp;<br>                description.equals(that.description);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">hashCode</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> Objects.hash(date, amount, description);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>Java 14提供了一种消除冗长且明确意图的方法，即您所需要的只是一个仅将数据与<code>equals</code>，<code>hashCode</code>和<code>toString</code>方法的实现一起聚合的类。 您可以按以下方式重构<code>BankTransaction</code>：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> record <span class="hljs-title">BankTransaction</span><span class="hljs-params">(LocalDate date,</span></span><br><span class="hljs-function"><span class="hljs-params">                              <span class="hljs-keyword">double</span> amount,</span></span><br><span class="hljs-function"><span class="hljs-params">                              String description)</span> </span>&#123;&#125;<br></code></pre></td></tr></table></figure>
-<p>使用<code>record</code>修饰符，您可以“自动”获取除构造函数和获取器之外的<code>equals</code>，<code>hashCode</code>和<code>toString</code>方法的实现。</p>
-<p>要尝试该示例，请记住您需要使用预览标志来编译文件：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">javac --enable-preview --release 14 BankTransaction.java<br></code></pre></td></tr></table></figure>
-<p>被<code>record</code>修饰的类是隐式的<code>final</code>类。 这意味着您无法重新分配它们。 请注意，但这并不意味着整个记录都是不变的。 存储在字段中的对象本身可以是可变的。</p>
-<p>如果您对有关<code>record</code>的更详细的文章感兴趣，请查看<a href="https://blogs.oracle.com/javamagazine/records-come-to-java">Java杂志上Ben Evans的最新文章</a>。</p>
-<p>敬请关注。 从教育的角度来看，<code>record</code>还为下一代Java开发人员提出了有趣的问题。 例如，如果您指导初级开发人员，那么什么时候应该在课程中引入<code>record</code>：在引入OOP和类之前或之后？</p>
-<h1 id="增强的-NullPointerExceptions-Beta"><a href="#增强的-NullPointerExceptions-Beta" class="headerlink" title="增强的 NullPointerExceptions (Beta)"></a>增强的 NullPointerExceptions (Beta)</h1><p>有人说抛出<code>NullPointerExceptions</code>应该是Java中新的<code>“Hello world”</code>，因为您无法逃避它们。 撇开笑话，它们会引起挫败感，因为当代码在生产环境中运行时，它们经常出现在应用程序日志中，这可能使调试变得困难，因为原码不容易获得。 例如，考虑以下代码：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> name = user.getLocation().getCity().getName();<br></code></pre></td></tr></table></figure>
-<p>在Java 14之前，您可能会收到以下错误：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Exception in thread &quot;main&quot; java.lang.NullPointerException<br>    at NullPointerExample.main(NullPointerExample.java:5)<br></code></pre></td></tr></table></figure>
-<p>不幸的是，如果在第5行，有一个具有多个方法调用的赋值——<code>getLocation()</code>和<code>getCity()</code>——两者都可能返回<code>null</code>。 实际上，变量<code>user</code>也可以为<code>null</code>。 因此，尚不清楚是什么导致了<strong>NullPointerException</strong>。</p>
-<p>现在，使用Java 14，有一个新的JVM功能，通过它您可以接收更多信息的诊断：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Exception in thread &quot;main&quot; java.lang.NullPointerException: Cannot invoke &quot;Location.getCity()&quot; because the return value of &quot;User.getLocation()&quot; is null<br></code></pre></td></tr></table></figure>
-<p>该消息现在具有两个明确的组成部分：</p>
-<ul>
-<li><strong>结果</strong>：无法调用<code>Location.getCity()</code>。</li>
-<li><strong>原因</strong>：<code>User.getLocation()</code>的返回值为<code>null</code>。</li>
-</ul>
-<p>仅当您使用以下标志运行Java时，增强型诊断才有效：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">-XX:+ShowCodeDetailsInExceptionMessages<br></code></pre></td></tr></table></figure>
-<p>这是一个例子：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">java -XX:+ShowCodeDetailsInExceptionMessages NullPointerExample<br></code></pre></td></tr></table></figure>
-<p>在Java的未来版本中，此功能可能默认启用，如<a href="https://bugs.openjdk.java.net/browse/JDK-8233014">此处报告</a>。</p>
-<p>此增强功能不仅可用于方法调用，还可用于可以导致<code>NullPointerException</code>异常的其他地方，包括字段访问，数组访问和赋值。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在Java 14中，有新的Beta功能和更新可帮助开发人员进行日常工作。 例如，Java 14引入了<code>instanceof</code>模式匹配，这是减少显式强制转换的一种方式。 而且，Java 14引入了<code>record</code>，这是一种新的结构，用于简洁地声明仅用于聚合数据的类。 此外，<code>NullPointerException</code>消息已得到改进，具有更好的诊断功能，并且<code>switch</code>表达式现在已成为Java 14的一部分。<code>Text Block</code>是一种可帮助您处理多行字符串值的功能，在引入了两个新的转义序列后，将进行另一轮预览。 Java操作的一部分技术人员可能会感兴趣的另一项更改是<a href="https://openjdk.java.net/jeps/349">JDK Flight Recorder中的事件流</a>。 Ben Evans在<a href="https://blogs.oracle.com/javamagazine/java-flight-recorder-and-jfr-event-streaming-in-java-14">他的文章中</a>中讨论了该功能。</p>
-<p>如您所见，Java 14带来了很多创新。 您绝对应该考虑一下，并将有关Beta功能的反馈发送给Java团队。</p>
-<blockquote>
-<p>原文：<a href="https://blogs.oracle.com/javamagazine/java-14-arrives-with-a-host-of-new-features">Java 14 Arrives with a Host of New Features</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HomeKit初始化</title>
-    <url>/p/3XS9TP7.html</url>
-    <content><![CDATA[<p>前段时间搬家，需要插排，买了个米家的只能插排，感觉用手机控制很方便。看到苹果有自己的Home App来管理智能家居，想试试米家的智能设备能不能接入苹果的HomeKit。首先需要先搭建一个HomeKit服务器。</p>
-<a id="more"></a>
-
-<h1 id="安装Node-js和npm"><a href="#安装Node-js和npm" class="headerlink" title="安装Node.js和npm"></a>安装Node.js和npm</h1><p>Node.js v10.x:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Using Ubuntu</span><br>curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -<br>sudo apt-get install -y nodejs<br><br><span class="hljs-meta">#</span><span class="bash"> Using Debian, as root</span><br>curl -sL https://deb.nodesource.com/setup_10.x | bash -<br>apt-get install -y nodejs<br></code></pre></td></tr></table></figure>
-<h1 id="安装编译组件"><a href="#安装编译组件" class="headerlink" title="安装编译组件"></a>安装编译组件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo apt-get install libavahi-compat-libdnssd-dev<br>sudo apt-get install build-essential libtool<br></code></pre></td></tr></table></figure>
-<h1 id="安装HomeBridge"><a href="#安装HomeBridge" class="headerlink" title="安装HomeBridge"></a>安装HomeBridge</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm install -g --unsafe-perm homebridge<br></code></pre></td></tr></table></figure>
-<h1 id="添加HomeBridge配置文件"><a href="#添加HomeBridge配置文件" class="headerlink" title="添加HomeBridge配置文件"></a>添加HomeBridge配置文件</h1><p>进入目录：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cd ~/.homebridge/<br></code></pre></td></tr></table></figure>
-<p>创建文件：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim config.json<br></code></pre></td></tr></table></figure>
-<p>添加：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;bridge&quot;</span>: &#123;<br>        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;Homebridge&quot;</span>,<br>        <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;CC:22:3D:E3:CE:30&quot;</span>,<br>        <span class="hljs-attr">&quot;port&quot;</span>: <span class="hljs-number">51826</span>,<br>        <span class="hljs-attr">&quot;pin&quot;</span>: <span class="hljs-string">&quot;031-45-154&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>保存并退出：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">wq!<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>HomeKit</category>
-      </categories>
-      <tags>
-        <tag>HomeKit</tag>
-        <tag>米家</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HomeKit添加米家智能插线板</title>
-    <url>/p/141WYMG.html</url>
-    <content><![CDATA[<p>之前搭建了个HomeKit服务器，还没有接入米家的插线板，现在试试能不能让米家设备接入苹果的HomeKit，用手机的Home软件就能控制米家插线板。</p>
-<a id="more"></a>
-
-<h1 id="安装homebridge-mi-outlet插件"><a href="#安装homebridge-mi-outlet插件" class="headerlink" title="安装homebridge-mi-outlet插件"></a>安装<code>homebridge-mi-outlet</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install homebridge-mi-outlet<br></code></pre></td></tr></table></figure>
-<h1 id="安装miio插件"><a href="#安装miio插件" class="headerlink" title="安装miio插件"></a>安装<code>miio</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install miio<br></code></pre></td></tr></table></figure>
-<h1 id="用miio插件发现小米智能插线板"><a href="#用miio插件发现小米智能插线板" class="headerlink" title="用miio插件发现小米智能插线板"></a>用<code>miio</code>插件发现小米智能插线板</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">miio discover<br></code></pre></td></tr></table></figure>
-<p>可以看到<code>Model info：zhimi.powerstrip.v2</code>就是米家智能插线板，将下放的Address和Token记下来：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Address：192.168.xxx.xxx<br>Token：21a98556732d471e2764cxxxxxxb1ee1<br></code></pre></td></tr></table></figure>
-<h1 id="修改HomeBridge的config-json文件"><a href="#修改HomeBridge的config-json文件" class="headerlink" title="修改HomeBridge的config.json文件"></a>修改HomeBridge的<code>config.json</code>文件</h1><p>在<code>bridge</code>节点后面添加所需的<code>platforms</code>：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;platforms&quot;</span>: [&#123;<br>        <span class="hljs-attr">&quot;platform&quot;</span>: <span class="hljs-string">&quot;MiOutletPlatform&quot;</span>,<br>            <span class="hljs-attr">&quot;deviceCfgs&quot;</span>: [&#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBase&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBaseWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchUSBName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchUSBDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiIntelligencePinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboardWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;]<br>    &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>其中<code>type</code>代表的硬件：</p>
-<ul>
-<li>米家智能插座基础版: <code>MiPlugBase</code></li>
-<li>米家智能插座USB版: <code>MiPlugBaseWithUSB</code></li>
-<li>米家智能插线板: <code>MiIntelligencePinboard</code></li>
-<li>青米智能插线板五孔位版: <code>MiQingPinboard</code></li>
-<li>青米智能插线板USB版: <code>MiQingPinboardWithUSB</code></li>
-</ul>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>HomeKit</category>
-      </categories>
-      <tags>
-        <tag>HomeKit</tag>
-        <tag>米家</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>理解 JavaScript 的 async、await</title>
     <url>/p/3Q3X94C.html</url>
     <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
@@ -573,6 +402,177 @@
       </categories>
       <tags>
         <tag>WebP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「翻译」Java 14带来了许多新功能</title>
+    <url>/p/2305442.html</url>
+    <content><![CDATA[<p>Java 14包含比前两个发行版更多的新功能-其中大多数旨在简化编程开发工作。</p>
+<p>Java 14计划于3月17日发布。版本14包含的<a href="https://openjdk.java.net/projects/jdk/14/">JEP</a>（Java Enhancement Proposals）比Java 12和13的总和还多。 那么，对于每天编写和维护代码的Java开发人员来说，最重要的是什么呢？</p>
+<p>在本文中，我研究了以下主要方面：</p>
+<ul>
+<li>改进的<code>switch</code>表达式，该表达式最初在Java 12和Java 13中作为预览出现，现在已完全成为Java 14的一部分</li>
+<li>新增<code>instanceof</code>的模式匹配（语法糖）</li>
+<li>增强的<code>NullPointerExceptions</code>提示（JVM功能）</li>
+</ul>
+<p>如果您阅读本文并尝试在代码库中使用其中的某些功能，建议您通过<a href="mailto:amber-dev@openjdk.java.net">向Java团队提供反馈</a>来分享您的经验。 这样，您就有机会为Java的发展做出贡献。</p>
+<a id="more"></a>
+
+<h1 id="switch-表达式"><a href="#switch-表达式" class="headerlink" title="switch 表达式"></a>switch 表达式</h1><p>在Java 14中，switch 表达式被保留变为正式版本。</p>
+<p>在早期版本中，switch 表达式是Beta功能。 提醒一下，将特征指定为 Beta 以收集反馈，并且根据反馈可能会更改甚至删除这些特征。 但预计大多数最终将在 Java 中被保留下来。</p>
+<p>新的 switch 表达式的优点让出bug的几率降低。 作为一个刷新示例，switch表达式现在可以利用箭头语法，例如在以下示例中：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> log = <span class="hljs-keyword">switch</span> (event) &#123;<br>    <span class="hljs-keyword">case</span> PLAY -&gt; <span class="hljs-string">&quot;User has triggered the play button&quot;</span>;<br>    <span class="hljs-keyword">case</span> STOP, PAUSE -&gt; <span class="hljs-string">&quot;User needs a break&quot;</span>;<br>    <span class="hljs-keyword">default</span> -&gt; &#123;<br>        String message = event.toString();<br>        LocalDateTime now = LocalDateTime.now();<br>        yield <span class="hljs-string">&quot;Unknown event &quot;</span> + message + <br>              <span class="hljs-string">&quot; logged on &quot;</span> + now;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h1 id="Text-Block-Beta"><a href="#Text-Block-Beta" class="headerlink" title="Text Block (Beta)"></a>Text Block (Beta)</h1><p>Java 13引入了<code>Text Block</code>作为Beta功能。 <code>Text Block</code>使使用多行字符串文字更加容易。 此功能在Java 14将是第二个版本的Beta功能，并进行了一些调整。 作为回顾，编写带有许多字符串连接和转义序列的代码以提供适当的多行文本格式非常普遍。 下面的代码显示了HTML格式的示例：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String html = <span class="hljs-string">&quot;&lt;HTML&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t&quot;</span> + <span class="hljs-string">&quot;&lt;BODY&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t\t&quot;</span> + <span class="hljs-string">&quot;&lt;H1&gt;\&quot;Java 14 is here!\&quot;&lt;/H1&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t&quot;</span> + <span class="hljs-string">&quot;&lt;/BODY&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n&quot;</span> + <span class="hljs-string">&quot;&lt;/HTML&gt;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>使用<code>Text Block</code>，您可以简化此过程并使用界定<code>Text Block</code>开头和结尾的三个引号来编写更优雅的代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String html = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">&lt;HTML&gt;</span><br><span class="hljs-string">  &lt;BODY&gt;</span><br><span class="hljs-string">    &lt;H1&gt;&quot;</span>Java <span class="hljs-number">14</span> is here!<span class="hljs-string">&quot;&lt;/H1&gt;</span><br><span class="hljs-string">  &lt;/BODY&gt;</span><br><span class="hljs-string">&lt;/HTML&gt;&quot;</span><span class="hljs-string">&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>与普通字符串文字相比，<code>Text Block</code>还提供了更高的表达能力。</p>
+<p>Java 14中添加了两个新的转义序列。首先，您可以使用新的<code>\s</code>转义序列表示单个空格。 其次，您可以使用反斜杠<code>\</code>来禁止在行尾插入新行字符。 当您想分隔很长的行以简化<code>Text Block</code>内的可读性时，这很有用。</p>
+<p>例如，当前处理多行字符串的方法是：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String literal = <br>         <span class="hljs-string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing &quot;</span> +<br>         <span class="hljs-string">&quot;elit, sed do eiusmod tempor incididunt ut labore &quot;</span> +<br>         <span class="hljs-string">&quot;et dolore magna aliqua.&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>使用<code>Text Block</code>中的<code>\</code>转义序列，可以表示如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String text = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">    Lorem ipsum dolor sit amet, consectetur adipiscing \</span><br><span class="hljs-string">    elit, sed do eiusmod tempor incididunt ut labore \</span><br><span class="hljs-string">    et dolore magna aliqua.\</span><br><span class="hljs-string">    &quot;</span><span class="hljs-string">&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<h1 id="instanceof-的模式匹配-Beta"><a href="#instanceof-的模式匹配-Beta" class="headerlink" title="instanceof 的模式匹配 (Beta)"></a>instanceof 的模式匹配 (Beta)</h1><p>Java 14引入了该Beta功能，该功能有助于消除对在有条件的<code>instanceof</code>检查之前进行显式强制转换的需求。 例如，考虑以下代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> Group) &#123;<br>  Group group = (Group) obj;<br><br>  <span class="hljs-comment">// use group specific methods</span><br>  <span class="hljs-keyword">var</span> entries = group.getEntries();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以使用<code>instanceof</code>的模式匹配功能将其重构为：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> Group group) &#123;<br>  <span class="hljs-keyword">var</span> entries = group.getEntries();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>由于条件检查断言<code>obj</code>是<code>Group</code>类型，为什么还要在第一个代码段中把<code>obj</code>强制转换为<code>Group</code>类型？ 这可能会增加错误几率。`</p>
+<p>较短的语法将删除典型Java程序中的许多强制转换。 （2011年一项提出相关语言功能的研究报告指出，所有演员表中约有24％遵循条件语句中的<code>instanceof</code>。）</p>
+<p>JEP 305涵盖了此更改，并从Joshua Bloch的Effective Java书中指出了一个示例，该示例通过以下相等方法进行说明：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123; <br>    <span class="hljs-keyword">return</span> (o <span class="hljs-keyword">instanceof</span> CaseInsensitiveString) &amp;&amp; <br>            ((CaseInsensitiveString) o).s.equalsIgnoreCase(s); <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>通过删除对CaseInsensitiveString的冗余显式转换，可以将前面的代码简化为以下形式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123; <br>    <span class="hljs-keyword">return</span> (o <span class="hljs-keyword">instanceof</span> CaseInsensitiveString cis) &amp;&amp;<br>            cis.s.equalsIgnoreCase(s); <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这是一个有趣的预览功能，因为它为更广泛的模式匹配打开了大门。 模式匹配的思想是为语言功能提供方便的语法，以根据某些条件提取对象的成分。 <code>instanceof</code>运算符就是这种情况，因为条件是类型检查，并且提取操作正在调用适当的方法或访问特定字段。</p>
+<p>换句话说，此预览功能仅仅是个开始，您可以期待一种语言功能，它可以帮助进一步减少冗长性，从而减少错误的可能性。</p>
+<h1 id="record-修饰符-Beta"><a href="#record-修饰符-Beta" class="headerlink" title="record 修饰符 (Beta)"></a>record 修饰符 (Beta)</h1><p>本次更新中还有另一种Beta功能：<code>record</code>修饰符。 像到目前为止提出的其他想法一样，此功能遵循减少Java冗长并帮助开发人员编写更简洁的代码的趋势。 记录集中在某些域类上，这些类仅用于将数据存储在字段中，并且不声明任何自定义行为。</p>
+<p>为了直接解决问题，用一个简单的类<code>BankTransaction</code>进行举例，该类使用三个字段对交易进行建模：<code>date</code>，<code>amount</code>和<code>description</code>。 声明类时，您需要担心多个问题：</p>
+<ul>
+<li>构造方法</li>
+<li><code>Getter</code> 方法</li>
+<li><code>toString()</code> 方法</li>
+<li><code>hashCode()</code> 和 <code>equals()</code> 方法</li>
+</ul>
+<p>此类组件的代码通常由IDE自动生成，并占用大量空间。 这是<code>BankTransaction</code>类的完整生成的实现：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BankTransaction</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> LocalDate date;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> amount;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String description;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BankTransaction</span><span class="hljs-params">(<span class="hljs-keyword">final</span> LocalDate date, </span></span><br><span class="hljs-function"><span class="hljs-params">                           <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> amount, </span></span><br><span class="hljs-function"><span class="hljs-params">                           <span class="hljs-keyword">final</span> String description)</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>.date = date;<br>        <span class="hljs-keyword">this</span>.amount = amount;<br>        <span class="hljs-keyword">this</span>.description = description;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> LocalDate <span class="hljs-title">date</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> date;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">amount</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> amount;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">description</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> description;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;BankTransaction&#123;&quot;</span> +<br>                <span class="hljs-string">&quot;date=&quot;</span> + date +<br>                <span class="hljs-string">&quot;, amount=&quot;</span> + amount +<br>                <span class="hljs-string">&quot;, description=&#x27;&quot;</span> + description + <span class="hljs-string">&#x27;\&#x27;&#x27;</span> +<br>                <span class="hljs-string">&#x27;&#125;&#x27;</span>;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> == o) <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>        <span class="hljs-keyword">if</span> (o == <span class="hljs-keyword">null</span> || getClass() != o.getClass()) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>        BankTransaction that = (BankTransaction) o;<br>        <span class="hljs-keyword">return</span> Double.compare(that.amount, amount) == <span class="hljs-number">0</span> &amp;&amp;<br>                date.equals(that.date) &amp;&amp;<br>                description.equals(that.description);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">hashCode</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> Objects.hash(date, amount, description);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Java 14提供了一种消除冗长且明确意图的方法，即您所需要的只是一个仅将数据与<code>equals</code>，<code>hashCode</code>和<code>toString</code>方法的实现一起聚合的类。 您可以按以下方式重构<code>BankTransaction</code>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> record <span class="hljs-title">BankTransaction</span><span class="hljs-params">(LocalDate date,</span></span><br><span class="hljs-function"><span class="hljs-params">                              <span class="hljs-keyword">double</span> amount,</span></span><br><span class="hljs-function"><span class="hljs-params">                              String description)</span> </span>&#123;&#125;<br></code></pre></td></tr></table></figure>
+<p>使用<code>record</code>修饰符，您可以“自动”获取除构造函数和获取器之外的<code>equals</code>，<code>hashCode</code>和<code>toString</code>方法的实现。</p>
+<p>要尝试该示例，请记住您需要使用预览标志来编译文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">javac --enable-preview --release 14 BankTransaction.java<br></code></pre></td></tr></table></figure>
+<p>被<code>record</code>修饰的类是隐式的<code>final</code>类。 这意味着您无法重新分配它们。 请注意，但这并不意味着整个记录都是不变的。 存储在字段中的对象本身可以是可变的。</p>
+<p>如果您对有关<code>record</code>的更详细的文章感兴趣，请查看<a href="https://blogs.oracle.com/javamagazine/records-come-to-java">Java杂志上Ben Evans的最新文章</a>。</p>
+<p>敬请关注。 从教育的角度来看，<code>record</code>还为下一代Java开发人员提出了有趣的问题。 例如，如果您指导初级开发人员，那么什么时候应该在课程中引入<code>record</code>：在引入OOP和类之前或之后？</p>
+<h1 id="增强的-NullPointerExceptions-Beta"><a href="#增强的-NullPointerExceptions-Beta" class="headerlink" title="增强的 NullPointerExceptions (Beta)"></a>增强的 NullPointerExceptions (Beta)</h1><p>有人说抛出<code>NullPointerExceptions</code>应该是Java中新的<code>“Hello world”</code>，因为您无法逃避它们。 撇开笑话，它们会引起挫败感，因为当代码在生产环境中运行时，它们经常出现在应用程序日志中，这可能使调试变得困难，因为原码不容易获得。 例如，考虑以下代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> name = user.getLocation().getCity().getName();<br></code></pre></td></tr></table></figure>
+<p>在Java 14之前，您可能会收到以下错误：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Exception in thread &quot;main&quot; java.lang.NullPointerException<br>    at NullPointerExample.main(NullPointerExample.java:5)<br></code></pre></td></tr></table></figure>
+<p>不幸的是，如果在第5行，有一个具有多个方法调用的赋值——<code>getLocation()</code>和<code>getCity()</code>——两者都可能返回<code>null</code>。 实际上，变量<code>user</code>也可以为<code>null</code>。 因此，尚不清楚是什么导致了<strong>NullPointerException</strong>。</p>
+<p>现在，使用Java 14，有一个新的JVM功能，通过它您可以接收更多信息的诊断：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Exception in thread &quot;main&quot; java.lang.NullPointerException: Cannot invoke &quot;Location.getCity()&quot; because the return value of &quot;User.getLocation()&quot; is null<br></code></pre></td></tr></table></figure>
+<p>该消息现在具有两个明确的组成部分：</p>
+<ul>
+<li><strong>结果</strong>：无法调用<code>Location.getCity()</code>。</li>
+<li><strong>原因</strong>：<code>User.getLocation()</code>的返回值为<code>null</code>。</li>
+</ul>
+<p>仅当您使用以下标志运行Java时，增强型诊断才有效：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">-XX:+ShowCodeDetailsInExceptionMessages<br></code></pre></td></tr></table></figure>
+<p>这是一个例子：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">java -XX:+ShowCodeDetailsInExceptionMessages NullPointerExample<br></code></pre></td></tr></table></figure>
+<p>在Java的未来版本中，此功能可能默认启用，如<a href="https://bugs.openjdk.java.net/browse/JDK-8233014">此处报告</a>。</p>
+<p>此增强功能不仅可用于方法调用，还可用于可以导致<code>NullPointerException</code>异常的其他地方，包括字段访问，数组访问和赋值。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在Java 14中，有新的Beta功能和更新可帮助开发人员进行日常工作。 例如，Java 14引入了<code>instanceof</code>模式匹配，这是减少显式强制转换的一种方式。 而且，Java 14引入了<code>record</code>，这是一种新的结构，用于简洁地声明仅用于聚合数据的类。 此外，<code>NullPointerException</code>消息已得到改进，具有更好的诊断功能，并且<code>switch</code>表达式现在已成为Java 14的一部分。<code>Text Block</code>是一种可帮助您处理多行字符串值的功能，在引入了两个新的转义序列后，将进行另一轮预览。 Java操作的一部分技术人员可能会感兴趣的另一项更改是<a href="https://openjdk.java.net/jeps/349">JDK Flight Recorder中的事件流</a>。 Ben Evans在<a href="https://blogs.oracle.com/javamagazine/java-flight-recorder-and-jfr-event-streaming-in-java-14">他的文章中</a>中讨论了该功能。</p>
+<p>如您所见，Java 14带来了很多创新。 您绝对应该考虑一下，并将有关Beta功能的反馈发送给Java团队。</p>
+<blockquote>
+<p>原文：<a href="https://blogs.oracle.com/javamagazine/java-14-arrives-with-a-host-of-new-features">Java 14 Arrives with a Host of New Features</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[Material Design] 尝试使用 Bottom Navigation</title>
+    <url>/p/GJ0Q47.html</url>
+    <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
+<p>Material Design的一些重要功能包括系统字体Roboto的升级版本，同时颜色更鲜艳，动画效果更突出。谷歌的想法是让谷歌平台上的开发者掌握这个新框架，从而让所有应用就有统一的外观，就像是苹果向开发者提出的设计原则一样。</p>
+<p>一直感觉Material Design设计很是好看，尤其是底部的导航栏，简约的图标以及透明的背景。决定自己体验一把。</p>
+<a id="more"></a>
+
+<p>先上效果图：</p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-14bd1b8c91c5f8b99.gif" alt="效果图"></p>
+<h1 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h1><p>Bottom Navigation经常用于底部导航栏。不过它所包含的标签页不应过多也不应该过少，<a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a>中表示，标签页的个数在3-5个左右合适。</p>
+<h1 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h1><h2 id="在Module的build-gradle中添加如下代码"><a href="#在Module的build-gradle中添加如下代码" class="headerlink" title="在Module的build.gradle中添加如下代码"></a>在Module的build.gradle中添加如下代码</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">compile &#x27;com.roughike:bottom-bar:2.0.2&#x27;<br></code></pre></td></tr></table></figure>
+<p>实现Bottom Navigation功能，比较好用的是第三方的BottomBar库，截止2017.1.8，最新的版本是2.0.2，如果需要最新版，请访问 <a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></p>
+<h2 id="在res下新建类型为xml的xml文件夹"><a href="#在res下新建类型为xml的xml文件夹" class="headerlink" title="在res下新建类型为xml的xml文件夹"></a>在res下新建类型为xml的xml文件夹</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-27a8c62661b42fd13.png"></p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/20210120100350.png"></p>
+<h2 id="在xml文件夹下新建bottombar-tabs-xml文件"><a href="#在xml文件夹下新建bottombar-tabs-xml文件" class="headerlink" title="在xml文件夹下新建bottombar_tabs.xml文件"></a>在xml文件夹下新建bottombar_tabs.xml文件</h2><p>res/xml/bottombar_tabs.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">PreferenceScreen</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">tabs</span>&gt;</span><br>        &lt;tab<br>            id=&quot;@+id/tab_one&quot;<br>            icon=&quot;@drawable/ic_3d_rotation_white_24dp&quot;<br>            title=&quot;财务&quot;<br>            barColorWhenSelected=&quot;#865242&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_two&quot;<br>            icon=&quot;@drawable/ic_account_balance_white_24dp&quot;<br>            title=&quot;群组&quot;<br>            barColorWhenSelected=&quot;#268434&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_three&quot;<br>            icon=&quot;@drawable/ic_accessibility_white_24dp&quot;<br>            title=&quot;朋友&quot;<br>            barColorWhenSelected=&quot;#8b2099&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">tabs</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">PreferenceScreen</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p><code>barColorWhenSelected</code>属性控制着当这个Tab被选择时，BottomBar的整体颜色。<code>inActiveColor</code>属性是这个Tab未激活时图片的颜色。与之相对应的<code>activeColor</code>属性，则是控制着激活时的图片颜色。</p>
+<h2 id="activity-main-xml"><a href="#activity-main-xml" class="headerlink" title="activity_main.xml"></a>activity_main.xml</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">RelativeLayout</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:app</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:tools</span>=<span class="hljs-string">&quot;http://schemas.android.com/tools&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/activity_main&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingBottom</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingLeft</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingRight</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingTop</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">tools:context</span>=<span class="hljs-string">&quot;me.luzhoumin.bottomnavigation.MainActivity&quot;</span>&gt;</span><br><br>    &lt;com.roughike.bottombar.BottomBar<br>        android:id=&quot;@+id/bottomBar&quot;<br>        android:layout_width=&quot;match_parent&quot;<br>        android:layout_height=&quot;60dp&quot;<br>        android:layout_alignParentBottom=&quot;true&quot;<br>        app:bb_tabXmlResource=&quot;@xml/bottombar_tabs&quot;<br>        app:bb_behavior=&quot;underNavbar&quot;<br>        app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>        app:bb_activeTabAlpha=&quot;1&quot;<br>        app:bb_showShadow=&quot;true&quot;/&gt;<br><br>    &lt;TextView<br>        android:id=&quot;@+id/textview&quot;<br>        android:layout_width=&quot;wrap_content&quot;<br>        android:layout_height=&quot;wrap_content&quot;<br>        android:textSize=&quot;36sp&quot;<br>        android:text=&quot;Hello World!&quot;<br>        android:layout_alignParentTop=&quot;true&quot;<br>        android:layout_alignParentStart=&quot;true&quot;<br>        android:layout_marginTop=&quot;51dp&quot; /&gt;<br><br><span class="hljs-tag">&lt;/<span class="hljs-name">RelativeLayout</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p><code>app:bb_tabXmlResource</code>指向的是第三步建的xml文件，里面有每个Tab的属性。</p>
+<h2 id="MainActivity-java"><a href="#MainActivity-java" class="headerlink" title="MainActivity.java"></a>MainActivity.java</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> android.support.annotation.IdRes;<br><span class="hljs-keyword">import</span> android.support.v7.app.AppCompatActivity;<br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> android.widget.TextView;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBar;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBarTab;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabReselectListener;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabSelectListener;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AppCompatActivity</span> </span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> </span>&#123;<br>        <span class="hljs-keyword">super</span>.onCreate(savedInstanceState);<br>        setContentView(R.layout.activity_main);<br>        <span class="hljs-comment">//获取Bottom Bar组件</span><br>        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);<br>        <span class="hljs-comment">//获取用来显示的TextView组件</span><br>        <span class="hljs-keyword">final</span> TextView tv = (TextView) findViewById(R.id.textview);<br>        <span class="hljs-comment">//设置Bottom Bar的选择监听器</span><br>        bottomBar.setOnTabSelectListener(<span class="hljs-keyword">new</span> OnTabSelectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_group 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Bottom Bar的重复选择监听器</span><br>        bottomBar.setOnTabReselectListener(<span class="hljs-keyword">new</span> OnTabReselectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabReSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_two 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 再次被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Tab的Badge</span><br>        BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_two);<br>        nearby.setBadgeCount(<span class="hljs-number">5</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="修改主题样式"><a href="#修改主题样式" class="headerlink" title="修改主题样式"></a>修改主题样式</h2><p>res/values/styles.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Base application theme. --&gt;</span><br>    <span class="hljs-comment">&lt;!--修改主题为无ActionBar--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;AppTheme&quot;</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">&quot;Theme.AppCompat.Light.NoActionBar&quot;</span>&gt;</span><br><span class="xml">        <span class="hljs-comment">&lt;!-- Customize your theme here. --&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-comment">&lt;!--添加--&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:navigationBarColor&quot;</span>&gt;</span>@android:color/transparent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowTranslucentNavigation&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowDrawsSystemBarBackgrounds&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="BottomBar-API"><a href="#BottomBar-API" class="headerlink" title="BottomBar API"></a>BottomBar API</h1><h2 id="For-the-BottomBar"><a href="#For-the-BottomBar" class="headerlink" title="For the BottomBar"></a>For the BottomBar</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;com.roughike.bottombar.BottomBar<br>    android:id=&quot;@+id/bottomBar&quot;<br>    android:layout_width=&quot;match_parent&quot;<br>    android:layout_height=&quot;60dp&quot;<br>    android:layout_alignParentBottom=&quot;true&quot;<br>    app:bb_tabXmlResource=&quot;@xml/bottombar_tabs_three&quot;<br>    app:bb_tabletMode=&quot;true&quot;<br>    app:bb_behavior=&quot;shifting|shy|underNavbar&quot;<br>    app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>    app:bb_activeTabAlpha=&quot;1&quot;<br>    app:bb_inActiveTabColor=&quot;#222222&quot;<br>    app:bb_activeTabColor=&quot;@color/colorPrimary&quot;<br>    app:bb_titleTextAppearance=&quot;@style/MyTextAppearance&quot;<br>    app:bb_titleTypeFace=&quot;fonts/MySuperDuperFont.ttf&quot;<br>    app:bb_showShadow=&quot;true&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>bb_tabXmlResource</strong></p>
+<p>the XML Resource id for your tabs, that reside in values/xml/</p>
+<p><strong>bb_tabletMode</strong></p>
+<p>if you want the BottomBar to behave differently for tablets. There’s an example of this in the sample project!</p>
+<p><strong>bb_behavior</strong></p>
+<ul>
+<li><code>shifting</code>: the selected tab is wider than the rest.</li>
+<li><code>shy</code>: put the BottomBar inside a CoordinatorLayout and it’ll automatically hide on scroll!</li>
+<li><code>underNavbar</code>: draw the BottomBar under the navBar!</li>
+</ul>
+<p><strong>bb_inActiveTabAlpha</strong></p>
+<p>the alpha value for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_activeTabAlpha</strong></p>
+<p>the alpha value for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_inActiveTabColor</strong></p>
+<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_activeTabColor</strong></p>
+<p>the color for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_badgeBackgroundColor</strong></p>
+<p>the background color for any Badges in this BottomBar.</p>
+<p><strong>bb_titleTextAppearance</strong></p>
+<p>custom textAppearance for the titles</p>
+<p><strong>bb_titleTypeFace</strong></p>
+<p>path for your custom font file, such as <code>fonts/MySuperDuperFont.ttf</code>. In that case your font path would look like <code>src/main/assets/fonts/MySuperDuperFont.ttf</code>, but you only need to provide <code>fonts/MySuperDuperFont.ttf</code>, as the asset folder will be auto-filled for you.</p>
+<p><strong>bb_showShadow</strong></p>
+<p>controls whether the shadow is shown or hidden, defaults to true.</p>
+<h2 id="For-the-tabs"><a href="#For-the-tabs" class="headerlink" title="For the tabs"></a>For the tabs</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;tab<br>    id=&quot;@+id/tab_recents&quot;<br>    title=&quot;Recents&quot;<br>    icon=&quot;@drawable/empty_icon&quot;<br>    inActiveColor=&quot;#00FF00&quot;<br>    activeColor=&quot;#FF0000&quot;<br>    barColorWhenSelected=&quot;#FF0000&quot;<br>    badgeBackgroundColor=&quot;#FF0000&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>inActiveColor</strong></p>
+<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>activeColor</strong></p>
+<p>the color for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>barColorWhenSelected</strong></p>
+<p>the color that the whole BottomBar should be when selected this tab.</p>
+<p><strong>badgeBackgroundColor</strong></p>
+<p>the background color for any Badges in this tab.</p>
+<h1 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h1><ul>
+<li>Tab的图标必须是<strong>全透明、纯黑、24dp、Padding = 0dp</strong>，而且最好所有分辨密度的图片都要有，否则图标会很大或者很小，影响显示效果。</li>
+<li>如果想保持在屏幕最底部，记得在布局xml的<code>&lt;com.roughike.bottombar.BottomBar&gt;</code>标签中添加属性<code>android:layout_alignParentBottom=&quot;true&quot;</code>，并且做好第六步工作。</li>
+</ul>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
+<li><a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a></li>
+<li><a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></li>
+</ul>
+<h1 id="与FloatingActionButton和SnackBar合作的效果"><a href="#与FloatingActionButton和SnackBar合作的效果" class="headerlink" title="与FloatingActionButton和SnackBar合作的效果"></a>与FloatingActionButton和SnackBar合作的效果</h1><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-4368fd9376e31ff43.gif"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Google</tag>
+        <tag>Material Design</tag>
+        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
@@ -957,9 +957,38 @@
         <category>Apple</category>
       </categories>
       <tags>
-        <tag>Android</tag>
         <tag>HomeKit</tag>
+        <tag>Android</tag>
         <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[202006期] 有价值 iOS App</title>
+    <url>/p/2S9K9NA.html</url>
+    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
+<a id="more"></a>
+
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
+<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
+<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
+<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>Apple</category>
+      </categories>
+      <tags>
+        <tag>Netflix</tag>
       </tags>
   </entry>
   <entry>
@@ -1013,33 +1042,68 @@
       </categories>
   </entry>
   <entry>
-    <title>[202006期] 有价值 iOS App</title>
-    <url>/p/2S9K9NA.html</url>
-    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
+    <title>How to download Wechat on iOS in india</title>
+    <url>/p/ESP3TJ.html</url>
+    <content><![CDATA[<p>WeChat has been removed from the App Store India, so how can friends in India download WeChat?</p>
 <a id="more"></a>
 
-<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
-<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
-<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
-<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
+<h2 id="Open-“App-Store”-on-home-screen"><a href="#Open-“App-Store”-on-home-screen" class="headerlink" title="Open “App Store” on home screen."></a>Open “App Store” on home screen.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled.png"></p>
+<h2 id="Click-on-the-avatar-in-the-upper-right-corner"><a href="#Click-on-the-avatar-in-the-upper-right-corner" class="headerlink" title="Click on the avatar in the upper right corner."></a>Click on the avatar in the upper right corner.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%201.png"></p>
+<h2 id="At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it"><a href="#At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it" class="headerlink" title="At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it."></a>At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%202.png"></p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%203.png"></p>
+<h2 id="Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button"><a href="#Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button" class="headerlink" title="Then, return to the top of the page, enter the account password provided, and click the sign in button."></a>Then, return to the top of the page, enter the account password provided, and click the sign in button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%204.png"></p>
+<h2 id="At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button"><a href="#At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button" class="headerlink" title="At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button."></a>At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%205.png"></p>
+<h2 id="In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade"><a href="#In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade" class="headerlink" title="In the “Protect your account” alert that pops up, select the second button(Do not upgrade)"></a>In the “Protect your account” alert that pops up, select the second button(Do not upgrade)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%206.png"></p>
+<h2 id="After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store"><a href="#After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store" class="headerlink" title="After the login is complete, click the “Done” button on the top right, and the store will switch to the US store."></a>After the login is complete, click the “Done” button on the top right, and the store will switch to the US store.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%207.png"></p>
+<h2 id="Search-amp-download-and-enjoy"><a href="#Search-amp-download-and-enjoy" class="headerlink" title="Search &amp; download and enjoy :-)"></a>Search &amp; download and enjoy :-)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%208.png"></p>
+<blockquote>
+<p>After the installation is complete, you can switch back to your Apple ID in the App Store</p>
+</blockquote>
+<p><strong>ATTENTION! DO NOT log in to the provided account in the settings app, otherwise the device may be locked.</strong></p>
 ]]></content>
       <categories>
         <category>日常</category>
-        <category>Apple</category>
+        <category>技巧</category>
       </categories>
-      <tags>
-        <tag>Netflix</tag>
-      </tags>
+  </entry>
+  <entry>
+    <title>真正的自律，就是战胜你自己</title>
+    <url>/p/ZAB5E7.html</url>
+    <content><![CDATA[<p>1</p>
+<p>问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。</p>
+<p>三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。</p>
+<p>他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。</p>
+<a id="more"></a>
+
+<p>不知你是否发现，很多人空有一颗求上进的心，但在实际生活中，却活得敷衍、潦草、不自律。他们一边痛恨自己总是拖延和懒散，一边又纵容自己，贪图片刻的满足和安逸。</p>
+<p>其实，<strong>人这一辈子就是战胜自己的过程。如果你管住了自己，就可以拥有更多的自由。如果你管不好自己，就只能被现实左右</strong>。</p>
+<p>2</p>
+<p>大概你也曾经历过无数个失败的自律计划。</p>
+<p>坚持早起，但第二天实在起不来，就放弃了。坚持读书，但刚读了几页还是忍不住看手机，就放弃了。坚持减肥，刚确立这个信念，但美食一出现又放弃了。</p>
+<p>放弃，其实很简单。只要你的思想稍微松动一下，就可以让自己轻松地逃避那些原本你不愿做的事。但想要坚持就太难了，因为你面对的困难和挫折，经受的挑战和诱惑实在太多了。</p>
+<p>人与人之间最大的差距就在于自律。优秀的人想要做成一件事，几乎是言出必行，说到即能做到。但很多人虽然也想改变自己，却很难克服自身的惰性。</p>
+<p>自律最难的地方，在于它没法一蹴而就。<strong>大多数时刻，你需要反复跟自己做斗争，需要对自己下狠手，需要对自己更严苛，不能给自己丝毫的犹豫和退路。</strong></p>
+<p>3</p>
+<p>人在什么时刻会意识到自律的重要性？</p>
+<p>大概不是在早晨睡到日上三竿时，也不是在深夜吃着炸鸡喝着啤酒时，更不是在一有空闲就盯着手机追剧时，而是当你发现自己的身材越来越胖、生活越来越无聊、人生越来越失去掌控时，才会感受到巨大的压力。</p>
+<p>人在什么时刻会意识到自律的好处？</p>
+<p>大概不是在寒冷的冬天逼着自己五点起床时，也不是在感到疲惫依旧锻炼身体时，更不是一个人在书房独自读书写作时，而是当你发现自己的身体越来越好、事业越来越有所成、生活越来越有趣时，为此感到无比欣慰。</p>
+<p>于不自律的人而言，轻松是暂时的，痛苦却是长久的。于自律的人来说，过程是痛苦的，结果却是令人满意的。</p>
+<p>记得网上有一个问题：“高度自律是一种什么体验”。有个回答是“不再被生活拖曳着前进，而是未来变得可控，一切有条不紊，想要的生活触手可及”。</p>
+<p>当你觉得管不住自己，想要偷懒、想要懈怠时，想一想自己理想的生活，大概就不会沉迷于安逸享乐。<strong>当你觉得坚持不下去，想要泄气、放弃时，想一想放任的后果，大概就有了自我约束的紧迫感。</strong></p>
+<p>4</p>
+<p>人人都渴望更出色，但无论做什么都没有捷径，都要做到自律。</p>
+<p>成绩比你好的人可能并没有比你更聪明，不过是在一日又一日的枯燥学业中，坚持不断地练题、背书、做笔记。</p>
+<p>身体比你好的人可能并不是天生体质好，而是在一天又一天的单调重复中，坚持不断地早睡、早起、多运动。</p>
+<p>文采比你好的人可能并不是有特殊的天赋，而是在一年又一年的平淡光阴里坚持不断地读书、沉淀和积累。</p>
+<p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
+<p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
+<p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>摘抄</category>
+      </categories>
   </entry>
   <entry>
     <title>运用Live Template加快写代码速度</title>
@@ -1180,70 +1244,6 @@
       <tags>
         <tag>Java</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>真正的自律，就是战胜你自己</title>
-    <url>/p/ZAB5E7.html</url>
-    <content><![CDATA[<p>1</p>
-<p>问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。</p>
-<p>三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。</p>
-<p>他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。</p>
-<a id="more"></a>
-
-<p>不知你是否发现，很多人空有一颗求上进的心，但在实际生活中，却活得敷衍、潦草、不自律。他们一边痛恨自己总是拖延和懒散，一边又纵容自己，贪图片刻的满足和安逸。</p>
-<p>其实，<strong>人这一辈子就是战胜自己的过程。如果你管住了自己，就可以拥有更多的自由。如果你管不好自己，就只能被现实左右</strong>。</p>
-<p>2</p>
-<p>大概你也曾经历过无数个失败的自律计划。</p>
-<p>坚持早起，但第二天实在起不来，就放弃了。坚持读书，但刚读了几页还是忍不住看手机，就放弃了。坚持减肥，刚确立这个信念，但美食一出现又放弃了。</p>
-<p>放弃，其实很简单。只要你的思想稍微松动一下，就可以让自己轻松地逃避那些原本你不愿做的事。但想要坚持就太难了，因为你面对的困难和挫折，经受的挑战和诱惑实在太多了。</p>
-<p>人与人之间最大的差距就在于自律。优秀的人想要做成一件事，几乎是言出必行，说到即能做到。但很多人虽然也想改变自己，却很难克服自身的惰性。</p>
-<p>自律最难的地方，在于它没法一蹴而就。<strong>大多数时刻，你需要反复跟自己做斗争，需要对自己下狠手，需要对自己更严苛，不能给自己丝毫的犹豫和退路。</strong></p>
-<p>3</p>
-<p>人在什么时刻会意识到自律的重要性？</p>
-<p>大概不是在早晨睡到日上三竿时，也不是在深夜吃着炸鸡喝着啤酒时，更不是在一有空闲就盯着手机追剧时，而是当你发现自己的身材越来越胖、生活越来越无聊、人生越来越失去掌控时，才会感受到巨大的压力。</p>
-<p>人在什么时刻会意识到自律的好处？</p>
-<p>大概不是在寒冷的冬天逼着自己五点起床时，也不是在感到疲惫依旧锻炼身体时，更不是一个人在书房独自读书写作时，而是当你发现自己的身体越来越好、事业越来越有所成、生活越来越有趣时，为此感到无比欣慰。</p>
-<p>于不自律的人而言，轻松是暂时的，痛苦却是长久的。于自律的人来说，过程是痛苦的，结果却是令人满意的。</p>
-<p>记得网上有一个问题：“高度自律是一种什么体验”。有个回答是“不再被生活拖曳着前进，而是未来变得可控，一切有条不紊，想要的生活触手可及”。</p>
-<p>当你觉得管不住自己，想要偷懒、想要懈怠时，想一想自己理想的生活，大概就不会沉迷于安逸享乐。<strong>当你觉得坚持不下去，想要泄气、放弃时，想一想放任的后果，大概就有了自我约束的紧迫感。</strong></p>
-<p>4</p>
-<p>人人都渴望更出色，但无论做什么都没有捷径，都要做到自律。</p>
-<p>成绩比你好的人可能并没有比你更聪明，不过是在一日又一日的枯燥学业中，坚持不断地练题、背书、做笔记。</p>
-<p>身体比你好的人可能并不是天生体质好，而是在一天又一天的单调重复中，坚持不断地早睡、早起、多运动。</p>
-<p>文采比你好的人可能并不是有特殊的天赋，而是在一年又一年的平淡光阴里坚持不断地读书、沉淀和积累。</p>
-<p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
-<p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
-<p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>摘抄</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>How to download Wechat on iOS in india</title>
-    <url>/p/ESP3TJ.html</url>
-    <content><![CDATA[<p>WeChat has been removed from the App Store India, so how can friends in India download WeChat?</p>
-<a id="more"></a>
-
-<h2 id="Open-“App-Store”-on-home-screen"><a href="#Open-“App-Store”-on-home-screen" class="headerlink" title="Open “App Store” on home screen."></a>Open “App Store” on home screen.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled.png"></p>
-<h2 id="Click-on-the-avatar-in-the-upper-right-corner"><a href="#Click-on-the-avatar-in-the-upper-right-corner" class="headerlink" title="Click on the avatar in the upper right corner."></a>Click on the avatar in the upper right corner.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%201.png"></p>
-<h2 id="At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it"><a href="#At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it" class="headerlink" title="At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it."></a>At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%202.png"></p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%203.png"></p>
-<h2 id="Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button"><a href="#Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button" class="headerlink" title="Then, return to the top of the page, enter the account password provided, and click the sign in button."></a>Then, return to the top of the page, enter the account password provided, and click the sign in button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%204.png"></p>
-<h2 id="At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button"><a href="#At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button" class="headerlink" title="At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button."></a>At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%205.png"></p>
-<h2 id="In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade"><a href="#In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade" class="headerlink" title="In the “Protect your account” alert that pops up, select the second button(Do not upgrade)"></a>In the “Protect your account” alert that pops up, select the second button(Do not upgrade)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%206.png"></p>
-<h2 id="After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store"><a href="#After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store" class="headerlink" title="After the login is complete, click the “Done” button on the top right, and the store will switch to the US store."></a>After the login is complete, click the “Done” button on the top right, and the store will switch to the US store.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%207.png"></p>
-<h2 id="Search-amp-download-and-enjoy"><a href="#Search-amp-download-and-enjoy" class="headerlink" title="Search &amp; download and enjoy :-)"></a>Search &amp; download and enjoy :-)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%208.png"></p>
-<blockquote>
-<p>After the installation is complete, you can switch back to your Apple ID in the App Store</p>
-</blockquote>
-<p><strong>ATTENTION! DO NOT log in to the provided account in the settings app, otherwise the device may be locked.</strong></p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>技巧</category>
-      </categories>
   </entry>
   <entry>
     <title>请记住人生中的“三”</title>
