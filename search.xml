@@ -67,39 +67,6 @@
       </categories>
   </entry>
   <entry>
-    <title>gitignore文件不起作用</title>
-    <url>/p/TSMFKX.html</url>
-    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
-<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git设置代理</title>
-    <url>/p/35NJX8Y.html</url>
-    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
-<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
-<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
-<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
-<p>显示如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
-<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>加速</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>[Material Design] 尝试使用 Bottom Navigation</title>
     <url>/p/GJ0Q47.html</url>
     <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
@@ -180,46 +147,61 @@
       </tags>
   </entry>
   <entry>
-    <title>JSP基本语法记录01</title>
-    <url>/p/3AB4DA.html</url>
-    <content><![CDATA[<p>最近项目上需要改老项目，巩固一下JSP方面的语法知识。</p>
+    <title>HomeKit添加米家智能插线板</title>
+    <url>/p/141WYMG.html</url>
+    <content><![CDATA[<p>之前搭建了个HomeKit服务器，还没有接入米家的插线板，现在试试能不能让米家设备接入苹果的HomeKit，用手机的Home软件就能控制米家插线板。</p>
 <a id="more"></a>
 
-<h1 id="JSP注释"><a href="#JSP注释" class="headerlink" title="JSP注释"></a>JSP注释</h1><p>JSP注释用于注释在程序开发过程中的开发提示，不会输出到浏览器端。<br>JSP注释的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%--JSP注释 --%&gt;<br></code></pre></td></tr></table></figure>
-<p>与JSP注释相似的是HTML注释，HTML注释的语法格式如下：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- HTML注释 --&gt;</span><br></code></pre></td></tr></table></figure>
-<p>HTML注释的内容会输出到浏览器端，在浏览器端查看网页源代码可以看到HTML注释的内容，而JSP注释的内容则查看不到。<br>下面是JSP注释和HTML注释的代码示例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP注释示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    注释示例<br>    &lt;!-- 增加JSP注释 --&gt;<br>    &lt;%--JSP注释 --%&gt;<br>    &lt;!-- 增加html注释 --&gt;<br>    &lt;!-- html注释 --&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>通过在浏览器端查看网页源代码可以看到html注释的内容可以看到，而JSP注释的内容则查看不到。如下图所示。</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/annotation8f234306e8e6514f.png" alt="annotation.png"></p>
-<h1 id="JSP声明"><a href="#JSP声明" class="headerlink" title="JSP声明"></a>JSP声明</h1><p>JSP声明用于声明变量和方法。JSP声明的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%!  JSP声明部分  %&gt;<br></code></pre></td></tr></table></figure>
-<p>下面看一个JSP声明的实例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP声明示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出count的值，然后再将count加1</span><br>        out.println(count++);<br>    %&gt;<br>    &lt;br/&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出info()方法的返回值</span><br>        out.println(info());<br>    %&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>在浏览器中测试该页面，可以看到正常输出了count 的值和info()方法的返回值，每次刷新页面，count的值就会加1。页面效果图如下（刷新许多次）：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/declare1ab0df224e6dad3d.png" alt="declare.png"></p>
-<h1 id="输出JSP表达式"><a href="#输出JSP表达式" class="headerlink" title="输出JSP表达式"></a>输出JSP表达式</h1><p>输出JSP表达式的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%=表达式%&gt;<br></code></pre></td></tr></table></figure>
-<p>下面是用表达式改写JSP声明的示例的页面代码，使用JSP表达式输出同样能达到上面的效果，代码如下：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP表达式示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;!-- 使用表达式输出变量的值 --&gt;<br>    &lt;%=count++%&gt;<br>    &lt;br/&gt;<br>    &lt;!-- 使用表达式输出方法的返回值 --&gt;<br>    &lt;%=info()%&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>页面效果如下：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/expression94586bd6a2b9a018.png" alt="expression.png"></p>
-<h1 id="JSP脚本"><a href="#JSP脚本" class="headerlink" title="JSP脚本"></a>JSP脚本</h1><p>JSP脚本是使用Java代码执行页面的控制，JSP脚本的语法格式如下：</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%  脚本语言代码 %&gt;<br></code></pre></td></tr></table></figure>
-<p>下面是一个使用Java脚本语言控制HTML中表格的示例：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;脚本测试&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    &lt;table border=<span class="hljs-string">&quot;1px&quot;</span> cellspacing=<span class="hljs-string">&quot;0px&quot;</span> style=<span class="hljs-string">&quot;border-collapse:collapse&quot;</span> width=<span class="hljs-string">&quot;300px&quot;</span>&gt;<br>    &lt;!-- Java脚本 --&gt;<br>    &lt;%<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++) <br>    &#123;<br>    %&gt;<br>        &lt;!-- 上面的循环控制&lt;tr&gt;标签循环 --&gt;<br>        &lt;tr&gt;<br>            &lt;td&gt;循环值：&lt;/td&gt;<br>            &lt;td&gt;&lt;%=i %&gt;&lt;/td&gt;<br>        &lt;/tr&gt;<br>    &lt;%&#125; %&gt;<br>    &lt;/table&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
-<p>页面的效果如下图所示：</p>
-<p><img src="https://file.moetu.org/images/2019/12/31/scripte85aac144f3530f4.png" alt="script.png"></p>
-<p>上面就是JSP的四种基本语法，详细理解 这四种语法还需要有Servlet的知识，如JSP声明变量和方法，JSP声明的变量和方法会在该JSP页面对应的Servlet中有对应的声明，不是独立存在的，因为在Java中方法是不能独立存在的，方法的声明需要在类中声明。</p>
+<h1 id="安装homebridge-mi-outlet插件"><a href="#安装homebridge-mi-outlet插件" class="headerlink" title="安装homebridge-mi-outlet插件"></a>安装<code>homebridge-mi-outlet</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install homebridge-mi-outlet<br></code></pre></td></tr></table></figure>
+<h1 id="安装miio插件"><a href="#安装miio插件" class="headerlink" title="安装miio插件"></a>安装<code>miio</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install miio<br></code></pre></td></tr></table></figure>
+<h1 id="用miio插件发现小米智能插线板"><a href="#用miio插件发现小米智能插线板" class="headerlink" title="用miio插件发现小米智能插线板"></a>用<code>miio</code>插件发现小米智能插线板</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">miio discover<br></code></pre></td></tr></table></figure>
+<p>可以看到<code>Model info：zhimi.powerstrip.v2</code>就是米家智能插线板，将下放的Address和Token记下来：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Address：192.168.xxx.xxx<br>Token：21a98556732d471e2764cxxxxxxb1ee1<br></code></pre></td></tr></table></figure>
+<h1 id="修改HomeBridge的config-json文件"><a href="#修改HomeBridge的config-json文件" class="headerlink" title="修改HomeBridge的config.json文件"></a>修改HomeBridge的<code>config.json</code>文件</h1><p>在<code>bridge</code>节点后面添加所需的<code>platforms</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;platforms&quot;</span>: [&#123;<br>        <span class="hljs-attr">&quot;platform&quot;</span>: <span class="hljs-string">&quot;MiOutletPlatform&quot;</span>,<br>            <span class="hljs-attr">&quot;deviceCfgs&quot;</span>: [&#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBase&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBaseWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchUSBName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchUSBDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiIntelligencePinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboardWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;]<br>    &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>其中<code>type</code>代表的硬件：</p>
+<ul>
+<li>米家智能插座基础版: <code>MiPlugBase</code></li>
+<li>米家智能插座USB版: <code>MiPlugBaseWithUSB</code></li>
+<li>米家智能插线板: <code>MiIntelligencePinboard</code></li>
+<li>青米智能插线板五孔位版: <code>MiQingPinboard</code></li>
+<li>青米智能插线板USB版: <code>MiQingPinboardWithUSB</code></li>
+</ul>
 ]]></content>
       <categories>
         <category>开发</category>
-        <category>JSP</category>
+        <category>HomeKit</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>JSP</tag>
+        <tag>HomeKit</tag>
+        <tag>米家</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HomeKit初始化</title>
+    <url>/p/3XS9TP7.html</url>
+    <content><![CDATA[<p>前段时间搬家，需要插排，买了个米家的只能插排，感觉用手机控制很方便。看到苹果有自己的Home App来管理智能家居，想试试米家的智能设备能不能接入苹果的HomeKit。首先需要先搭建一个HomeKit服务器。</p>
+<a id="more"></a>
+
+<h1 id="安装Node-js和npm"><a href="#安装Node-js和npm" class="headerlink" title="安装Node.js和npm"></a>安装Node.js和npm</h1><p>Node.js v10.x:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Using Ubuntu</span><br>curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -<br>sudo apt-get install -y nodejs<br><br><span class="hljs-meta">#</span><span class="bash"> Using Debian, as root</span><br>curl -sL https://deb.nodesource.com/setup_10.x | bash -<br>apt-get install -y nodejs<br></code></pre></td></tr></table></figure>
+<h1 id="安装编译组件"><a href="#安装编译组件" class="headerlink" title="安装编译组件"></a>安装编译组件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo apt-get install libavahi-compat-libdnssd-dev<br>sudo apt-get install build-essential libtool<br></code></pre></td></tr></table></figure>
+<h1 id="安装HomeBridge"><a href="#安装HomeBridge" class="headerlink" title="安装HomeBridge"></a>安装HomeBridge</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm install -g --unsafe-perm homebridge<br></code></pre></td></tr></table></figure>
+<h1 id="添加HomeBridge配置文件"><a href="#添加HomeBridge配置文件" class="headerlink" title="添加HomeBridge配置文件"></a>添加HomeBridge配置文件</h1><p>进入目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cd ~/.homebridge/<br></code></pre></td></tr></table></figure>
+<p>创建文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim config.json<br></code></pre></td></tr></table></figure>
+<p>添加：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;bridge&quot;</span>: &#123;<br>        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;Homebridge&quot;</span>,<br>        <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;CC:22:3D:E3:CE:30&quot;</span>,<br>        <span class="hljs-attr">&quot;port&quot;</span>: <span class="hljs-number">51826</span>,<br>        <span class="hljs-attr">&quot;pin&quot;</span>: <span class="hljs-string">&quot;031-45-154&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>保存并退出：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">wq!<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>HomeKit</category>
+      </categories>
+      <tags>
+        <tag>HomeKit</tag>
+        <tag>米家</tag>
       </tags>
   </entry>
   <entry>
@@ -314,216 +296,79 @@
       </tags>
   </entry>
   <entry>
-    <title>理解 JavaScript 的 async、await</title>
-    <url>/p/3Q3X94C.html</url>
-    <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
+    <title>gitignore文件不起作用</title>
+    <url>/p/TSMFKX.html</url>
+    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
+<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
 <a id="more"></a>
 
-<h1 id="async-和-await-在干什么"><a href="#async-和-await-在干什么" class="headerlink" title="async 和 await 在干什么"></a>async 和 await 在干什么</h1><p>另外还有一个很有意思的语法规定，await 只能出现在 async 函数中。然后细心的朋友会产生一个疑问，如果 await 只能出现在 async 函数中，那这个 async 函数应该怎么调用？<br>如果需要通过 await 来调用一个 async 函数，那这个调用的外面必须得再包一个 async 函数，然后……进入死循环，永无出头之日……<br>如果 async 函数不需要 await 来调用，那 async 到底起个啥作用？</p>
-<h2 id="async-起什么作用"><a href="#async-起什么作用" class="headerlink" title="async 起什么作用"></a>async 起什么作用</h2><p>这个问题的关键在于，async 函数是怎么处理它的返回值的！<br>我们当然希望它能直接通过 return 语句返回我们想要的值，但是如果真是这样，似乎就没 await 什么事了。所以，写段代码来试试，看它到底会返回什么：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello async&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> result = testAsync();<br><span class="hljs-built_in">console</span>.log(result);<br></code></pre></td></tr></table></figure>
-<p>看到输出就恍然大悟了——输出的是一个 Promise 对象。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">c:\var\test&gt; node --harmony_async_await .<br>Promise &#123; &#x27;hello async&#x27; &#125;<br></code></pre></td></tr></table></figure>
-<p>所以，<code>async</code> 函数返回的是一个 Promise 对象。从文档中也可以得到这个信息。async 函数（包含函数语句、函数表达式、Lambda表达式）会返回一个 Promise 对象，如果在函数中 <code>return</code> 一个直接量，async 会把这个直接量通过 <code>Promise.resolve()</code> 封装成 Promise 对象。</p>
-<p>async 函数返回的是一个 Promise 对象，所以在最外层不能用 await 获取其返回值的情况下，我们当然应该用原来的方式：<code>then()</code> 链来处理这个 Promise 对象，就像这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">testAsync().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(v);    <span class="hljs-comment">// 输出 hello async</span><br>&#125;);<br></code></pre></td></tr></table></figure>
-<p>现在回过头来想下，如果 async 函数没有返回值，又该如何？很容易想到，它会返回<code>Promise.resolve(undefined)</code>。</p>
-<p>联想一下 Promise 的特点——无等待，所以在没有 await 的情况下执行 async 函数，它会立即执行，返回一个 Promise 对象，并且，绝不会阻塞后面的语句。这和普通返回 Promise 对象的函数并无二致。</p>
-<p>那么下一个关键点就在于 await 关键字了。</p>
-<h2 id="await-到底在等啥"><a href="#await-到底在等啥" class="headerlink" title="await 到底在等啥"></a>await 到底在等啥</h2><p>一般来说，都认为 await 是在等待一个 async 函数完成。不过按语法说明，await 等待的是一个表达式，这个表达式的计算结果是 Promise 对象或者其它值（换句话说，就是没有特殊限定）。</p>
-<p>因为 async 函数返回一个 Promise 对象，所以 await 可以用于等待一个 async 函数的返回值——这也可以说是 await 在等 async 函数，但要清楚，它等的实际是一个返回值。注意到 await 不仅仅用于等 Promise 对象，它可以等任意表达式的结果，所以，await 后面实际是可以接普通函数调用或者直接量的。所以下面这个示例完全可以正确运行</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSomething</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;something&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">&quot;hello async&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v1 = <span class="hljs-keyword">await</span> getSomething();<br>    <span class="hljs-keyword">const</span> v2 = <span class="hljs-keyword">await</span> testAsync();<br>    <span class="hljs-built_in">console</span>.log(v1, v2);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
-<h2 id="await-等到了要等的，然后呢"><a href="#await-等到了要等的，然后呢" class="headerlink" title="await 等到了要等的，然后呢"></a>await 等到了要等的，然后呢</h2><p>await 等到了它要等的东西，一个 Promise 对象，或者其它值，然后呢？我不得不先说，await 是个运算符，用于组成表达式，await 表达式的运算结果取决于它等的东西。</p>
-<p>如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。</p>
-<p>如果它等到的是一个 Promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。</p>
-<blockquote>
-<p>看到上面的阻塞一词，心慌了吧……放心，这就是 await 必须用在 async 函数中的原因。async 函数调用不会造成阻塞，它内部所有的阻塞都被封装在一个 Promise 对象中异步执行。</p>
-</blockquote>
-<h1 id="async-await-帮我们干了啥"><a href="#async-await-帮我们干了啥" class="headerlink" title="async/await 帮我们干了啥"></a>async/await 帮我们干了啥</h1><h2 id="作个简单的比较"><a href="#作个简单的比较" class="headerlink" title="作个简单的比较"></a>作个简单的比较</h2><p>上面已经说明了 async 会将其后的函数（函数表达式或 Lambda）的返回值封装成一个 Promise 对象，而 await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来。</p>
-<p>现在举例，用 <code>setTimeout</code> 模拟耗时的异步操作，先来看看不用 async/await 会怎么写</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br>takeLongTime().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;got&quot;</span>, v);<br>&#125;);<br></code></pre></td></tr></table></figure>
-<p>如果改用 async/await 呢，会是这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v = <span class="hljs-keyword">await</span> takeLongTime();<br>    <span class="hljs-built_in">console</span>.log(v);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
-<p>眼尖的同学已经发现 <code>takeLongTime()</code> 没有申明为 <code>async</code>。实际上，<code>takeLongTime()</code> 本身就是返回的 Promise 对象，加不加 <code>async</code> 结果都一样，如果没明白，请回过头再去看看上面的“async 起什么作用”。</p>
-<p>又一个疑问产生了，这两段代码，两种方式对异步调用的处理（实际就是对 Promise 对象的处理）差别并不明显，甚至使用 async/await 还需要多写一些代码，那它的优势到底在哪？</p>
-<h2 id="async-await-的优势在于处理-then-链"><a href="#async-await-的优势在于处理-then-链" class="headerlink" title="async/await 的优势在于处理 then 链"></a>async/await 的优势在于处理 then 链</h2><p>单一的 Promise 链并不能发现 async/await 的优势，但是，如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（很有意思，Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。</p>
-<p>假设一个业务，分多个步骤完成，每个步骤都是异步的，而且依赖于上一个步骤的结果。我们仍然用 <code>setTimeout</code> 来模拟异步操作：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 传入参数 n，表示这个函数执行的时间（毫秒）</span><br><span class="hljs-comment"> * 执行的结果是 n + 200，这个值将用于下一步骤</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(n + <span class="hljs-number">200</span>), n);<br>    &#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>现在用 Promise 方式来实现这三个步骤的处理</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> step2(time2))<br>        .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> step3(time3))<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 500</span><br><span class="hljs-comment">// step3 with 700</span><br><span class="hljs-comment">// result is 900</span><br><span class="hljs-comment">// doIt: 1507.251ms</span><br></code></pre></td></tr></table></figure>
-<p>输出结果 <code>result</code> 是 <code>step3()</code> 的参数 <code>700 + 200 = 900</code>。<code>doIt()</code> 顺序执行了三个步骤，一共用了 <code>300 + 500 + 700 = 1500</code> 毫秒，和 <code>console.time()/console.timeEnd()</code> 计算的结果一致。<br>如果用 async/await 来实现呢，会是这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
-<p>结果和之前的 Promise 实现是一样的，但是这个代码看起来是不是清晰得多，几乎跟同步代码一样</p>
-<h2 id="还有更酷的"><a href="#还有更酷的" class="headerlink" title="还有更酷的"></a>还有更酷的</h2><p>现在把业务要求改一下，仍然是三个步骤，但每一个步骤都需要之前每个步骤的结果。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(m + n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">k, m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;k&#125;</span>, <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(k + m + n);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>这回先用 async/await 来写：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time1, time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time1, time2, time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 800 = 300 + 500</span><br><span class="hljs-comment">// step3 with 1800 = 300 + 500 + 1000</span><br><span class="hljs-comment">// result is 2000</span><br><span class="hljs-comment">// doIt: 2907.387ms</span><br></code></pre></td></tr></table></figure>
-<p>除了觉得执行时间变长了之外，似乎和之前的示例没啥区别啊！别急，认真想想如果把它写成 Promise 方式实现会是什么样子？</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> step2(time1, time2)<br>                .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> [time1, time2, time3]);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">times</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> [time1, time2, time3] = times;<br>            <span class="hljs-keyword">return</span> step3(time1, time2, time3);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
-<p>有没有感觉有点复杂的样子？那一堆参数处理，就是 Promise 方案的死穴—— 参数传递太麻烦了，看着就晕！</p>
-<blockquote>
-<p>参考：<a href="https://segmentfault.com/a/1190000007535316">理解 JavaScript 的 async/await - 边城</a></p>
-</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git设置代理</title>
+    <url>/p/35NJX8Y.html</url>
+    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
+<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
+<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
+<p>显示如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
+<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>加速</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JSP基本语法记录01</title>
+    <url>/p/3AB4DA.html</url>
+    <content><![CDATA[<p>最近项目上需要改老项目，巩固一下JSP方面的语法知识。</p>
+<a id="more"></a>
+
+<h1 id="JSP注释"><a href="#JSP注释" class="headerlink" title="JSP注释"></a>JSP注释</h1><p>JSP注释用于注释在程序开发过程中的开发提示，不会输出到浏览器端。<br>JSP注释的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%--JSP注释 --%&gt;<br></code></pre></td></tr></table></figure>
+<p>与JSP注释相似的是HTML注释，HTML注释的语法格式如下：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- HTML注释 --&gt;</span><br></code></pre></td></tr></table></figure>
+<p>HTML注释的内容会输出到浏览器端，在浏览器端查看网页源代码可以看到HTML注释的内容，而JSP注释的内容则查看不到。<br>下面是JSP注释和HTML注释的代码示例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP注释示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    注释示例<br>    &lt;!-- 增加JSP注释 --&gt;<br>    &lt;%--JSP注释 --%&gt;<br>    &lt;!-- 增加html注释 --&gt;<br>    &lt;!-- html注释 --&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>通过在浏览器端查看网页源代码可以看到html注释的内容可以看到，而JSP注释的内容则查看不到。如下图所示。</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/annotation8f234306e8e6514f.png" alt="annotation.png"></p>
+<h1 id="JSP声明"><a href="#JSP声明" class="headerlink" title="JSP声明"></a>JSP声明</h1><p>JSP声明用于声明变量和方法。JSP声明的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%!  JSP声明部分  %&gt;<br></code></pre></td></tr></table></figure>
+<p>下面看一个JSP声明的实例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP声明示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出count的值，然后再将count加1</span><br>        out.println(count++);<br>    %&gt;<br>    &lt;br/&gt;<br>    &lt;%<br>        <span class="hljs-comment">//输出info()方法的返回值</span><br>        out.println(info());<br>    %&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>在浏览器中测试该页面，可以看到正常输出了count 的值和info()方法的返回值，每次刷新页面，count的值就会加1。页面效果图如下（刷新许多次）：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/declare1ab0df224e6dad3d.png" alt="declare.png"></p>
+<h1 id="输出JSP表达式"><a href="#输出JSP表达式" class="headerlink" title="输出JSP表达式"></a>输出JSP表达式</h1><p>输出JSP表达式的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%=表达式%&gt;<br></code></pre></td></tr></table></figure>
+<p>下面是用表达式改写JSP声明的示例的页面代码，使用JSP表达式输出同样能达到上面的效果，代码如下：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;JSP表达式示例&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;%--下面是JSP声明部分 --%&gt;<br>&lt;%!<br>    <span class="hljs-comment">//声明一个整型变量</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> count;<br>    <span class="hljs-comment">//声明一个方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">info</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>    &#125;<br>%&gt;<br>&lt;body&gt;<br>    &lt;!-- 使用表达式输出变量的值 --&gt;<br>    &lt;%=count++%&gt;<br>    &lt;br/&gt;<br>    &lt;!-- 使用表达式输出方法的返回值 --&gt;<br>    &lt;%=info()%&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>页面效果如下：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/expression94586bd6a2b9a018.png" alt="expression.png"></p>
+<h1 id="JSP脚本"><a href="#JSP脚本" class="headerlink" title="JSP脚本"></a>JSP脚本</h1><p>JSP脚本是使用Java代码执行页面的控制，JSP脚本的语法格式如下：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%  脚本语言代码 %&gt;<br></code></pre></td></tr></table></figure>
+<p>下面是一个使用Java脚本语言控制HTML中表格的示例：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> contentType=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><br>    pageEncoding=<span class="hljs-string">&quot;utf-8&quot;</span>%&gt;<br>&lt;!DOCTYPE html PUBLIC <span class="hljs-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span> <span class="hljs-string">&quot;http://www.w3.org/TR/html4/loose.dtd&quot;</span>&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>&lt;meta http-equiv=<span class="hljs-string">&quot;Content-Type&quot;</span> content=<span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span>&gt;<br>&lt;title&gt;脚本测试&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    &lt;table border=<span class="hljs-string">&quot;1px&quot;</span> cellspacing=<span class="hljs-string">&quot;0px&quot;</span> style=<span class="hljs-string">&quot;border-collapse:collapse&quot;</span> width=<span class="hljs-string">&quot;300px&quot;</span>&gt;<br>    &lt;!-- Java脚本 --&gt;<br>    &lt;%<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">10</span>;i++) <br>    &#123;<br>    %&gt;<br>        &lt;!-- 上面的循环控制&lt;tr&gt;标签循环 --&gt;<br>        &lt;tr&gt;<br>            &lt;td&gt;循环值：&lt;/td&gt;<br>            &lt;td&gt;&lt;%=i %&gt;&lt;/td&gt;<br>        &lt;/tr&gt;<br>    &lt;%&#125; %&gt;<br>    &lt;/table&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>页面的效果如下图所示：</p>
+<p><img src="https://file.moetu.org/images/2019/12/31/scripte85aac144f3530f4.png" alt="script.png"></p>
+<p>上面就是JSP的四种基本语法，详细理解 这四种语法还需要有Servlet的知识，如JSP声明变量和方法，JSP声明的变量和方法会在该JSP页面对应的Servlet中有对应的声明，不是独立存在的，因为在Java中方法是不能独立存在的，方法的声明需要在类中声明。</p>
 ]]></content>
       <categories>
         <category>开发</category>
-        <category>Javascript</category>
+        <category>JSP</category>
       </categories>
       <tags>
         <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HomeKit初始化</title>
-    <url>/p/3XS9TP7.html</url>
-    <content><![CDATA[<p>前段时间搬家，需要插排，买了个米家的只能插排，感觉用手机控制很方便。看到苹果有自己的Home App来管理智能家居，想试试米家的智能设备能不能接入苹果的HomeKit。首先需要先搭建一个HomeKit服务器。</p>
-<a id="more"></a>
-
-<h1 id="安装Node-js和npm"><a href="#安装Node-js和npm" class="headerlink" title="安装Node.js和npm"></a>安装Node.js和npm</h1><p>Node.js v10.x:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Using Ubuntu</span><br>curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -<br>sudo apt-get install -y nodejs<br><br><span class="hljs-meta">#</span><span class="bash"> Using Debian, as root</span><br>curl -sL https://deb.nodesource.com/setup_10.x | bash -<br>apt-get install -y nodejs<br></code></pre></td></tr></table></figure>
-<h1 id="安装编译组件"><a href="#安装编译组件" class="headerlink" title="安装编译组件"></a>安装编译组件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo apt-get install libavahi-compat-libdnssd-dev<br>sudo apt-get install build-essential libtool<br></code></pre></td></tr></table></figure>
-<h1 id="安装HomeBridge"><a href="#安装HomeBridge" class="headerlink" title="安装HomeBridge"></a>安装HomeBridge</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm install -g --unsafe-perm homebridge<br></code></pre></td></tr></table></figure>
-<h1 id="添加HomeBridge配置文件"><a href="#添加HomeBridge配置文件" class="headerlink" title="添加HomeBridge配置文件"></a>添加HomeBridge配置文件</h1><p>进入目录：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cd ~/.homebridge/<br></code></pre></td></tr></table></figure>
-<p>创建文件：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim config.json<br></code></pre></td></tr></table></figure>
-<p>添加：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;bridge&quot;</span>: &#123;<br>        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;Homebridge&quot;</span>,<br>        <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;CC:22:3D:E3:CE:30&quot;</span>,<br>        <span class="hljs-attr">&quot;port&quot;</span>: <span class="hljs-number">51826</span>,<br>        <span class="hljs-attr">&quot;pin&quot;</span>: <span class="hljs-string">&quot;031-45-154&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>保存并退出：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">wq!<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>HomeKit</category>
-      </categories>
-      <tags>
-        <tag>HomeKit</tag>
-        <tag>米家</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HomeKit添加米家智能插线板</title>
-    <url>/p/141WYMG.html</url>
-    <content><![CDATA[<p>之前搭建了个HomeKit服务器，还没有接入米家的插线板，现在试试能不能让米家设备接入苹果的HomeKit，用手机的Home软件就能控制米家插线板。</p>
-<a id="more"></a>
-
-<h1 id="安装homebridge-mi-outlet插件"><a href="#安装homebridge-mi-outlet插件" class="headerlink" title="安装homebridge-mi-outlet插件"></a>安装<code>homebridge-mi-outlet</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install homebridge-mi-outlet<br></code></pre></td></tr></table></figure>
-<h1 id="安装miio插件"><a href="#安装miio插件" class="headerlink" title="安装miio插件"></a>安装<code>miio</code>插件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm -g install miio<br></code></pre></td></tr></table></figure>
-<h1 id="用miio插件发现小米智能插线板"><a href="#用miio插件发现小米智能插线板" class="headerlink" title="用miio插件发现小米智能插线板"></a>用<code>miio</code>插件发现小米智能插线板</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">miio discover<br></code></pre></td></tr></table></figure>
-<p>可以看到<code>Model info：zhimi.powerstrip.v2</code>就是米家智能插线板，将下放的Address和Token记下来：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Address：192.168.xxx.xxx<br>Token：21a98556732d471e2764cxxxxxxb1ee1<br></code></pre></td></tr></table></figure>
-<h1 id="修改HomeBridge的config-json文件"><a href="#修改HomeBridge的config-json文件" class="headerlink" title="修改HomeBridge的config.json文件"></a>修改HomeBridge的<code>config.json</code>文件</h1><p>在<code>bridge</code>节点后面添加所需的<code>platforms</code>：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>    <span class="hljs-attr">&quot;platforms&quot;</span>: [&#123;<br>        <span class="hljs-attr">&quot;platform&quot;</span>: <span class="hljs-string">&quot;MiOutletPlatform&quot;</span>,<br>            <span class="hljs-attr">&quot;deviceCfgs&quot;</span>: [&#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBase&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插座基础版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiPlugBaseWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchUSBName&quot;</span>: <span class="hljs-string">&quot;米家智能插座USB版指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchUSBDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiIntelligencePinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;switchLEDName&quot;</span>: <span class="hljs-string">&quot;米家智能插线板指示灯开关&quot;</span>,<br>                <span class="hljs-attr">&quot;switchLEDDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboard&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板五孔位版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;, &#123;<br>                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;MiQingPinboardWithUSB&quot;</span>,<br>                <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.xxx.xxx&quot;</span>,<br>                <span class="hljs-attr">&quot;token&quot;</span>: <span class="hljs-string">&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>,<br>                <span class="hljs-attr">&quot;outletName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版&quot;</span>,<br>                <span class="hljs-attr">&quot;outletDisable&quot;</span>: <span class="hljs-literal">false</span>,<br>                <span class="hljs-attr">&quot;temperatureName&quot;</span>: <span class="hljs-string">&quot;青米智能插线板USB版温度&quot;</span>,<br>                <span class="hljs-attr">&quot;temperatureDisable&quot;</span>: <span class="hljs-literal">false</span><br>            &#125;]<br>    &#125;]<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>其中<code>type</code>代表的硬件：</p>
-<ul>
-<li>米家智能插座基础版: <code>MiPlugBase</code></li>
-<li>米家智能插座USB版: <code>MiPlugBaseWithUSB</code></li>
-<li>米家智能插线板: <code>MiIntelligencePinboard</code></li>
-<li>青米智能插线板五孔位版: <code>MiQingPinboard</code></li>
-<li>青米智能插线板USB版: <code>MiQingPinboardWithUSB</code></li>
-</ul>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>HomeKit</category>
-      </categories>
-      <tags>
-        <tag>HomeKit</tag>
-        <tag>米家</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
-    <url>/p/2JJ2AE2.html</url>
-    <content><![CDATA[<p>服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。</p>
-<p>Google推出了一种图片格式: WebP (<a href="https://developers.google.com/speed/webp/">Google官方网址</a>)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%</p>
-<a id="more"></a>
-
-<p><a href="https://caniuse.com/#feat=webp">查看支持率</a></p>
-<p><img src="https://file.moetu.org/images/2020/01/06/webp805caf2e553e4f3ad1.jpg" alt="WebP支持率"></p>
-<p>原图加载截图：（12.61s）</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/Chrome--d61d7c79a27fca39.jpg" alt="Chrome 原图 加载"></p>
-<p>WebP加载截图：（4.72s）</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/Chrome-Webp-7a40425fcab83529.jpg" alt="Chrome Webp 加载"></p>
-<p>可以看出加载Webp会大大提高加载速度</p>
-<h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
-<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>libwebp是图片转成webp的工具</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">yum install libwebp-tools<br></code></pre></td></tr></table></figure>
-<p>测试:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cwebp -q 100 1.jpg -o 1.webp<br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/libwebpd4b8956ec9f0cc80.jpg" alt="测试libwebp安装"></p>
-<p>如果出现以上信息，说明安装成功。</p>
-<h2 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><p>配置：</p>
-<p>让<code>.png.webp</code>、<code>.jpg.webp</code>、<code>.gif.webp</code>的请求执行转WebP的lua文件。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>    expires               365d;<br>    autoindex             on;<br>    autoindex_exact_size  on;<br>    try_files             $uri $uri/ @webp;<br>&#125;<br>    <br>location @webp &#123;    <br>    if ($uri ~ \.(png|jpg|gif)\.webp) &#123;<br>        content_by_lua_file  lua/imgProcess.lua;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/nginxwebplua03e80bf8dc3f9b85.jpg" alt="Nginx-Lua配置WebP转换"></p>
-<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span> <span class="hljs-comment">--判断文件是否存在的方法</span><br>    <span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-keyword">local</span> newFile = ngx.var.request_filename;<br> <span class="hljs-keyword">local</span> originalFile = newFile:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>, #newFile - <span class="hljs-number">5</span>); <span class="hljs-comment">--请求的webp图片去掉.webp后缀</span><br><br> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>   ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>   <span class="hljs-keyword">return</span>;<br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile);  <span class="hljs-comment">--用libwebp转换图片</span><br><br> <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>     ngx.exec(ngx.var.uri); <span class="hljs-comment">--重定向到转换成的webp图片</span><br> <span class="hljs-keyword">else</span><br>     ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>); <span class="hljs-comment">--转换失败：404</span><br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/weblua2dc97f3492a10817.jpg" alt="WebP转换的Lua"></p>
-<h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>访问前图片，服务器上没有WebP文件。</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/3123de3b82b6d0ef1761eac2796a88fa58aa0d2c178c2991.jpg" alt="访问前图片"></p>
-<p>当服务器接收到<code>.jpg.webp</code>的请求后，自动生成WebP文件：</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/webpdd22bfaefcb9faff.jpg" alt="访问后自动生成WebP"></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Google</tag>
-        <tag>WebP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实现浏览器WebP图片自适应加载</title>
-    <url>/p/3MDAQPQ.html</url>
-    <content><![CDATA[<p>让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。</p>
-<h1 id="主要思路"><a href="#主要思路" class="headerlink" title="主要思路"></a>主要思路</h1><p>如何判断浏览器是否支持WebP格式的图片，除了在前端加载一个1×1像素的WebP图片来获取宽度的方法，还有个方法，那就是查看浏览器发出的请求头中的Accept字段，如果改字段中带着<code>image/webp</code>说明浏览器支持WebP，反之则就是不持支。</p>
-<a id="more"></a>
-
-<p>不支持WebP的IE的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/WebPIEAccept14c6d4ecc012785f.jpg" alt="不支持WebP的IE的请求头Accept字段"></p>
-<p>支持WebP的Firefox的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/WebPFirefoxAccept08877c383da9747a.jpg" alt="支持WebP的Firefox的请求头Accept字段"></p>
-<p>支持WebP的Chrome的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/ChromeAcceptad5df29d04e6d935.jpg" alt="支持WebP的Chrome的请求头Accept字段"></p>
-<p>根据这个，我们可以修改Nginx的配置文件，让以**<code>.jgp</code>、<code>.jpeg</code>和<code>.png</code>结尾的请求**并且请求头Accept字段包含<code>image/webp</code>的请求进行WebP文件的判断，这个判断我们写在Lua文件中。在Lua文件中，先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
-<p>有了这个思路，我们进行尝试。</p>
-<h1 id="修改准备"><a href="#修改准备" class="headerlink" title="修改准备"></a>修改准备</h1><h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
-<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>参考：<a href="https://zmlu.me/p/2jj2ae2.html">Nginx+Lua+libwebp实现服务器图片自动转WebP</a></p>
-<h2 id="Nginx-conf"><a href="#Nginx-conf" class="headerlink" title="Nginx.conf"></a>Nginx.conf</h2><p>因为if不能同时判断多个条件，所以我们定义一个变量，用if修改变量值，最后根据该变量的值来判断是否满足所有的条件。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>        set                   $cwebp_flag 0;<br>    <br>        if ($uri ~ \.(png|jpg|jpeg)$) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($http_accept ~ image/webp) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($cwebp_flag = 011) &#123;<br>            content_by_lua_file  lua/imgProcess.lua;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
-<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><p>这个文件主要工作是：先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
-<figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span><br>	<span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br> <br><span class="hljs-keyword">local</span> originalFile = ngx.var.request_filename;<br><span class="hljs-keyword">local</span> newFile = ngx.var.request_filename .. <span class="hljs-string">&quot;.webp&quot;</span>;<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><br>  <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile); <br><br>  <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>    ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>    ngx.header.x_webp = <span class="hljs-string">&#x27;generate&#x27;</span>;<br>    ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>    ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>    <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br>  <span class="hljs-keyword">else</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">500</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">else</span><br>  ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>  ngx.header.x_webp = <span class="hljs-string">&#x27;read&#x27;</span>;<br>  ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>  ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>  <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br><span class="hljs-keyword">end</span><br><br> <br><br></code></pre></td></tr></table></figure>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>用不支持WebP的IE和支持WebP的Chrome打开同一张图片的地址，我们发现服务器给他们返回的响应内容是不一样的。</p>
-<p>支持WebP的Chrome的相应内容是WebP格式的图片：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/Chrome546a1f0b913288f7.jpg" alt="Chrome的响应内容"></p>
-<p>而不支持WebP的IE的相应内容就是普通的jpg图片：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/IEa287039efc97d622.jpg" alt="IE的响应内容"></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>WebP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Composer多线程安装、更新包方法</title>
-    <url>/p/3PKQ4GE.html</url>
-    <content><![CDATA[<p>Composer通过更换国内镜像源之后，发现安装和更新都很快了，但是由于是单线程下载，有时候还是慢的出奇，能不能在安装更新的时候使用多线程来下载依赖呢？</p>
-<p>有一款Composer包可以实现此功能————<code>prestissimo</code>。</p>
-<p>Github地址：<a href="https://github.com/hirak/prestissimo">hirak/prestissimo</a></p>
-<a id="more"></a>
-
-<h1 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer global require hirak/prestissimo<br></code></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p><code>composer install/update</code> 任何需要大量安装依赖的情景，都会自动生效。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>PHP</category>
-      </categories>
-      <tags>
-        <tag>Composer</tag>
+        <tag>JSP</tag>
       </tags>
   </entry>
   <entry>
@@ -549,6 +394,25 @@
       <tags>
         <tag>Composer</tag>
         <tag>PHP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Composer多线程安装、更新包方法</title>
+    <url>/p/3PKQ4GE.html</url>
+    <content><![CDATA[<p>Composer通过更换国内镜像源之后，发现安装和更新都很快了，但是由于是单线程下载，有时候还是慢的出奇，能不能在安装更新的时候使用多线程来下载依赖呢？</p>
+<p>有一款Composer包可以实现此功能————<code>prestissimo</code>。</p>
+<p>Github地址：<a href="https://github.com/hirak/prestissimo">hirak/prestissimo</a></p>
+<a id="more"></a>
+
+<h1 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer global require hirak/prestissimo<br></code></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p><code>composer install/update</code> 任何需要大量安装依赖的情景，都会自动生效。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>PHP</category>
+      </categories>
+      <tags>
+        <tag>Composer</tag>
       </tags>
   </entry>
   <entry>
@@ -617,105 +481,6 @@
       <tags>
         <tag>Java</tag>
         <tag>Gulp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python在全局代理下安装包报错</title>
-    <url>/p/1E56RCW.html</url>
-    <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Python<span class="hljs-string">&#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal</span><br></code></pre></td></tr></table></figure>
-<p>以下是解决办法:</p>
-<a id="more"></a>
-
-<p>首先去掉所有代理，和终端的<code>PROXY</code>属性，然后安装<code>pysocks</code>模块</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install pysocks<br></code></pre></td></tr></table></figure>
-<p>安装完毕后再加上代理或者终端<code>PROXY</code>属性，即可正常安装其他模块。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>Mac</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python切片</title>
-    <url>/p/253PZX0.html</url>
-    <content><![CDATA[<p>记录下Python五个高级特性，分别是切片、迭代、列表生成式、生成器、迭代器，记录切片学习的笔记。</p>
-<a id="more"></a>
-
-<h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><p>取一个list或tuple的部分元素是非常常见的操作。比如，一个list如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L = [<span class="hljs-string">&#x27;Michael&#x27;</span>, <span class="hljs-string">&#x27;Sarah&#x27;</span>, <span class="hljs-string">&#x27;Tracy&#x27;</span>, <span class="hljs-string">&#x27;Bob&#x27;</span>, <span class="hljs-string">&#x27;Jack&#x27;</span>]<br></code></pre></td></tr></table></figure>
-<p>取前3个元素，应该怎么做？笨办法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">[L[<span class="hljs-number">0</span>], L[<span class="hljs-number">1</span>], L[<span class="hljs-number">2</span>]]<br></code></pre></td></tr></table></figure>
-<p>或者用循环，不过代码都很长，比如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">r = []<br>n = <span class="hljs-number">3</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>    r.append(L[i])<br></code></pre></td></tr></table></figure>
-<p>对这种经常取指定索引范围的操作，用循环十分繁琐，因此，Python提供了切片（Slice）操作符，能大大简化这种操作。<br>对应上面的问题，取前3个元素，用一行代码就可以完成切片：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
-<p><code>L[0:3]</code>表示，从索引<code>0</code>开始取，直到索引<code>3</code>为止，但不包括索引<code>3</code>。即索引<code>0</code>，<code>1</code>，<code>2</code>，正好是3个元素。<br>如果第一个索引是<code>0</code>，还可以省略：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[:<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
-<p>类似的，既然Python支持L[-1]取倒数第一个元素，那么它同样支持倒数切片，试试：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[-<span class="hljs-number">2</span>:]<br></code></pre></td></tr></table></figure>
-<p>倒数第一个元素的索引是<code>-1</code>。<br>有一个0-99的数列，前10个数，每两个取一个：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[:10:2]</span><br>[0, 2, 4, 6, 8]<br></code></pre></td></tr></table></figure>
-<p>所有数，每5个取一个：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[::5]</span><br>[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]<br></code></pre></td></tr></table></figure>
-<p>什么都不写，只写[:]就可以原样复制一个list：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[:]</span><br>[0, 1, 2, 3, ..., 99]<br></code></pre></td></tr></table></figure>
-<p>字符串’xxx’也可以看成是一种list，每个元素就是一个字符。因此，字符串也可以用切片操作，只是操作结果仍是字符串：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; <span class="hljs-string">&#x27;ABCDEFG&#x27;</span>[:3]</span><br>&#x27;ABC&#x27;<br><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; <span class="hljs-string">&#x27;ABCDEFG&#x27;</span>[::2]</span><br>&#x27;ACEG&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用Scrapy抓取百度热点新闻</title>
-    <url>/p/QHV65K.html</url>
-    <content><![CDATA[<h2 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install Scrapy<br></code></pre></td></tr></table></figure>
-<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy startproject tutorial<br></code></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h2 id="编写Item"><a href="#编写Item" class="headerlink" title="编写Item"></a>编写Item</h2><p>修改<code>items.py</code>文件：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaiduNewsItem</span>(<span class="hljs-params">scrapy.Item</span>):</span><br>    <span class="hljs-comment"># define the fields for your item here like:</span><br>    <span class="hljs-comment"># name = scrapy.Field()</span><br>    title = scrapy.Field()<br>    link = scrapy.Field()<br>    time = scrapy.Field()<br>    category = scrapy.Field()<br></code></pre></td></tr></table></figure>
-<h2 id="编写爬虫-Spider"><a href="#编写爬虫-Spider" class="headerlink" title="编写爬虫(Spider)"></a>编写爬虫(Spider)</h2><p>在<code>spiders</code>文件夹下新建一个py文件，命名为<code>baidunews.py</code></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy,re<br><br><span class="hljs-keyword">from</span> tutorial.items <span class="hljs-keyword">import</span> BaiduNewsItem<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DmozSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span><br>    name = <span class="hljs-string">&quot;baidunews&quot;</span><br>    allowed_domains = [<span class="hljs-string">&quot;baidu.com&quot;</span>]<br>    start_urls = [<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guoji&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guonei&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=mil&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=ent&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=sports&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=tech&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=lady&quot;</span>,<br>    ]<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span><br>        category = &#123;<span class="hljs-string">&#x27;guoji&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u9645&#x27;</span>,<span class="hljs-string">&#x27;guonei&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u5185&#x27;</span>,<span class="hljs-string">&#x27;mil&#x27;</span>:<span class="hljs-string">u&#x27;\u519b\u4e8b&#x27;</span>,<span class="hljs-string">&#x27;ent&#x27;</span>:<span class="hljs-string">u&#x27;\u5a31\u4e50&#x27;</span>,<span class="hljs-string">&#x27;sports&#x27;</span>:<span class="hljs-string">u&#x27;\u4f53\u80b2&#x27;</span>,<span class="hljs-string">&#x27;tech&#x27;</span>:<span class="hljs-string">u&#x27;\u79d1\u6280&#x27;</span>,<span class="hljs-string">&#x27;lady&#x27;</span>:<span class="hljs-string">u&#x27;\u5973\u4eba&#x27;</span>&#125;<br>        <span class="hljs-keyword">for</span> sel <span class="hljs-keyword">in</span> response.xpath(<span class="hljs-string">&#x27;//div[@id=&quot;latest-news&quot;]/ul/li&#x27;</span>):<br>            item = BaiduNewsItem()<br>            item[<span class="hljs-string">&#x27;title&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;link&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/@href&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;time&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;span/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;category&#x27;</span>] = category[<span class="hljs-string">&quot;&quot;</span>.join(re.findall(<span class="hljs-string">&#x27;(^|&amp;)channel=([^&amp;]*)(&amp;|$)&#x27;</span>,response.url)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>])]<br>            <span class="hljs-keyword">yield</span> item<br></code></pre></td></tr></table></figure>
-<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy crawl baidunews<br></code></pre></td></tr></table></figure>
-<h2 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h2><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">[<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦新增新冠肺炎确诊病例1748例，累计563..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667639131171773453&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;13:30&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;面临破产危机！法国警告雷诺：若不“返回”法国将不提..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667635925032421657&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;12:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;印度战机迫降到巴基斯坦，飞行员一句话瞬间就逗笑了在..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667630787025851625&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;11:18&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;法国地方政府用菠萝丈量社交距离，被批“太幼稚”&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667624101851668641&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;09:32&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;大疆：正与巴基斯坦洽谈无人机治蝗 初中毕业生5天就..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667620721060133107&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;08:38&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;离太近！德国警察“把错门”，错把卢森堡当成法国&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667617809556396961&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;07:51&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;温格：慎重面对外资进入法甲，不能毁了法国的足球文化&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667573388455325969&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:55&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;五角大楼终于松口，巴铁F-16将迎重大利好，该印度..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667581813539045925&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:20&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;致敬！巴基斯坦坠机事故未造成地面人员死亡原因曝光&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667575501812426929&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦官方：坠机事故97人遇难 2人幸存&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667574758558193863&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:29&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦坠机事件2人生还！幸存者：被火海包围 人们..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667565408074998538&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:59&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;里昂主席：西班牙患者更多却能复赛，我们法国真是太蠢..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667563640465920816&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:31&quot;</span>&#125;,<br>]<br></code></pre></td></tr></table></figure>
-<h2 id="附：中文乱码"><a href="#附：中文乱码" class="headerlink" title="附：中文乱码"></a>附：中文乱码</h2><p>如果结果中文乱码，则需要在<code>settings.py</code>中添加如下配置：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">FEED_EXPORT_ENCODING = <span class="hljs-string">&#x27;utf-8&#x27;</span><br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Orcale日常记录</title>
-    <url>/p/3PN2K8A.html</url>
-    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
-<a id="more"></a>
-
-<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
-<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
-<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
-<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>SQL</category>
-      </categories>
-      <tags>
-        <tag>Mac</tag>
-        <tag>Orcale</tag>
-        <tag>SQL</tag>
       </tags>
   </entry>
   <entry>
@@ -809,6 +574,87 @@
       </tags>
   </entry>
   <entry>
+    <title>Orcale日常记录</title>
+    <url>/p/3PN2K8A.html</url>
+    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
+<a id="more"></a>
+
+<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
+<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
+<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>SQL</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Orcale</tag>
+        <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>理解 JavaScript 的 async、await</title>
+    <url>/p/3Q3X94C.html</url>
+    <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
+<a id="more"></a>
+
+<h1 id="async-和-await-在干什么"><a href="#async-和-await-在干什么" class="headerlink" title="async 和 await 在干什么"></a>async 和 await 在干什么</h1><p>另外还有一个很有意思的语法规定，await 只能出现在 async 函数中。然后细心的朋友会产生一个疑问，如果 await 只能出现在 async 函数中，那这个 async 函数应该怎么调用？<br>如果需要通过 await 来调用一个 async 函数，那这个调用的外面必须得再包一个 async 函数，然后……进入死循环，永无出头之日……<br>如果 async 函数不需要 await 来调用，那 async 到底起个啥作用？</p>
+<h2 id="async-起什么作用"><a href="#async-起什么作用" class="headerlink" title="async 起什么作用"></a>async 起什么作用</h2><p>这个问题的关键在于，async 函数是怎么处理它的返回值的！<br>我们当然希望它能直接通过 return 语句返回我们想要的值，但是如果真是这样，似乎就没 await 什么事了。所以，写段代码来试试，看它到底会返回什么：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello async&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> result = testAsync();<br><span class="hljs-built_in">console</span>.log(result);<br></code></pre></td></tr></table></figure>
+<p>看到输出就恍然大悟了——输出的是一个 Promise 对象。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">c:\var\test&gt; node --harmony_async_await .<br>Promise &#123; &#x27;hello async&#x27; &#125;<br></code></pre></td></tr></table></figure>
+<p>所以，<code>async</code> 函数返回的是一个 Promise 对象。从文档中也可以得到这个信息。async 函数（包含函数语句、函数表达式、Lambda表达式）会返回一个 Promise 对象，如果在函数中 <code>return</code> 一个直接量，async 会把这个直接量通过 <code>Promise.resolve()</code> 封装成 Promise 对象。</p>
+<p>async 函数返回的是一个 Promise 对象，所以在最外层不能用 await 获取其返回值的情况下，我们当然应该用原来的方式：<code>then()</code> 链来处理这个 Promise 对象，就像这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">testAsync().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(v);    <span class="hljs-comment">// 输出 hello async</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>现在回过头来想下，如果 async 函数没有返回值，又该如何？很容易想到，它会返回<code>Promise.resolve(undefined)</code>。</p>
+<p>联想一下 Promise 的特点——无等待，所以在没有 await 的情况下执行 async 函数，它会立即执行，返回一个 Promise 对象，并且，绝不会阻塞后面的语句。这和普通返回 Promise 对象的函数并无二致。</p>
+<p>那么下一个关键点就在于 await 关键字了。</p>
+<h2 id="await-到底在等啥"><a href="#await-到底在等啥" class="headerlink" title="await 到底在等啥"></a>await 到底在等啥</h2><p>一般来说，都认为 await 是在等待一个 async 函数完成。不过按语法说明，await 等待的是一个表达式，这个表达式的计算结果是 Promise 对象或者其它值（换句话说，就是没有特殊限定）。</p>
+<p>因为 async 函数返回一个 Promise 对象，所以 await 可以用于等待一个 async 函数的返回值——这也可以说是 await 在等 async 函数，但要清楚，它等的实际是一个返回值。注意到 await 不仅仅用于等 Promise 对象，它可以等任意表达式的结果，所以，await 后面实际是可以接普通函数调用或者直接量的。所以下面这个示例完全可以正确运行</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSomething</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;something&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">&quot;hello async&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v1 = <span class="hljs-keyword">await</span> getSomething();<br>    <span class="hljs-keyword">const</span> v2 = <span class="hljs-keyword">await</span> testAsync();<br>    <span class="hljs-built_in">console</span>.log(v1, v2);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
+<h2 id="await-等到了要等的，然后呢"><a href="#await-等到了要等的，然后呢" class="headerlink" title="await 等到了要等的，然后呢"></a>await 等到了要等的，然后呢</h2><p>await 等到了它要等的东西，一个 Promise 对象，或者其它值，然后呢？我不得不先说，await 是个运算符，用于组成表达式，await 表达式的运算结果取决于它等的东西。</p>
+<p>如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。</p>
+<p>如果它等到的是一个 Promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。</p>
+<blockquote>
+<p>看到上面的阻塞一词，心慌了吧……放心，这就是 await 必须用在 async 函数中的原因。async 函数调用不会造成阻塞，它内部所有的阻塞都被封装在一个 Promise 对象中异步执行。</p>
+</blockquote>
+<h1 id="async-await-帮我们干了啥"><a href="#async-await-帮我们干了啥" class="headerlink" title="async/await 帮我们干了啥"></a>async/await 帮我们干了啥</h1><h2 id="作个简单的比较"><a href="#作个简单的比较" class="headerlink" title="作个简单的比较"></a>作个简单的比较</h2><p>上面已经说明了 async 会将其后的函数（函数表达式或 Lambda）的返回值封装成一个 Promise 对象，而 await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来。</p>
+<p>现在举例，用 <code>setTimeout</code> 模拟耗时的异步操作，先来看看不用 async/await 会怎么写</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br>takeLongTime().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;got&quot;</span>, v);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>如果改用 async/await 呢，会是这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v = <span class="hljs-keyword">await</span> takeLongTime();<br>    <span class="hljs-built_in">console</span>.log(v);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
+<p>眼尖的同学已经发现 <code>takeLongTime()</code> 没有申明为 <code>async</code>。实际上，<code>takeLongTime()</code> 本身就是返回的 Promise 对象，加不加 <code>async</code> 结果都一样，如果没明白，请回过头再去看看上面的“async 起什么作用”。</p>
+<p>又一个疑问产生了，这两段代码，两种方式对异步调用的处理（实际就是对 Promise 对象的处理）差别并不明显，甚至使用 async/await 还需要多写一些代码，那它的优势到底在哪？</p>
+<h2 id="async-await-的优势在于处理-then-链"><a href="#async-await-的优势在于处理-then-链" class="headerlink" title="async/await 的优势在于处理 then 链"></a>async/await 的优势在于处理 then 链</h2><p>单一的 Promise 链并不能发现 async/await 的优势，但是，如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（很有意思，Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。</p>
+<p>假设一个业务，分多个步骤完成，每个步骤都是异步的，而且依赖于上一个步骤的结果。我们仍然用 <code>setTimeout</code> 来模拟异步操作：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 传入参数 n，表示这个函数执行的时间（毫秒）</span><br><span class="hljs-comment"> * 执行的结果是 n + 200，这个值将用于下一步骤</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(n + <span class="hljs-number">200</span>), n);<br>    &#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>现在用 Promise 方式来实现这三个步骤的处理</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> step2(time2))<br>        .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> step3(time3))<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 500</span><br><span class="hljs-comment">// step3 with 700</span><br><span class="hljs-comment">// result is 900</span><br><span class="hljs-comment">// doIt: 1507.251ms</span><br></code></pre></td></tr></table></figure>
+<p>输出结果 <code>result</code> 是 <code>step3()</code> 的参数 <code>700 + 200 = 900</code>。<code>doIt()</code> 顺序执行了三个步骤，一共用了 <code>300 + 500 + 700 = 1500</code> 毫秒，和 <code>console.time()/console.timeEnd()</code> 计算的结果一致。<br>如果用 async/await 来实现呢，会是这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
+<p>结果和之前的 Promise 实现是一样的，但是这个代码看起来是不是清晰得多，几乎跟同步代码一样</p>
+<h2 id="还有更酷的"><a href="#还有更酷的" class="headerlink" title="还有更酷的"></a>还有更酷的</h2><p>现在把业务要求改一下，仍然是三个步骤，但每一个步骤都需要之前每个步骤的结果。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(m + n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">k, m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;k&#125;</span>, <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(k + m + n);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这回先用 async/await 来写：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time1, time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time1, time2, time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 800 = 300 + 500</span><br><span class="hljs-comment">// step3 with 1800 = 300 + 500 + 1000</span><br><span class="hljs-comment">// result is 2000</span><br><span class="hljs-comment">// doIt: 2907.387ms</span><br></code></pre></td></tr></table></figure>
+<p>除了觉得执行时间变长了之外，似乎和之前的示例没啥区别啊！别急，认真想想如果把它写成 Promise 方式实现会是什么样子？</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> step2(time1, time2)<br>                .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> [time1, time2, time3]);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">times</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> [time1, time2, time3] = times;<br>            <span class="hljs-keyword">return</span> step3(time1, time2, time3);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
+<p>有没有感觉有点复杂的样子？那一堆参数处理，就是 Promise 方案的死穴—— 参数传递太麻烦了，看着就晕！</p>
+<blockquote>
+<p>参考：<a href="https://segmentfault.com/a/1190000007535316">理解 JavaScript 的 async/await - 边城</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Javascript</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在macOS上运用Crontab运行定时任务</title>
     <url>/p/11CFSV5.html</url>
     <content><![CDATA[<blockquote>
@@ -838,6 +684,35 @@
       </categories>
       <tags>
         <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[202006期] 有价值 iOS App</title>
+    <url>/p/2S9K9NA.html</url>
+    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
+<a id="more"></a>
+
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
+<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
+<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
+<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>Apple</category>
+      </categories>
+      <tags>
+        <tag>Netflix</tag>
       </tags>
   </entry>
   <entry>
@@ -944,35 +819,6 @@
       </tags>
   </entry>
   <entry>
-    <title>[202006期] 有价值 iOS App</title>
-    <url>/p/2S9K9NA.html</url>
-    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
-<a id="more"></a>
-
-<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
-<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
-<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
-<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>Apple</category>
-      </categories>
-      <tags>
-        <tag>Netflix</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CarKey功能预测及介绍</title>
     <url>/p/T5A9FS.html</url>
     <content><![CDATA[<p>苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。</p>
@@ -1021,6 +867,247 @@
         <category>日常</category>
         <category>Apple</category>
       </categories>
+  </entry>
+  <entry>
+    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
+    <url>/p/2JJ2AE2.html</url>
+    <content><![CDATA[<p>服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。</p>
+<p>Google推出了一种图片格式: WebP (<a href="https://developers.google.com/speed/webp/">Google官方网址</a>)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%</p>
+<a id="more"></a>
+
+<p><a href="https://caniuse.com/#feat=webp">查看支持率</a></p>
+<p><img src="https://file.moetu.org/images/2020/01/06/webp805caf2e553e4f3ad1.jpg" alt="WebP支持率"></p>
+<p>原图加载截图：（12.61s）</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/Chrome--d61d7c79a27fca39.jpg" alt="Chrome 原图 加载"></p>
+<p>WebP加载截图：（4.72s）</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/Chrome-Webp-7a40425fcab83529.jpg" alt="Chrome Webp 加载"></p>
+<p>可以看出加载Webp会大大提高加载速度</p>
+<h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
+<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>libwebp是图片转成webp的工具</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">yum install libwebp-tools<br></code></pre></td></tr></table></figure>
+<p>测试:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cwebp -q 100 1.jpg -o 1.webp<br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/libwebpd4b8956ec9f0cc80.jpg" alt="测试libwebp安装"></p>
+<p>如果出现以上信息，说明安装成功。</p>
+<h2 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><p>配置：</p>
+<p>让<code>.png.webp</code>、<code>.jpg.webp</code>、<code>.gif.webp</code>的请求执行转WebP的lua文件。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>    expires               365d;<br>    autoindex             on;<br>    autoindex_exact_size  on;<br>    try_files             $uri $uri/ @webp;<br>&#125;<br>    <br>location @webp &#123;    <br>    if ($uri ~ \.(png|jpg|gif)\.webp) &#123;<br>        content_by_lua_file  lua/imgProcess.lua;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/nginxwebplua03e80bf8dc3f9b85.jpg" alt="Nginx-Lua配置WebP转换"></p>
+<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span> <span class="hljs-comment">--判断文件是否存在的方法</span><br>    <span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-keyword">local</span> newFile = ngx.var.request_filename;<br> <span class="hljs-keyword">local</span> originalFile = newFile:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>, #newFile - <span class="hljs-number">5</span>); <span class="hljs-comment">--请求的webp图片去掉.webp后缀</span><br><br> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>   ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>   <span class="hljs-keyword">return</span>;<br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile);  <span class="hljs-comment">--用libwebp转换图片</span><br><br> <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>     ngx.exec(ngx.var.uri); <span class="hljs-comment">--重定向到转换成的webp图片</span><br> <span class="hljs-keyword">else</span><br>     ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>); <span class="hljs-comment">--转换失败：404</span><br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/weblua2dc97f3492a10817.jpg" alt="WebP转换的Lua"></p>
+<h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>访问前图片，服务器上没有WebP文件。</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/3123de3b82b6d0ef1761eac2796a88fa58aa0d2c178c2991.jpg" alt="访问前图片"></p>
+<p>当服务器接收到<code>.jpg.webp</code>的请求后，自动生成WebP文件：</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/webpdd22bfaefcb9faff.jpg" alt="访问后自动生成WebP"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Google</tag>
+        <tag>WebP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实现浏览器WebP图片自适应加载</title>
+    <url>/p/3MDAQPQ.html</url>
+    <content><![CDATA[<p>让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。</p>
+<h1 id="主要思路"><a href="#主要思路" class="headerlink" title="主要思路"></a>主要思路</h1><p>如何判断浏览器是否支持WebP格式的图片，除了在前端加载一个1×1像素的WebP图片来获取宽度的方法，还有个方法，那就是查看浏览器发出的请求头中的Accept字段，如果改字段中带着<code>image/webp</code>说明浏览器支持WebP，反之则就是不持支。</p>
+<a id="more"></a>
+
+<p>不支持WebP的IE的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/WebPIEAccept14c6d4ecc012785f.jpg" alt="不支持WebP的IE的请求头Accept字段"></p>
+<p>支持WebP的Firefox的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/WebPFirefoxAccept08877c383da9747a.jpg" alt="支持WebP的Firefox的请求头Accept字段"></p>
+<p>支持WebP的Chrome的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/ChromeAcceptad5df29d04e6d935.jpg" alt="支持WebP的Chrome的请求头Accept字段"></p>
+<p>根据这个，我们可以修改Nginx的配置文件，让以**<code>.jgp</code>、<code>.jpeg</code>和<code>.png</code>结尾的请求**并且请求头Accept字段包含<code>image/webp</code>的请求进行WebP文件的判断，这个判断我们写在Lua文件中。在Lua文件中，先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
+<p>有了这个思路，我们进行尝试。</p>
+<h1 id="修改准备"><a href="#修改准备" class="headerlink" title="修改准备"></a>修改准备</h1><h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
+<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>参考：<a href="https://zmlu.me/p/2jj2ae2.html">Nginx+Lua+libwebp实现服务器图片自动转WebP</a></p>
+<h2 id="Nginx-conf"><a href="#Nginx-conf" class="headerlink" title="Nginx.conf"></a>Nginx.conf</h2><p>因为if不能同时判断多个条件，所以我们定义一个变量，用if修改变量值，最后根据该变量的值来判断是否满足所有的条件。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>        set                   $cwebp_flag 0;<br>    <br>        if ($uri ~ \.(png|jpg|jpeg)$) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($http_accept ~ image/webp) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($cwebp_flag = 011) &#123;<br>            content_by_lua_file  lua/imgProcess.lua;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><p>这个文件主要工作是：先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span><br>	<span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br> <br><span class="hljs-keyword">local</span> originalFile = ngx.var.request_filename;<br><span class="hljs-keyword">local</span> newFile = ngx.var.request_filename .. <span class="hljs-string">&quot;.webp&quot;</span>;<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><br>  <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile); <br><br>  <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>    ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>    ngx.header.x_webp = <span class="hljs-string">&#x27;generate&#x27;</span>;<br>    ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>    ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>    <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br>  <span class="hljs-keyword">else</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">500</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">else</span><br>  ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>  ngx.header.x_webp = <span class="hljs-string">&#x27;read&#x27;</span>;<br>  ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>  ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>  <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br><span class="hljs-keyword">end</span><br><br> <br><br></code></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>用不支持WebP的IE和支持WebP的Chrome打开同一张图片的地址，我们发现服务器给他们返回的响应内容是不一样的。</p>
+<p>支持WebP的Chrome的相应内容是WebP格式的图片：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/Chrome546a1f0b913288f7.jpg" alt="Chrome的响应内容"></p>
+<p>而不支持WebP的IE的相应内容就是普通的jpg图片：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/IEa287039efc97d622.jpg" alt="IE的响应内容"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>WebP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>How to download Wechat on iOS in india</title>
+    <url>/p/ESP3TJ.html</url>
+    <content><![CDATA[<p>WeChat has been removed from the App Store India, so how can friends in India download WeChat?</p>
+<a id="more"></a>
+
+<h2 id="Open-“App-Store”-on-home-screen"><a href="#Open-“App-Store”-on-home-screen" class="headerlink" title="Open “App Store” on home screen."></a>Open “App Store” on home screen.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled.png"></p>
+<h2 id="Click-on-the-avatar-in-the-upper-right-corner"><a href="#Click-on-the-avatar-in-the-upper-right-corner" class="headerlink" title="Click on the avatar in the upper right corner."></a>Click on the avatar in the upper right corner.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%201.png"></p>
+<h2 id="At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it"><a href="#At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it" class="headerlink" title="At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it."></a>At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%202.png"></p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%203.png"></p>
+<h2 id="Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button"><a href="#Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button" class="headerlink" title="Then, return to the top of the page, enter the account password provided, and click the sign in button."></a>Then, return to the top of the page, enter the account password provided, and click the sign in button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%204.png"></p>
+<h2 id="At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button"><a href="#At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button" class="headerlink" title="At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button."></a>At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%205.png"></p>
+<h2 id="In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade"><a href="#In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade" class="headerlink" title="In the “Protect your account” alert that pops up, select the second button(Do not upgrade)"></a>In the “Protect your account” alert that pops up, select the second button(Do not upgrade)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%206.png"></p>
+<h2 id="After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store"><a href="#After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store" class="headerlink" title="After the login is complete, click the “Done” button on the top right, and the store will switch to the US store."></a>After the login is complete, click the “Done” button on the top right, and the store will switch to the US store.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%207.png"></p>
+<h2 id="Search-amp-download-and-enjoy"><a href="#Search-amp-download-and-enjoy" class="headerlink" title="Search &amp; download and enjoy :-)"></a>Search &amp; download and enjoy :-)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%208.png"></p>
+<blockquote>
+<p>After the installation is complete, you can switch back to your Apple ID in the App Store</p>
+</blockquote>
+<p><strong>ATTENTION! DO NOT log in to the provided account in the settings app, otherwise the device may be locked.</strong></p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>技巧</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>运用Live Template加快写代码速度</title>
+    <url>/p/1W7RVXA.html</url>
+    <content><![CDATA[<p>用IDEA写代码的时候往往会重复性的写一段类似或者一样的代码，让人懊恼不已。<br>IDEA自带了个Live Template功能，不仅有许多自带的快捷写代码的功能，而且还可以自定义属于自己的Live Template。</p>
+<a id="more"></a>
+
+<h1 id="自定义命令"><a href="#自定义命令" class="headerlink" title="自定义命令"></a>自定义命令</h1><p>可以自定义一些命令。<br>打开IDEA的设置，找到Live Template，右侧添加，可以先添加一个自己的分组，比如我添加了一个<code>My Live</code>的分组，再添加具体的配置</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/WX20200511-1557582xe4befa839a2b5629.png" alt="设置中的Live Template"></p>
+<p>变量用<code>$$</code>包裹，IDEA就知道这是个变量了，变量可以在右下角的<code>Edit variables</code>中赋值</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/WX20200511-1601432x2ec5b3a8f51453e1.png" alt="Edit variables"></p>
+<p>其中，<code>Expression</code>列可以为变量设置一个计算方法，比如<code>className()</code>说明<code>CLASS</code>变量为当前类名，也可以在<code>Default value</code>上指定一个默认值。<br>最后一列如果勾选的话，使用的时候如果这个变量计算出值了则不提示用户进行输入赋值。</p>
+<p>以下是我自己使用的一些例子</p>
+<h2 id="logger定义"><a href="#logger定义" class="headerlink" title="logger定义"></a>logger定义</h2><p>Template text</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger($CLASS$.class);<br></code></pre></td></tr></table></figure>
+<p>Variables</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Expression</th>
+<th align="center">Default value</th>
+<th align="center">Skip if defined</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>CLASS</code></td>
+<td align="center"><code>className()</code></td>
+<td align="center"></td>
+<td align="center">☑️</td>
+</tr>
+</tbody></table>
+<p>效果</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/jlogddfa0f987151730e.gif" alt="logger定义"></p>
+<h2 id="返回ModelAndView"><a href="#返回ModelAndView" class="headerlink" title="返回ModelAndView"></a>返回ModelAndView</h2><p>Template text</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/$NAME$.html&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView $NAME$(HttpServletRequest request, HttpServletResponse response) &#123;<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 开始****************&quot;</span>);<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 结束****************&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$NAME$/$NAME$&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Variables</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Expression</th>
+<th align="center">Default value</th>
+<th align="center">Skip if defined</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>NAME</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>CLASS</code></td>
+<td align="center"><code>className()</code></td>
+<td align="center"></td>
+<td align="center">☑️</td>
+</tr>
+</tbody></table>
+<p>效果</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/jmv3bb39f360ca29f14.gif" alt="返回ModelAndView"></p>
+<h2 id="返回ModelAndView-有url参数"><a href="#返回ModelAndView-有url参数" class="headerlink" title="返回ModelAndView(有url参数)"></a>返回ModelAndView(有url参数)</h2><p>Template text</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/$NAME$/&#123;$PATHVARIABLE$&#125;.html&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView $NAME$(<span class="hljs-meta">@PathVariable(&quot;$PATHVARIABLE$&quot;)</span> String $PATHVARIABLE$, HttpServletRequest request, HttpServletResponse response) &#123;<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 开始****************&quot;</span>);<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 结束****************&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$NAME$/$NAME$&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Variables</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Expression</th>
+<th align="center">Default value</th>
+<th align="center">Skip if defined</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>NAME</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>PATHVARIABLE</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>CLASS</code></td>
+<td align="center"><code>className()</code></td>
+<td align="center"></td>
+<td align="center">☑️</td>
+</tr>
+</tbody></table>
+<p>效果</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/jmvpfad58786086a271b.gif" alt="返回ModelAndView(有url参数)"></p>
+<h2 id="新建Controller"><a href="#新建Controller" class="headerlink" title="新建Controller"></a>新建Controller</h2><p>Template text</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $<span class="hljs-title">ControllerName</span>$<span class="hljs-title">Controller</span> </span>&#123;<br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger($ControllerName$Controller.class);<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * $viewName$</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-meta">@RequestMapping(&quot;/$viewName$.html&quot;)</span><br>	<span class="hljs-keyword">public</span> ModelAndView $viewName$(HttpServletRequest request, HttpServletResponse response) &#123;<br>		logger.info(<span class="hljs-string">&quot;****************$ControllerName$Controller:$viewName$ 开始****************&quot;</span>);<br>		logger.info(<span class="hljs-string">&quot;****************$ControllerName$Controller:$viewName$ 结束****************&quot;</span>);<br>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$viewName$/$viewName$&quot;</span>);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Variables</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Expression</th>
+<th align="center">Default value</th>
+<th align="center">Skip if defined</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>ControllerName</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>viewName</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>效果</p>
+<p><img src="https://file.moetu.org/images/2020/05/11/jctlvdd24a5491428c46e.gif" alt="新建Controller"></p>
+<h1 id="自带命令"><a href="#自带命令" class="headerlink" title="自带命令"></a>自带命令</h1><p>也可以使用自带命令来模板式地补全语句，如遍历循环语句（for、foreach）、使用 String.format() 包裹一个字符串、使用类型转化包裹一个表达式、根据判（非）空或者其它判别语句生成 if 语句、用 instanceOf 生成分支判断语句等。<br>使用的方式也很简单，就是在一个表达式后按下点号 . ，然后输入一些提示或者在列表中选择一个候选项，常见的候选项下面会给出 GIF 演示。</p>
+<h2 id="var-声明"><a href="#var-声明" class="headerlink" title="var 声明"></a>var 声明</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325105809880cf9e5e79b2d0c9e2.gif" alt="var 声明"></p>
+<h2 id="null-判空"><a href="#null-判空" class="headerlink" title="null 判空"></a>null 判空</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251127382722662ffb5d6bb703d.gif" alt="null 判空"></p>
+<h2 id="notnull-判非空"><a href="#notnull-判非空" class="headerlink" title="notnull 判非空"></a>notnull 判非空</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325112825345d5bc93049265eda2.gif" alt="notnull 判非空"></p>
+<h2 id="nn-判非空"><a href="#nn-判非空" class="headerlink" title="nn 判非空"></a>nn 判非空</h2><p><img src="https://file.moetu.org/images/2020/05/11/2019032511285338147f7c09312c94c65.gif" alt="nn 判非空"></p>
+<h2 id="for-遍历"><a href="#for-遍历" class="headerlink" title="for 遍历"></a>for 遍历</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325112942270eab8ea6c5343be88.gif" alt="for 遍历"></p>
+<h2 id="fori-带索引的遍历"><a href="#fori-带索引的遍历" class="headerlink" title="fori 带索引的遍历"></a>fori 带索引的遍历</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113005808f636bed94c14a7db.gif" alt="fori 带索引的遍历"></p>
+<h2 id="not-取反"><a href="#not-取反" class="headerlink" title="not 取反"></a>not 取反</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251130255555422d0425fb8cd2.gif" alt="not 取反"></p>
+<h2 id="if-条件判断"><a href="#if-条件判断" class="headerlink" title="if 条件判断"></a>if 条件判断</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251130436fb7d2d7090921a58.gif" alt="if 条件判断"></p>
+<h2 id="cast-强转"><a href="#cast-强转" class="headerlink" title="cast 强转"></a>cast 强转</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113102357ed50cc72af92ad69.gif" alt="cast 强转"></p>
+<h2 id="return-返回值"><a href="#return-返回值" class="headerlink" title="return 返回值"></a>return 返回值</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113139614f62e07bd5e20fae7.gif" alt="return 返回值"></p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
   </entry>
   <entry>
     <title>真正的自律，就是战胜你自己</title>
@@ -1084,6 +1171,84 @@
         <category>日常</category>
         <category>摘抄</category>
       </categories>
+  </entry>
+  <entry>
+    <title>Python在全局代理下安装包报错</title>
+    <url>/p/1E56RCW.html</url>
+    <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Python<span class="hljs-string">&#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal</span><br></code></pre></td></tr></table></figure>
+<p>以下是解决办法:</p>
+<a id="more"></a>
+
+<p>首先去掉所有代理，和终端的<code>PROXY</code>属性，然后安装<code>pysocks</code>模块</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install pysocks<br></code></pre></td></tr></table></figure>
+<p>安装完毕后再加上代理或者终端<code>PROXY</code>属性，即可正常安装其他模块。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python切片</title>
+    <url>/p/253PZX0.html</url>
+    <content><![CDATA[<p>记录下Python五个高级特性，分别是切片、迭代、列表生成式、生成器、迭代器，记录切片学习的笔记。</p>
+<a id="more"></a>
+
+<h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><p>取一个list或tuple的部分元素是非常常见的操作。比如，一个list如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L = [<span class="hljs-string">&#x27;Michael&#x27;</span>, <span class="hljs-string">&#x27;Sarah&#x27;</span>, <span class="hljs-string">&#x27;Tracy&#x27;</span>, <span class="hljs-string">&#x27;Bob&#x27;</span>, <span class="hljs-string">&#x27;Jack&#x27;</span>]<br></code></pre></td></tr></table></figure>
+<p>取前3个元素，应该怎么做？笨办法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">[L[<span class="hljs-number">0</span>], L[<span class="hljs-number">1</span>], L[<span class="hljs-number">2</span>]]<br></code></pre></td></tr></table></figure>
+<p>或者用循环，不过代码都很长，比如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">r = []<br>n = <span class="hljs-number">3</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>    r.append(L[i])<br></code></pre></td></tr></table></figure>
+<p>对这种经常取指定索引范围的操作，用循环十分繁琐，因此，Python提供了切片（Slice）操作符，能大大简化这种操作。<br>对应上面的问题，取前3个元素，用一行代码就可以完成切片：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
+<p><code>L[0:3]</code>表示，从索引<code>0</code>开始取，直到索引<code>3</code>为止，但不包括索引<code>3</code>。即索引<code>0</code>，<code>1</code>，<code>2</code>，正好是3个元素。<br>如果第一个索引是<code>0</code>，还可以省略：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[:<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
+<p>类似的，既然Python支持L[-1]取倒数第一个元素，那么它同样支持倒数切片，试试：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[-<span class="hljs-number">2</span>:]<br></code></pre></td></tr></table></figure>
+<p>倒数第一个元素的索引是<code>-1</code>。<br>有一个0-99的数列，前10个数，每两个取一个：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[:10:2]</span><br>[0, 2, 4, 6, 8]<br></code></pre></td></tr></table></figure>
+<p>所有数，每5个取一个：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[::5]</span><br>[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]<br></code></pre></td></tr></table></figure>
+<p>什么都不写，只写[:]就可以原样复制一个list：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[:]</span><br>[0, 1, 2, 3, ..., 99]<br></code></pre></td></tr></table></figure>
+<p>字符串’xxx’也可以看成是一种list，每个元素就是一个字符。因此，字符串也可以用切片操作，只是操作结果仍是字符串：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; <span class="hljs-string">&#x27;ABCDEFG&#x27;</span>[:3]</span><br>&#x27;ABC&#x27;<br><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; <span class="hljs-string">&#x27;ABCDEFG&#x27;</span>[::2]</span><br>&#x27;ACEG&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Scrapy抓取百度热点新闻</title>
+    <url>/p/QHV65K.html</url>
+    <content><![CDATA[<h2 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install Scrapy<br></code></pre></td></tr></table></figure>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy startproject tutorial<br></code></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="编写Item"><a href="#编写Item" class="headerlink" title="编写Item"></a>编写Item</h2><p>修改<code>items.py</code>文件：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaiduNewsItem</span>(<span class="hljs-params">scrapy.Item</span>):</span><br>    <span class="hljs-comment"># define the fields for your item here like:</span><br>    <span class="hljs-comment"># name = scrapy.Field()</span><br>    title = scrapy.Field()<br>    link = scrapy.Field()<br>    time = scrapy.Field()<br>    category = scrapy.Field()<br></code></pre></td></tr></table></figure>
+<h2 id="编写爬虫-Spider"><a href="#编写爬虫-Spider" class="headerlink" title="编写爬虫(Spider)"></a>编写爬虫(Spider)</h2><p>在<code>spiders</code>文件夹下新建一个py文件，命名为<code>baidunews.py</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy,re<br><br><span class="hljs-keyword">from</span> tutorial.items <span class="hljs-keyword">import</span> BaiduNewsItem<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DmozSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span><br>    name = <span class="hljs-string">&quot;baidunews&quot;</span><br>    allowed_domains = [<span class="hljs-string">&quot;baidu.com&quot;</span>]<br>    start_urls = [<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guoji&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guonei&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=mil&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=ent&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=sports&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=tech&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=lady&quot;</span>,<br>    ]<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span><br>        category = &#123;<span class="hljs-string">&#x27;guoji&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u9645&#x27;</span>,<span class="hljs-string">&#x27;guonei&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u5185&#x27;</span>,<span class="hljs-string">&#x27;mil&#x27;</span>:<span class="hljs-string">u&#x27;\u519b\u4e8b&#x27;</span>,<span class="hljs-string">&#x27;ent&#x27;</span>:<span class="hljs-string">u&#x27;\u5a31\u4e50&#x27;</span>,<span class="hljs-string">&#x27;sports&#x27;</span>:<span class="hljs-string">u&#x27;\u4f53\u80b2&#x27;</span>,<span class="hljs-string">&#x27;tech&#x27;</span>:<span class="hljs-string">u&#x27;\u79d1\u6280&#x27;</span>,<span class="hljs-string">&#x27;lady&#x27;</span>:<span class="hljs-string">u&#x27;\u5973\u4eba&#x27;</span>&#125;<br>        <span class="hljs-keyword">for</span> sel <span class="hljs-keyword">in</span> response.xpath(<span class="hljs-string">&#x27;//div[@id=&quot;latest-news&quot;]/ul/li&#x27;</span>):<br>            item = BaiduNewsItem()<br>            item[<span class="hljs-string">&#x27;title&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;link&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/@href&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;time&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;span/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;category&#x27;</span>] = category[<span class="hljs-string">&quot;&quot;</span>.join(re.findall(<span class="hljs-string">&#x27;(^|&amp;)channel=([^&amp;]*)(&amp;|$)&#x27;</span>,response.url)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>])]<br>            <span class="hljs-keyword">yield</span> item<br></code></pre></td></tr></table></figure>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy crawl baidunews<br></code></pre></td></tr></table></figure>
+<h2 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h2><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">[<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦新增新冠肺炎确诊病例1748例，累计563..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667639131171773453&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;13:30&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;面临破产危机！法国警告雷诺：若不“返回”法国将不提..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667635925032421657&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;12:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;印度战机迫降到巴基斯坦，飞行员一句话瞬间就逗笑了在..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667630787025851625&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;11:18&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;法国地方政府用菠萝丈量社交距离，被批“太幼稚”&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667624101851668641&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;09:32&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;大疆：正与巴基斯坦洽谈无人机治蝗 初中毕业生5天就..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667620721060133107&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;08:38&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;离太近！德国警察“把错门”，错把卢森堡当成法国&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667617809556396961&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;07:51&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;温格：慎重面对外资进入法甲，不能毁了法国的足球文化&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667573388455325969&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:55&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;五角大楼终于松口，巴铁F-16将迎重大利好，该印度..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667581813539045925&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:20&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;致敬！巴基斯坦坠机事故未造成地面人员死亡原因曝光&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667575501812426929&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦官方：坠机事故97人遇难 2人幸存&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667574758558193863&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:29&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦坠机事件2人生还！幸存者：被火海包围 人们..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667565408074998538&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:59&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;里昂主席：西班牙患者更多却能复赛，我们法国真是太蠢..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667563640465920816&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:31&quot;</span>&#125;,<br>]<br></code></pre></td></tr></table></figure>
+<h2 id="附：中文乱码"><a href="#附：中文乱码" class="headerlink" title="附：中文乱码"></a>附：中文乱码</h2><p>如果结果中文乱码，则需要在<code>settings.py</code>中添加如下配置：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">FEED_EXPORT_ENCODING = <span class="hljs-string">&#x27;utf-8&#x27;</span><br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
   </entry>
   <entry>
     <title>Netflix各国价格对比(2019)</title>
@@ -1432,170 +1597,6 @@
       <tags>
         <tag>总结</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>运用Live Template加快写代码速度</title>
-    <url>/p/1W7RVXA.html</url>
-    <content><![CDATA[<p>用IDEA写代码的时候往往会重复性的写一段类似或者一样的代码，让人懊恼不已。<br>IDEA自带了个Live Template功能，不仅有许多自带的快捷写代码的功能，而且还可以自定义属于自己的Live Template。</p>
-<a id="more"></a>
-
-<h1 id="自定义命令"><a href="#自定义命令" class="headerlink" title="自定义命令"></a>自定义命令</h1><p>可以自定义一些命令。<br>打开IDEA的设置，找到Live Template，右侧添加，可以先添加一个自己的分组，比如我添加了一个<code>My Live</code>的分组，再添加具体的配置</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/WX20200511-1557582xe4befa839a2b5629.png" alt="设置中的Live Template"></p>
-<p>变量用<code>$$</code>包裹，IDEA就知道这是个变量了，变量可以在右下角的<code>Edit variables</code>中赋值</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/WX20200511-1601432x2ec5b3a8f51453e1.png" alt="Edit variables"></p>
-<p>其中，<code>Expression</code>列可以为变量设置一个计算方法，比如<code>className()</code>说明<code>CLASS</code>变量为当前类名，也可以在<code>Default value</code>上指定一个默认值。<br>最后一列如果勾选的话，使用的时候如果这个变量计算出值了则不提示用户进行输入赋值。</p>
-<p>以下是我自己使用的一些例子</p>
-<h2 id="logger定义"><a href="#logger定义" class="headerlink" title="logger定义"></a>logger定义</h2><p>Template text</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger($CLASS$.class);<br></code></pre></td></tr></table></figure>
-<p>Variables</p>
-<table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Expression</th>
-<th align="center">Default value</th>
-<th align="center">Skip if defined</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>CLASS</code></td>
-<td align="center"><code>className()</code></td>
-<td align="center"></td>
-<td align="center">☑️</td>
-</tr>
-</tbody></table>
-<p>效果</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/jlogddfa0f987151730e.gif" alt="logger定义"></p>
-<h2 id="返回ModelAndView"><a href="#返回ModelAndView" class="headerlink" title="返回ModelAndView"></a>返回ModelAndView</h2><p>Template text</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/$NAME$.html&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView $NAME$(HttpServletRequest request, HttpServletResponse response) &#123;<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 开始****************&quot;</span>);<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 结束****************&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$NAME$/$NAME$&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>Variables</p>
-<table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Expression</th>
-<th align="center">Default value</th>
-<th align="center">Skip if defined</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>NAME</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>CLASS</code></td>
-<td align="center"><code>className()</code></td>
-<td align="center"></td>
-<td align="center">☑️</td>
-</tr>
-</tbody></table>
-<p>效果</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/jmv3bb39f360ca29f14.gif" alt="返回ModelAndView"></p>
-<h2 id="返回ModelAndView-有url参数"><a href="#返回ModelAndView-有url参数" class="headerlink" title="返回ModelAndView(有url参数)"></a>返回ModelAndView(有url参数)</h2><p>Template text</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/$NAME$/&#123;$PATHVARIABLE$&#125;.html&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView $NAME$(<span class="hljs-meta">@PathVariable(&quot;$PATHVARIABLE$&quot;)</span> String $PATHVARIABLE$, HttpServletRequest request, HttpServletResponse response) &#123;<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 开始****************&quot;</span>);<br>	logger.info(<span class="hljs-string">&quot;****************$CLASS$:$NAME$ 结束****************&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$NAME$/$NAME$&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>Variables</p>
-<table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Expression</th>
-<th align="center">Default value</th>
-<th align="center">Skip if defined</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>NAME</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>PATHVARIABLE</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>CLASS</code></td>
-<td align="center"><code>className()</code></td>
-<td align="center"></td>
-<td align="center">☑️</td>
-</tr>
-</tbody></table>
-<p>效果</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/jmvpfad58786086a271b.gif" alt="返回ModelAndView(有url参数)"></p>
-<h2 id="新建Controller"><a href="#新建Controller" class="headerlink" title="新建Controller"></a>新建Controller</h2><p>Template text</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $<span class="hljs-title">ControllerName</span>$<span class="hljs-title">Controller</span> </span>&#123;<br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger logger = LoggerFactory.getLogger($ControllerName$Controller.class);<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * $viewName$</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-meta">@RequestMapping(&quot;/$viewName$.html&quot;)</span><br>	<span class="hljs-keyword">public</span> ModelAndView $viewName$(HttpServletRequest request, HttpServletResponse response) &#123;<br>		logger.info(<span class="hljs-string">&quot;****************$ControllerName$Controller:$viewName$ 开始****************&quot;</span>);<br>		logger.info(<span class="hljs-string">&quot;****************$ControllerName$Controller:$viewName$ 结束****************&quot;</span>);<br>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;$viewName$/$viewName$&quot;</span>);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>Variables</p>
-<table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Expression</th>
-<th align="center">Default value</th>
-<th align="center">Skip if defined</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>ControllerName</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>viewName</code></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-<p>效果</p>
-<p><img src="https://file.moetu.org/images/2020/05/11/jctlvdd24a5491428c46e.gif" alt="新建Controller"></p>
-<h1 id="自带命令"><a href="#自带命令" class="headerlink" title="自带命令"></a>自带命令</h1><p>也可以使用自带命令来模板式地补全语句，如遍历循环语句（for、foreach）、使用 String.format() 包裹一个字符串、使用类型转化包裹一个表达式、根据判（非）空或者其它判别语句生成 if 语句、用 instanceOf 生成分支判断语句等。<br>使用的方式也很简单，就是在一个表达式后按下点号 . ，然后输入一些提示或者在列表中选择一个候选项，常见的候选项下面会给出 GIF 演示。</p>
-<h2 id="var-声明"><a href="#var-声明" class="headerlink" title="var 声明"></a>var 声明</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325105809880cf9e5e79b2d0c9e2.gif" alt="var 声明"></p>
-<h2 id="null-判空"><a href="#null-判空" class="headerlink" title="null 判空"></a>null 判空</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251127382722662ffb5d6bb703d.gif" alt="null 判空"></p>
-<h2 id="notnull-判非空"><a href="#notnull-判非空" class="headerlink" title="notnull 判非空"></a>notnull 判非空</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325112825345d5bc93049265eda2.gif" alt="notnull 判非空"></p>
-<h2 id="nn-判非空"><a href="#nn-判非空" class="headerlink" title="nn 判非空"></a>nn 判非空</h2><p><img src="https://file.moetu.org/images/2020/05/11/2019032511285338147f7c09312c94c65.gif" alt="nn 判非空"></p>
-<h2 id="for-遍历"><a href="#for-遍历" class="headerlink" title="for 遍历"></a>for 遍历</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325112942270eab8ea6c5343be88.gif" alt="for 遍历"></p>
-<h2 id="fori-带索引的遍历"><a href="#fori-带索引的遍历" class="headerlink" title="fori 带索引的遍历"></a>fori 带索引的遍历</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113005808f636bed94c14a7db.gif" alt="fori 带索引的遍历"></p>
-<h2 id="not-取反"><a href="#not-取反" class="headerlink" title="not 取反"></a>not 取反</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251130255555422d0425fb8cd2.gif" alt="not 取反"></p>
-<h2 id="if-条件判断"><a href="#if-条件判断" class="headerlink" title="if 条件判断"></a>if 条件判断</h2><p><img src="https://file.moetu.org/images/2020/05/11/201903251130436fb7d2d7090921a58.gif" alt="if 条件判断"></p>
-<h2 id="cast-强转"><a href="#cast-强转" class="headerlink" title="cast 强转"></a>cast 强转</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113102357ed50cc72af92ad69.gif" alt="cast 强转"></p>
-<h2 id="return-返回值"><a href="#return-返回值" class="headerlink" title="return 返回值"></a>return 返回值</h2><p><img src="https://file.moetu.org/images/2020/05/11/20190325113139614f62e07bd5e20fae7.gif" alt="return 返回值"></p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>技巧</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>How to download Wechat on iOS in india</title>
-    <url>/p/ESP3TJ.html</url>
-    <content><![CDATA[<h1 id="How-to-download-Wechat-on-iOS"><a href="#How-to-download-Wechat-on-iOS" class="headerlink" title="How to download Wechat on iOS"></a>How to download Wechat on iOS</h1><a id="more"></a>
-
-<h3 id="Open-“App-Store”-on-home-screen"><a href="#Open-“App-Store”-on-home-screen" class="headerlink" title="Open “App Store” on home screen."></a>Open “App Store” on home screen.</h3><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled.png"></p>
-<h3 id="Click-on-the-avatar-in-the-upper-right-corner"><a href="#Click-on-the-avatar-in-the-upper-right-corner" class="headerlink" title="Click on the avatar in the upper right corner."></a>Click on the avatar in the upper right corner.</h3><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%201.png"></p>
-<h3 id="At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it"><a href="#At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it" class="headerlink" title="At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it."></a>At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it.</h3><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%202.png"></p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%203.png"></p>
-<h3 id="Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button"><a href="#Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button" class="headerlink" title="Then, return to the top of the page, enter the account password provided, and click the sign in button."></a>Then, return to the top of the page, enter the account password provided, and click the sign in button.</h3><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%204.png"></p>
-<h3 id="At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button"><a href="#At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button" class="headerlink" title="At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button."></a>At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button.</h3><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%205.png"></p>
-<h3 id="In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade"><a href="#In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade" class="headerlink" title="In the “Protect your account” alert that pops up, select the second button(Do not upgrade)"></a>In the “Protect your account” alert that pops up, select the second button(Do not upgrade)</h3><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%206.png"></p>
-<h3 id="After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store"><a href="#After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store" class="headerlink" title="After the login is complete, click the “Done” button on the top right, and the store will switch to the US store."></a>After the login is complete, click the “Done” button on the top right, and the store will switch to the US store.</h3><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%207.png"></p>
-<h3 id="Search-amp-download-and-enjoy"><a href="#Search-amp-download-and-enjoy" class="headerlink" title="Search &amp; download and enjoy :-)"></a>Search &amp; download and enjoy :-)</h3><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%208.png"></p>
-<blockquote>
-<p>After the installation is complete, you can switch back to your Apple ID in the App Store</p>
-</blockquote>
-<p><strong>ATTENTION! DO NOT log in to the provided account in the settings app, otherwise the device may be locked.</strong></p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>技巧</category>
-      </categories>
   </entry>
   <entry>
     <title>Element输入框自动去除空格及校验</title>
