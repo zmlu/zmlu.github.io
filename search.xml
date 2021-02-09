@@ -1,72 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>ES镜像制作并启动</title>
-    <url>/p/10C2G1E.html</url>
-    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
-<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
-<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
-<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
-<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
-<p>在配置文件最下面，添加如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>修改完成后，执行此命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>然后，重新启动elasticsearch，即可启动成功；</p>
-<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
-<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
-<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
-<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
-<p>均改为 512m</p>
-<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
-<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Elasticsearch</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ES文件挂载</title>
-    <url>/p/PW04BF.html</url>
-    <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker exec -it test_es bash<br></code></pre></td></tr></table></figure>
-<p>找到配置文件所在位置：<code>/usr/share/elasticsearch/config</code> 下，可以看的配置文件：<code>elasticsearch.yml</code></p>
-<a id="more"></a>
-
-<p>拷贝配置文件到宿主机 <code>/opt/elasticsearch/</code> 目录下</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker cp  test_es:/usr/share/elasticsearch/config/elasticsearch.yml  /opt/elasticsearch/<br></code></pre></td></tr></table></figure>
-<p>停止并且删除原来创建的容器</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker stop test_es <br>docker rm  test_es<br></code></pre></td></tr></table></figure>
-<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改 <code>/opt/elasticsearch/elasticsearch.yml</code> 配置文件</p>
-<p>将 <code>transport.host: 0.0.0.0</code> 前的#去掉后保存文件退出，其作用是允许任何ip地址访问elasticsearch。<br>开发测试阶段可以这么做，生产环境下指定具体的IP在<code>elasticsearch.yml</code>配置文件中添加如下跨域访问，方便下面的可视化连接工具连接。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cluster.name: &quot;docker-cluster&quot;<br>network.host: 0.0.0.0<br><br><span class="hljs-meta">#</span><span class="bash">开启跨域访问</span><br>http.cors.enabled: true<br>http.cors.allow-origin: &quot;*&quot;<br></code></pre></td></tr></table></figure>
-<h2 id="重新创建容器"><a href="#重新创建容器" class="headerlink" title="重新创建容器"></a>重新创建容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run -d --name=tensquare_elasticsearch -p 9200:9200 -p 9300:9300 -v  /opt/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="系统调优"><a href="#系统调优" class="headerlink" title="系统调优"></a>系统调优</h2><p>启动后发现启动失败了，这时什么原因呢？这与我们刚才修改的配置有关，因为 elasticsearch在启动的时候会进行一些检查，比如最多打开的文件的个数以及虚拟内存 区域数量等等，如果你放开了此配置，意味着需要打开更多的文件以及虚拟内存，所以 我们还需要系统调优。</p>
-<p>一共需要修改两处</p>
-<h3 id="修改-etc-security-limits-conf"><a href="#修改-etc-security-limits-conf" class="headerlink" title="修改 /etc/security/limits.conf"></a>修改 /etc/security/limits.conf</h3><p>添加如下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">* soft nofile 65536 <br>* hard nofile 65536<br></code></pre></td></tr></table></figure>
-<p>nofile是单个进程允许打开的最大文件个数<br>soft nofile 是软限制<br>hard nofile是硬限制</p>
-<h3 id="修改-etc-sysctl-conf"><a href="#修改-etc-sysctl-conf" class="headerlink" title="修改 /etc/sysctl.conf"></a>修改 /etc/sysctl.conf</h3><p>添加如下内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>限制一个进程可以拥有的VMA(虚拟内存区域)的数量；执行下面命令 修改内核参数马上生效</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>重新启动虚拟机，再次启动容器，发现已经可以启动并远程访问</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Elasticsearch</category>
-      </categories>
-  </entry>
-  <entry>
     <title>[Material Design] 尝试使用 Bottom Navigation</title>
     <url>/p/GJ0Q47.html</url>
     <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
@@ -140,10 +74,177 @@
         <category>Android</category>
       </categories>
       <tags>
-        <tag>Java</tag>
         <tag>Material Design</tag>
         <tag>Android</tag>
         <tag>Google</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ES文件挂载</title>
+    <url>/p/PW04BF.html</url>
+    <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker exec -it test_es bash<br></code></pre></td></tr></table></figure>
+<p>找到配置文件所在位置：<code>/usr/share/elasticsearch/config</code> 下，可以看的配置文件：<code>elasticsearch.yml</code></p>
+<a id="more"></a>
+
+<p>拷贝配置文件到宿主机 <code>/opt/elasticsearch/</code> 目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker cp  test_es:/usr/share/elasticsearch/config/elasticsearch.yml  /opt/elasticsearch/<br></code></pre></td></tr></table></figure>
+<p>停止并且删除原来创建的容器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker stop test_es <br>docker rm  test_es<br></code></pre></td></tr></table></figure>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改 <code>/opt/elasticsearch/elasticsearch.yml</code> 配置文件</p>
+<p>将 <code>transport.host: 0.0.0.0</code> 前的#去掉后保存文件退出，其作用是允许任何ip地址访问elasticsearch。<br>开发测试阶段可以这么做，生产环境下指定具体的IP在<code>elasticsearch.yml</code>配置文件中添加如下跨域访问，方便下面的可视化连接工具连接。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cluster.name: &quot;docker-cluster&quot;<br>network.host: 0.0.0.0<br><br><span class="hljs-meta">#</span><span class="bash">开启跨域访问</span><br>http.cors.enabled: true<br>http.cors.allow-origin: &quot;*&quot;<br></code></pre></td></tr></table></figure>
+<h2 id="重新创建容器"><a href="#重新创建容器" class="headerlink" title="重新创建容器"></a>重新创建容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run -d --name=tensquare_elasticsearch -p 9200:9200 -p 9300:9300 -v  /opt/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="系统调优"><a href="#系统调优" class="headerlink" title="系统调优"></a>系统调优</h2><p>启动后发现启动失败了，这时什么原因呢？这与我们刚才修改的配置有关，因为 elasticsearch在启动的时候会进行一些检查，比如最多打开的文件的个数以及虚拟内存 区域数量等等，如果你放开了此配置，意味着需要打开更多的文件以及虚拟内存，所以 我们还需要系统调优。</p>
+<p>一共需要修改两处</p>
+<h3 id="修改-etc-security-limits-conf"><a href="#修改-etc-security-limits-conf" class="headerlink" title="修改 /etc/security/limits.conf"></a>修改 /etc/security/limits.conf</h3><p>添加如下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">* soft nofile 65536 <br>* hard nofile 65536<br></code></pre></td></tr></table></figure>
+<p>nofile是单个进程允许打开的最大文件个数<br>soft nofile 是软限制<br>hard nofile是硬限制</p>
+<h3 id="修改-etc-sysctl-conf"><a href="#修改-etc-sysctl-conf" class="headerlink" title="修改 /etc/sysctl.conf"></a>修改 /etc/sysctl.conf</h3><p>添加如下内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>限制一个进程可以拥有的VMA(虚拟内存区域)的数量；执行下面命令 修改内核参数马上生效</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>重新启动虚拟机，再次启动容器，发现已经可以启动并远程访问</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ES镜像制作并启动</title>
+    <url>/p/10C2G1E.html</url>
+    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
+<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
+<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
+<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
+<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
+<p>在配置文件最下面，添加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>修改完成后，执行此命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>然后，重新启动elasticsearch，即可启动成功；</p>
+<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
+<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
+<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
+<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
+<p>均改为 512m</p>
+<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
+<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gitignore文件不起作用</title>
+    <url>/p/TSMFKX.html</url>
+    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
+<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git设置代理</title>
+    <url>/p/35NJX8Y.html</url>
+    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
+<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
+<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
+<p>显示如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
+<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>加速</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Gulp加速Hexo</title>
+    <url>/p/8VNSFG.html</url>
+    <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
+<h1 id="安装Gulp到Hexo博客"><a href="#安装Gulp到Hexo博客" class="headerlink" title="安装Gulp到Hexo博客"></a>安装Gulp到Hexo博客</h1><p>参见文章：<a href="https://zmlu.github.io/p/14JCGNP.html">安装Gulp</a></p>
+<p>进入hexo博客的根目录（public文件夹所在的目录），安装一些必要的组件。</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp gulp-babel gulp-clean-css gulp-htmlclean gulp-htmlmin gulp-uglify @babel/core @babel/preset-env @babel/register<br></code></pre></td></tr></table></figure>
+<h1 id="新建-babelrc"><a href="#新建-babelrc" class="headerlink" title="新建.babelrc"></a>新建.babelrc</h1><p>依然在hexo博客根目录下新建.babelrc文件</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;presets&quot;</span>: [ <span class="hljs-string">&quot;@babel/preset-env&quot;</span> ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h1><p>在hexo博客根目录下新建gulpfile.js文件，内容如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);<br><span class="hljs-keyword">var</span> babel = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-babel&#x27;</span>);<br><span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>);<br><span class="hljs-keyword">var</span> cleanCSS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-clean-css&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlmin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlmin&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlclean = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlclean&#x27;</span>);<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * css</span><br><span class="hljs-comment"> */</span><br>gulp.task(<span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.css&#x27;</span>)<br>			.pipe(cleanCSS())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-js&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src([<span class="hljs-string">&#x27;./public/**/*.js&#x27;</span>, <span class="hljs-string">&#x27;!./public/**/*.min.js&#x27;</span>])<br>			.pipe(babel())<br>			.pipe(uglify())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.html&#x27;</span>)<br>			.pipe(htmlclean())<br>			.pipe(htmlmin(&#123;<br>				removeComments: <span class="hljs-literal">true</span>,<br>				minifyJS: <span class="hljs-literal">true</span>,<br>				minifyCSS: <span class="hljs-literal">true</span>,<br>				minifyURLs: <span class="hljs-literal">true</span>,<br>			&#125;))<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,gulp.parallel(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-string">&#x27;minify-js&#x27;</span>));<br></code></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>执行完<code>hexo g</code>产生编译文件后，再手动执行执行<code>gulp</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[15:03:44] Using gulpfile E:\dev\hexoBlog\gulpfile.js<br>[15:03:44] Starting &#x27;default&#x27;...<br>[15:03:44] Starting &#x27;minify-html&#x27;...<br>[15:03:44] Starting &#x27;minify-css&#x27;...<br>[15:03:44] Starting &#x27;minify-js&#x27;...<br>[15:03:47] Finished &#x27;minify-css&#x27; after 3.52 s<br>[15:03:48] Finished &#x27;minify-html&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;minify-js&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;default&#x27; after 4.63 s<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Gulp</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Gulp</tag>
+        <tag>Hexo</tag>
+        <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装Gulp</title>
+    <url>/p/14JCGNP.html</url>
+    <content><![CDATA[<p>记录一下安装Gulp的过程，参考官方文档，参考地址见文章末尾。</p>
+<p>如果你先前将gulp安装到全局环境中了，请执行<code>npm rm --global gulp</code>将<code>gulp</code>删除再继续以下操作。更多信息请参考<a href="https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467">Sip</a>。</p>
+<a id="more"></a>
+
+<h1 id="检查-node、npm-和-npx-是否正确安装"><a href="#检查-node、npm-和-npx-是否正确安装" class="headerlink" title="检查 node、npm 和 npx 是否正确安装"></a>检查 node、npm 和 npx 是否正确安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">node --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-node-version-command.png" alt="Output:v8.11.1"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-npm-version-command.png" alt="Output:5.6.0"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-npx-version-command.png" alt="Output:9.7.1"></p>
+<p>如果上述工具还没安装，请参考<a href="https://nodejs.org/en/">这里</a>。</p>
+<h1 id="安装-gulp-命令行工具"><a href="#安装-gulp-命令行工具" class="headerlink" title="安装 gulp 命令行工具"></a>安装 gulp 命令行工具</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --global gulp-cli<br></code></pre></td></tr></table></figure>
+<h1 id="创建项目目录并进入"><a href="#创建项目目录并进入" class="headerlink" title="创建项目目录并进入"></a>创建项目目录并进入</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx mkdirp my-project<br>cd my-project<br></code></pre></td></tr></table></figure>
+<h1 id="在项目目录下创建-package-json-文件"><a href="#在项目目录下创建-package-json-文件" class="headerlink" title="在项目目录下创建 package.json 文件"></a>在项目目录下创建 package.json 文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm init<br></code></pre></td></tr></table></figure>
+<p>上述命令将指引你设置项目名、版本、描述信息等。</p>
+<h1 id="安装-gulp，作为开发时依赖项"><a href="#安装-gulp，作为开发时依赖项" class="headerlink" title="安装 gulp，作为开发时依赖项"></a>安装 gulp，作为开发时依赖项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp<br></code></pre></td></tr></table></figure>
+<h1 id="检查-gulp-版本"><a href="#检查-gulp-版本" class="headerlink" title="检查 gulp 版本"></a>检查 gulp 版本</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp --version<br></code></pre></td></tr></table></figure>
+<p>确保输出与下面的屏幕截图匹配，否则你可能需要执行本指南中的上述步骤。</p>
+<p><img src="https://gulpjs.com/img/docs-gulp-version-command.png" alt="Output: CLI version 2.0.1 &amp; Local version 4.0.0"></p>
+<h1 id="创建-gulpfile-文件"><a href="#创建-gulpfile-文件" class="headerlink" title="创建 gulpfile 文件"></a>创建 gulpfile 文件</h1><p>利用任何文本编辑器在项目大的根目录下创建一个名为 gulpfile.js 的文件，并在文件中输入以下内容：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultTask</span>(<span class="hljs-params">cb</span>) </span>&#123;<br>  <span class="hljs-comment">// place code for your default task here</span><br>  cb();<br>&#125;<br><br><span class="hljs-built_in">exports</span>.default = defaultTask<br></code></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在项目根目录下执行 gulp 命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp<br></code></pre></td></tr></table></figure>
+<p>如需运行多个任务（task），可以执行<code>gulp &lt;task&gt; &lt;othertask&gt;</code>。</p>
+<h1 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h1><p>默认任务（task）将执行，因为任务为空，因此没有实际动作。</p>
+<p><img src="https://gulpjs.com/img/docs-gulp-command.png" alt="Output:Starting default &amp; Finished default"></p>
+<blockquote>
+<p>参考： <a href="https://gulpjs.com/docs/en/getting-started/quick-start">Gulp Quick Start</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Gulp</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Gulp</tag>
       </tags>
   </entry>
   <entry>
@@ -248,167 +349,6 @@
       </tags>
   </entry>
   <entry>
-    <title>使用Gulp加速Hexo</title>
-    <url>/p/8VNSFG.html</url>
-    <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
-<h1 id="安装Gulp到Hexo博客"><a href="#安装Gulp到Hexo博客" class="headerlink" title="安装Gulp到Hexo博客"></a>安装Gulp到Hexo博客</h1><p>参见文章：<a href="https://zmlu.github.io/p/14JCGNP.html">安装Gulp</a></p>
-<p>进入hexo博客的根目录（public文件夹所在的目录），安装一些必要的组件。</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp gulp-babel gulp-clean-css gulp-htmlclean gulp-htmlmin gulp-uglify @babel/core @babel/preset-env @babel/register<br></code></pre></td></tr></table></figure>
-<h1 id="新建-babelrc"><a href="#新建-babelrc" class="headerlink" title="新建.babelrc"></a>新建.babelrc</h1><p>依然在hexo博客根目录下新建.babelrc文件</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;presets&quot;</span>: [ <span class="hljs-string">&quot;@babel/preset-env&quot;</span> ]<br>&#125;<br></code></pre></td></tr></table></figure>
-<h1 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h1><p>在hexo博客根目录下新建gulpfile.js文件，内容如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);<br><span class="hljs-keyword">var</span> babel = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-babel&#x27;</span>);<br><span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>);<br><span class="hljs-keyword">var</span> cleanCSS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-clean-css&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlmin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlmin&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlclean = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlclean&#x27;</span>);<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * css</span><br><span class="hljs-comment"> */</span><br>gulp.task(<span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.css&#x27;</span>)<br>			.pipe(cleanCSS())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-js&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src([<span class="hljs-string">&#x27;./public/**/*.js&#x27;</span>, <span class="hljs-string">&#x27;!./public/**/*.min.js&#x27;</span>])<br>			.pipe(babel())<br>			.pipe(uglify())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.html&#x27;</span>)<br>			.pipe(htmlclean())<br>			.pipe(htmlmin(&#123;<br>				removeComments: <span class="hljs-literal">true</span>,<br>				minifyJS: <span class="hljs-literal">true</span>,<br>				minifyCSS: <span class="hljs-literal">true</span>,<br>				minifyURLs: <span class="hljs-literal">true</span>,<br>			&#125;))<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,gulp.parallel(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-string">&#x27;minify-js&#x27;</span>));<br></code></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>执行完<code>hexo g</code>产生编译文件后，再手动执行执行<code>gulp</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[15:03:44] Using gulpfile E:\dev\hexoBlog\gulpfile.js<br>[15:03:44] Starting &#x27;default&#x27;...<br>[15:03:44] Starting &#x27;minify-html&#x27;...<br>[15:03:44] Starting &#x27;minify-css&#x27;...<br>[15:03:44] Starting &#x27;minify-js&#x27;...<br>[15:03:47] Finished &#x27;minify-css&#x27; after 3.52 s<br>[15:03:48] Finished &#x27;minify-html&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;minify-js&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;default&#x27; after 4.63 s<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Gulp</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Gulp</tag>
-        <tag>Hexo</tag>
-        <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安装Gulp</title>
-    <url>/p/14JCGNP.html</url>
-    <content><![CDATA[<p>记录一下安装Gulp的过程，参考官方文档，参考地址见文章末尾。</p>
-<p>如果你先前将gulp安装到全局环境中了，请执行<code>npm rm --global gulp</code>将<code>gulp</code>删除再继续以下操作。更多信息请参考<a href="https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467">Sip</a>。</p>
-<a id="more"></a>
-
-<h1 id="检查-node、npm-和-npx-是否正确安装"><a href="#检查-node、npm-和-npx-是否正确安装" class="headerlink" title="检查 node、npm 和 npx 是否正确安装"></a>检查 node、npm 和 npx 是否正确安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">node --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-node-version-command.png" alt="Output:v8.11.1"></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-npm-version-command.png" alt="Output:5.6.0"></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-npx-version-command.png" alt="Output:9.7.1"></p>
-<p>如果上述工具还没安装，请参考<a href="https://nodejs.org/en/">这里</a>。</p>
-<h1 id="安装-gulp-命令行工具"><a href="#安装-gulp-命令行工具" class="headerlink" title="安装 gulp 命令行工具"></a>安装 gulp 命令行工具</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --global gulp-cli<br></code></pre></td></tr></table></figure>
-<h1 id="创建项目目录并进入"><a href="#创建项目目录并进入" class="headerlink" title="创建项目目录并进入"></a>创建项目目录并进入</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx mkdirp my-project<br>cd my-project<br></code></pre></td></tr></table></figure>
-<h1 id="在项目目录下创建-package-json-文件"><a href="#在项目目录下创建-package-json-文件" class="headerlink" title="在项目目录下创建 package.json 文件"></a>在项目目录下创建 package.json 文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm init<br></code></pre></td></tr></table></figure>
-<p>上述命令将指引你设置项目名、版本、描述信息等。</p>
-<h1 id="安装-gulp，作为开发时依赖项"><a href="#安装-gulp，作为开发时依赖项" class="headerlink" title="安装 gulp，作为开发时依赖项"></a>安装 gulp，作为开发时依赖项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp<br></code></pre></td></tr></table></figure>
-<h1 id="检查-gulp-版本"><a href="#检查-gulp-版本" class="headerlink" title="检查 gulp 版本"></a>检查 gulp 版本</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp --version<br></code></pre></td></tr></table></figure>
-<p>确保输出与下面的屏幕截图匹配，否则你可能需要执行本指南中的上述步骤。</p>
-<p><img src="https://gulpjs.com/img/docs-gulp-version-command.png" alt="Output: CLI version 2.0.1 &amp; Local version 4.0.0"></p>
-<h1 id="创建-gulpfile-文件"><a href="#创建-gulpfile-文件" class="headerlink" title="创建 gulpfile 文件"></a>创建 gulpfile 文件</h1><p>利用任何文本编辑器在项目大的根目录下创建一个名为 gulpfile.js 的文件，并在文件中输入以下内容：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultTask</span>(<span class="hljs-params">cb</span>) </span>&#123;<br>  <span class="hljs-comment">// place code for your default task here</span><br>  cb();<br>&#125;<br><br><span class="hljs-built_in">exports</span>.default = defaultTask<br></code></pre></td></tr></table></figure>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在项目根目录下执行 gulp 命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp<br></code></pre></td></tr></table></figure>
-<p>如需运行多个任务（task），可以执行<code>gulp &lt;task&gt; &lt;othertask&gt;</code>。</p>
-<h1 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h1><p>默认任务（task）将执行，因为任务为空，因此没有实际动作。</p>
-<p><img src="https://gulpjs.com/img/docs-gulp-command.png" alt="Output:Starting default &amp; Finished default"></p>
-<blockquote>
-<p>参考： <a href="https://gulpjs.com/docs/en/getting-started/quick-start">Gulp Quick Start</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Gulp</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Gulp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gitignore文件不起作用</title>
-    <url>/p/TSMFKX.html</url>
-    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
-<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git设置代理</title>
-    <url>/p/35NJX8Y.html</url>
-    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
-<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
-<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
-<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
-<p>显示如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
-<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>加速</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>理解 JavaScript 的 async、await</title>
-    <url>/p/3Q3X94C.html</url>
-    <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
-<a id="more"></a>
-
-<h1 id="async-和-await-在干什么"><a href="#async-和-await-在干什么" class="headerlink" title="async 和 await 在干什么"></a>async 和 await 在干什么</h1><p>另外还有一个很有意思的语法规定，await 只能出现在 async 函数中。然后细心的朋友会产生一个疑问，如果 await 只能出现在 async 函数中，那这个 async 函数应该怎么调用？<br>如果需要通过 await 来调用一个 async 函数，那这个调用的外面必须得再包一个 async 函数，然后……进入死循环，永无出头之日……<br>如果 async 函数不需要 await 来调用，那 async 到底起个啥作用？</p>
-<h2 id="async-起什么作用"><a href="#async-起什么作用" class="headerlink" title="async 起什么作用"></a>async 起什么作用</h2><p>这个问题的关键在于，async 函数是怎么处理它的返回值的！<br>我们当然希望它能直接通过 return 语句返回我们想要的值，但是如果真是这样，似乎就没 await 什么事了。所以，写段代码来试试，看它到底会返回什么：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello async&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> result = testAsync();<br><span class="hljs-built_in">console</span>.log(result);<br></code></pre></td></tr></table></figure>
-<p>看到输出就恍然大悟了——输出的是一个 Promise 对象。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">c:\var\test&gt; node --harmony_async_await .<br>Promise &#123; &#x27;hello async&#x27; &#125;<br></code></pre></td></tr></table></figure>
-<p>所以，<code>async</code> 函数返回的是一个 Promise 对象。从文档中也可以得到这个信息。async 函数（包含函数语句、函数表达式、Lambda表达式）会返回一个 Promise 对象，如果在函数中 <code>return</code> 一个直接量，async 会把这个直接量通过 <code>Promise.resolve()</code> 封装成 Promise 对象。</p>
-<p>async 函数返回的是一个 Promise 对象，所以在最外层不能用 await 获取其返回值的情况下，我们当然应该用原来的方式：<code>then()</code> 链来处理这个 Promise 对象，就像这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">testAsync().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(v);    <span class="hljs-comment">// 输出 hello async</span><br>&#125;);<br></code></pre></td></tr></table></figure>
-<p>现在回过头来想下，如果 async 函数没有返回值，又该如何？很容易想到，它会返回<code>Promise.resolve(undefined)</code>。</p>
-<p>联想一下 Promise 的特点——无等待，所以在没有 await 的情况下执行 async 函数，它会立即执行，返回一个 Promise 对象，并且，绝不会阻塞后面的语句。这和普通返回 Promise 对象的函数并无二致。</p>
-<p>那么下一个关键点就在于 await 关键字了。</p>
-<h2 id="await-到底在等啥"><a href="#await-到底在等啥" class="headerlink" title="await 到底在等啥"></a>await 到底在等啥</h2><p>一般来说，都认为 await 是在等待一个 async 函数完成。不过按语法说明，await 等待的是一个表达式，这个表达式的计算结果是 Promise 对象或者其它值（换句话说，就是没有特殊限定）。</p>
-<p>因为 async 函数返回一个 Promise 对象，所以 await 可以用于等待一个 async 函数的返回值——这也可以说是 await 在等 async 函数，但要清楚，它等的实际是一个返回值。注意到 await 不仅仅用于等 Promise 对象，它可以等任意表达式的结果，所以，await 后面实际是可以接普通函数调用或者直接量的。所以下面这个示例完全可以正确运行</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSomething</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;something&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">&quot;hello async&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v1 = <span class="hljs-keyword">await</span> getSomething();<br>    <span class="hljs-keyword">const</span> v2 = <span class="hljs-keyword">await</span> testAsync();<br>    <span class="hljs-built_in">console</span>.log(v1, v2);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
-<h2 id="await-等到了要等的，然后呢"><a href="#await-等到了要等的，然后呢" class="headerlink" title="await 等到了要等的，然后呢"></a>await 等到了要等的，然后呢</h2><p>await 等到了它要等的东西，一个 Promise 对象，或者其它值，然后呢？我不得不先说，await 是个运算符，用于组成表达式，await 表达式的运算结果取决于它等的东西。</p>
-<p>如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。</p>
-<p>如果它等到的是一个 Promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。</p>
-<blockquote>
-<p>看到上面的阻塞一词，心慌了吧……放心，这就是 await 必须用在 async 函数中的原因。async 函数调用不会造成阻塞，它内部所有的阻塞都被封装在一个 Promise 对象中异步执行。</p>
-</blockquote>
-<h1 id="async-await-帮我们干了啥"><a href="#async-await-帮我们干了啥" class="headerlink" title="async/await 帮我们干了啥"></a>async/await 帮我们干了啥</h1><h2 id="作个简单的比较"><a href="#作个简单的比较" class="headerlink" title="作个简单的比较"></a>作个简单的比较</h2><p>上面已经说明了 async 会将其后的函数（函数表达式或 Lambda）的返回值封装成一个 Promise 对象，而 await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来。</p>
-<p>现在举例，用 <code>setTimeout</code> 模拟耗时的异步操作，先来看看不用 async/await 会怎么写</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br>takeLongTime().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;got&quot;</span>, v);<br>&#125;);<br></code></pre></td></tr></table></figure>
-<p>如果改用 async/await 呢，会是这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v = <span class="hljs-keyword">await</span> takeLongTime();<br>    <span class="hljs-built_in">console</span>.log(v);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
-<p>眼尖的同学已经发现 <code>takeLongTime()</code> 没有申明为 <code>async</code>。实际上，<code>takeLongTime()</code> 本身就是返回的 Promise 对象，加不加 <code>async</code> 结果都一样，如果没明白，请回过头再去看看上面的“async 起什么作用”。</p>
-<p>又一个疑问产生了，这两段代码，两种方式对异步调用的处理（实际就是对 Promise 对象的处理）差别并不明显，甚至使用 async/await 还需要多写一些代码，那它的优势到底在哪？</p>
-<h2 id="async-await-的优势在于处理-then-链"><a href="#async-await-的优势在于处理-then-链" class="headerlink" title="async/await 的优势在于处理 then 链"></a>async/await 的优势在于处理 then 链</h2><p>单一的 Promise 链并不能发现 async/await 的优势，但是，如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（很有意思，Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。</p>
-<p>假设一个业务，分多个步骤完成，每个步骤都是异步的，而且依赖于上一个步骤的结果。我们仍然用 <code>setTimeout</code> 来模拟异步操作：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 传入参数 n，表示这个函数执行的时间（毫秒）</span><br><span class="hljs-comment"> * 执行的结果是 n + 200，这个值将用于下一步骤</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(n + <span class="hljs-number">200</span>), n);<br>    &#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>现在用 Promise 方式来实现这三个步骤的处理</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> step2(time2))<br>        .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> step3(time3))<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 500</span><br><span class="hljs-comment">// step3 with 700</span><br><span class="hljs-comment">// result is 900</span><br><span class="hljs-comment">// doIt: 1507.251ms</span><br></code></pre></td></tr></table></figure>
-<p>输出结果 <code>result</code> 是 <code>step3()</code> 的参数 <code>700 + 200 = 900</code>。<code>doIt()</code> 顺序执行了三个步骤，一共用了 <code>300 + 500 + 700 = 1500</code> 毫秒，和 <code>console.time()/console.timeEnd()</code> 计算的结果一致。<br>如果用 async/await 来实现呢，会是这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
-<p>结果和之前的 Promise 实现是一样的，但是这个代码看起来是不是清晰得多，几乎跟同步代码一样</p>
-<h2 id="还有更酷的"><a href="#还有更酷的" class="headerlink" title="还有更酷的"></a>还有更酷的</h2><p>现在把业务要求改一下，仍然是三个步骤，但每一个步骤都需要之前每个步骤的结果。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(m + n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">k, m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;k&#125;</span>, <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(k + m + n);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>这回先用 async/await 来写：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time1, time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time1, time2, time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 800 = 300 + 500</span><br><span class="hljs-comment">// step3 with 1800 = 300 + 500 + 1000</span><br><span class="hljs-comment">// result is 2000</span><br><span class="hljs-comment">// doIt: 2907.387ms</span><br></code></pre></td></tr></table></figure>
-<p>除了觉得执行时间变长了之外，似乎和之前的示例没啥区别啊！别急，认真想想如果把它写成 Promise 方式实现会是什么样子？</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> step2(time1, time2)<br>                .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> [time1, time2, time3]);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">times</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> [time1, time2, time3] = times;<br>            <span class="hljs-keyword">return</span> step3(time1, time2, time3);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
-<p>有没有感觉有点复杂的样子？那一堆参数处理，就是 Promise 方案的死穴—— 参数传递太麻烦了，看着就晕！</p>
-<blockquote>
-<p>参考：<a href="https://segmentfault.com/a/1190000007535316">理解 JavaScript 的 async/await - 边城</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Javascript</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「翻译」Java 14带来了许多新功能</title>
     <url>/p/2305442.html</url>
     <content><![CDATA[<p>Java 14包含比前两个发行版更多的新功能-其中大多数旨在简化编程开发工作。</p>
@@ -497,6 +437,66 @@
       <tags>
         <tag>Java</tag>
         <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>理解 JavaScript 的 async、await</title>
+    <url>/p/3Q3X94C.html</url>
+    <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
+<a id="more"></a>
+
+<h1 id="async-和-await-在干什么"><a href="#async-和-await-在干什么" class="headerlink" title="async 和 await 在干什么"></a>async 和 await 在干什么</h1><p>另外还有一个很有意思的语法规定，await 只能出现在 async 函数中。然后细心的朋友会产生一个疑问，如果 await 只能出现在 async 函数中，那这个 async 函数应该怎么调用？<br>如果需要通过 await 来调用一个 async 函数，那这个调用的外面必须得再包一个 async 函数，然后……进入死循环，永无出头之日……<br>如果 async 函数不需要 await 来调用，那 async 到底起个啥作用？</p>
+<h2 id="async-起什么作用"><a href="#async-起什么作用" class="headerlink" title="async 起什么作用"></a>async 起什么作用</h2><p>这个问题的关键在于，async 函数是怎么处理它的返回值的！<br>我们当然希望它能直接通过 return 语句返回我们想要的值，但是如果真是这样，似乎就没 await 什么事了。所以，写段代码来试试，看它到底会返回什么：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello async&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> result = testAsync();<br><span class="hljs-built_in">console</span>.log(result);<br></code></pre></td></tr></table></figure>
+<p>看到输出就恍然大悟了——输出的是一个 Promise 对象。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">c:\var\test&gt; node --harmony_async_await .<br>Promise &#123; &#x27;hello async&#x27; &#125;<br></code></pre></td></tr></table></figure>
+<p>所以，<code>async</code> 函数返回的是一个 Promise 对象。从文档中也可以得到这个信息。async 函数（包含函数语句、函数表达式、Lambda表达式）会返回一个 Promise 对象，如果在函数中 <code>return</code> 一个直接量，async 会把这个直接量通过 <code>Promise.resolve()</code> 封装成 Promise 对象。</p>
+<p>async 函数返回的是一个 Promise 对象，所以在最外层不能用 await 获取其返回值的情况下，我们当然应该用原来的方式：<code>then()</code> 链来处理这个 Promise 对象，就像这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">testAsync().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(v);    <span class="hljs-comment">// 输出 hello async</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>现在回过头来想下，如果 async 函数没有返回值，又该如何？很容易想到，它会返回<code>Promise.resolve(undefined)</code>。</p>
+<p>联想一下 Promise 的特点——无等待，所以在没有 await 的情况下执行 async 函数，它会立即执行，返回一个 Promise 对象，并且，绝不会阻塞后面的语句。这和普通返回 Promise 对象的函数并无二致。</p>
+<p>那么下一个关键点就在于 await 关键字了。</p>
+<h2 id="await-到底在等啥"><a href="#await-到底在等啥" class="headerlink" title="await 到底在等啥"></a>await 到底在等啥</h2><p>一般来说，都认为 await 是在等待一个 async 函数完成。不过按语法说明，await 等待的是一个表达式，这个表达式的计算结果是 Promise 对象或者其它值（换句话说，就是没有特殊限定）。</p>
+<p>因为 async 函数返回一个 Promise 对象，所以 await 可以用于等待一个 async 函数的返回值——这也可以说是 await 在等 async 函数，但要清楚，它等的实际是一个返回值。注意到 await 不仅仅用于等 Promise 对象，它可以等任意表达式的结果，所以，await 后面实际是可以接普通函数调用或者直接量的。所以下面这个示例完全可以正确运行</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSomething</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;something&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">&quot;hello async&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v1 = <span class="hljs-keyword">await</span> getSomething();<br>    <span class="hljs-keyword">const</span> v2 = <span class="hljs-keyword">await</span> testAsync();<br>    <span class="hljs-built_in">console</span>.log(v1, v2);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
+<h2 id="await-等到了要等的，然后呢"><a href="#await-等到了要等的，然后呢" class="headerlink" title="await 等到了要等的，然后呢"></a>await 等到了要等的，然后呢</h2><p>await 等到了它要等的东西，一个 Promise 对象，或者其它值，然后呢？我不得不先说，await 是个运算符，用于组成表达式，await 表达式的运算结果取决于它等的东西。</p>
+<p>如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。</p>
+<p>如果它等到的是一个 Promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。</p>
+<blockquote>
+<p>看到上面的阻塞一词，心慌了吧……放心，这就是 await 必须用在 async 函数中的原因。async 函数调用不会造成阻塞，它内部所有的阻塞都被封装在一个 Promise 对象中异步执行。</p>
+</blockquote>
+<h1 id="async-await-帮我们干了啥"><a href="#async-await-帮我们干了啥" class="headerlink" title="async/await 帮我们干了啥"></a>async/await 帮我们干了啥</h1><h2 id="作个简单的比较"><a href="#作个简单的比较" class="headerlink" title="作个简单的比较"></a>作个简单的比较</h2><p>上面已经说明了 async 会将其后的函数（函数表达式或 Lambda）的返回值封装成一个 Promise 对象，而 await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来。</p>
+<p>现在举例，用 <code>setTimeout</code> 模拟耗时的异步操作，先来看看不用 async/await 会怎么写</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br>takeLongTime().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;got&quot;</span>, v);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>如果改用 async/await 呢，会是这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v = <span class="hljs-keyword">await</span> takeLongTime();<br>    <span class="hljs-built_in">console</span>.log(v);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
+<p>眼尖的同学已经发现 <code>takeLongTime()</code> 没有申明为 <code>async</code>。实际上，<code>takeLongTime()</code> 本身就是返回的 Promise 对象，加不加 <code>async</code> 结果都一样，如果没明白，请回过头再去看看上面的“async 起什么作用”。</p>
+<p>又一个疑问产生了，这两段代码，两种方式对异步调用的处理（实际就是对 Promise 对象的处理）差别并不明显，甚至使用 async/await 还需要多写一些代码，那它的优势到底在哪？</p>
+<h2 id="async-await-的优势在于处理-then-链"><a href="#async-await-的优势在于处理-then-链" class="headerlink" title="async/await 的优势在于处理 then 链"></a>async/await 的优势在于处理 then 链</h2><p>单一的 Promise 链并不能发现 async/await 的优势，但是，如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（很有意思，Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。</p>
+<p>假设一个业务，分多个步骤完成，每个步骤都是异步的，而且依赖于上一个步骤的结果。我们仍然用 <code>setTimeout</code> 来模拟异步操作：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 传入参数 n，表示这个函数执行的时间（毫秒）</span><br><span class="hljs-comment"> * 执行的结果是 n + 200，这个值将用于下一步骤</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(n + <span class="hljs-number">200</span>), n);<br>    &#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>现在用 Promise 方式来实现这三个步骤的处理</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> step2(time2))<br>        .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> step3(time3))<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 500</span><br><span class="hljs-comment">// step3 with 700</span><br><span class="hljs-comment">// result is 900</span><br><span class="hljs-comment">// doIt: 1507.251ms</span><br></code></pre></td></tr></table></figure>
+<p>输出结果 <code>result</code> 是 <code>step3()</code> 的参数 <code>700 + 200 = 900</code>。<code>doIt()</code> 顺序执行了三个步骤，一共用了 <code>300 + 500 + 700 = 1500</code> 毫秒，和 <code>console.time()/console.timeEnd()</code> 计算的结果一致。<br>如果用 async/await 来实现呢，会是这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
+<p>结果和之前的 Promise 实现是一样的，但是这个代码看起来是不是清晰得多，几乎跟同步代码一样</p>
+<h2 id="还有更酷的"><a href="#还有更酷的" class="headerlink" title="还有更酷的"></a>还有更酷的</h2><p>现在把业务要求改一下，仍然是三个步骤，但每一个步骤都需要之前每个步骤的结果。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(m + n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">k, m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;k&#125;</span>, <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(k + m + n);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这回先用 async/await 来写：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time1, time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time1, time2, time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 800 = 300 + 500</span><br><span class="hljs-comment">// step3 with 1800 = 300 + 500 + 1000</span><br><span class="hljs-comment">// result is 2000</span><br><span class="hljs-comment">// doIt: 2907.387ms</span><br></code></pre></td></tr></table></figure>
+<p>除了觉得执行时间变长了之外，似乎和之前的示例没啥区别啊！别急，认真想想如果把它写成 Promise 方式实现会是什么样子？</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> step2(time1, time2)<br>                .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> [time1, time2, time3]);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">times</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> [time1, time2, time3] = times;<br>            <span class="hljs-keyword">return</span> step3(time1, time2, time3);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
+<p>有没有感觉有点复杂的样子？那一堆参数处理，就是 Promise 方案的死穴—— 参数传递太麻烦了，看着就晕！</p>
+<blockquote>
+<p>参考：<a href="https://segmentfault.com/a/1190000007535316">理解 JavaScript 的 async/await - 边城</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Javascript</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -620,24 +620,81 @@
       </tags>
   </entry>
   <entry>
-    <title>Orcale日常记录</title>
-    <url>/p/3PN2K8A.html</url>
-    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
+    <title>Python在全局代理下安装包报错</title>
+    <url>/p/1E56RCW.html</url>
+    <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Python<span class="hljs-string">&#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal</span><br></code></pre></td></tr></table></figure>
+<p>以下是解决办法:</p>
 <a id="more"></a>
 
-<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
-<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
-<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
-<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
+<p>首先去掉所有代理，和终端的<code>PROXY</code>属性，然后安装<code>pysocks</code>模块</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install pysocks<br></code></pre></td></tr></table></figure>
+<p>安装完毕后再加上代理或者终端<code>PROXY</code>属性，即可正常安装其他模块。</p>
+]]></content>
       <categories>
         <category>开发</category>
-        <category>SQL</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>Orcale</tag>
-        <tag>SQL</tag>
+        <tag>Python</tag>
         <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python切片</title>
+    <url>/p/253PZX0.html</url>
+    <content><![CDATA[<p>记录下Python五个高级特性，分别是切片、迭代、列表生成式、生成器、迭代器，记录切片学习的笔记。</p>
+<a id="more"></a>
+
+<h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><p>取一个list或tuple的部分元素是非常常见的操作。比如，一个list如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L = [<span class="hljs-string">&#x27;Michael&#x27;</span>, <span class="hljs-string">&#x27;Sarah&#x27;</span>, <span class="hljs-string">&#x27;Tracy&#x27;</span>, <span class="hljs-string">&#x27;Bob&#x27;</span>, <span class="hljs-string">&#x27;Jack&#x27;</span>]<br></code></pre></td></tr></table></figure>
+<p>取前3个元素，应该怎么做？笨办法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">[L[<span class="hljs-number">0</span>], L[<span class="hljs-number">1</span>], L[<span class="hljs-number">2</span>]]<br></code></pre></td></tr></table></figure>
+<p>或者用循环，不过代码都很长，比如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">r = []<br>n = <span class="hljs-number">3</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>    r.append(L[i])<br></code></pre></td></tr></table></figure>
+<p>对这种经常取指定索引范围的操作，用循环十分繁琐，因此，Python提供了切片（Slice）操作符，能大大简化这种操作。<br>对应上面的问题，取前3个元素，用一行代码就可以完成切片：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
+<p><code>L[0:3]</code>表示，从索引<code>0</code>开始取，直到索引<code>3</code>为止，但不包括索引<code>3</code>。即索引<code>0</code>，<code>1</code>，<code>2</code>，正好是3个元素。<br>如果第一个索引是<code>0</code>，还可以省略：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[:<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
+<p>类似的，既然Python支持L[-1]取倒数第一个元素，那么它同样支持倒数切片，试试：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[-<span class="hljs-number">2</span>:]<br></code></pre></td></tr></table></figure>
+<p>倒数第一个元素的索引是<code>-1</code>。<br>有一个0-99的数列，前10个数，每两个取一个：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[:10:2]</span><br>[0, 2, 4, 6, 8]<br></code></pre></td></tr></table></figure>
+<p>所有数，每5个取一个：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[::5]</span><br>[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]<br></code></pre></td></tr></table></figure>
+<p>什么都不写，只写[:]就可以原样复制一个list：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[:]</span><br>[0, 1, 2, 3, ..., 99]<br></code></pre></td></tr></table></figure>
+<p>字符串’xxx’也可以看成是一种list，每个元素就是一个字符。因此，字符串也可以用切片操作，只是操作结果仍是字符串：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; <span class="hljs-string">&#x27;ABCDEFG&#x27;</span>[:3]</span><br>&#x27;ABC&#x27;<br><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; <span class="hljs-string">&#x27;ABCDEFG&#x27;</span>[::2]</span><br>&#x27;ACEG&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Scrapy抓取百度热点新闻</title>
+    <url>/p/QHV65K.html</url>
+    <content><![CDATA[<h2 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install Scrapy<br></code></pre></td></tr></table></figure>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy startproject tutorial<br></code></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="编写Item"><a href="#编写Item" class="headerlink" title="编写Item"></a>编写Item</h2><p>修改<code>items.py</code>文件：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaiduNewsItem</span>(<span class="hljs-params">scrapy.Item</span>):</span><br>    <span class="hljs-comment"># define the fields for your item here like:</span><br>    <span class="hljs-comment"># name = scrapy.Field()</span><br>    title = scrapy.Field()<br>    link = scrapy.Field()<br>    time = scrapy.Field()<br>    category = scrapy.Field()<br></code></pre></td></tr></table></figure>
+<h2 id="编写爬虫-Spider"><a href="#编写爬虫-Spider" class="headerlink" title="编写爬虫(Spider)"></a>编写爬虫(Spider)</h2><p>在<code>spiders</code>文件夹下新建一个py文件，命名为<code>baidunews.py</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy,re<br><br><span class="hljs-keyword">from</span> tutorial.items <span class="hljs-keyword">import</span> BaiduNewsItem<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DmozSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span><br>    name = <span class="hljs-string">&quot;baidunews&quot;</span><br>    allowed_domains = [<span class="hljs-string">&quot;baidu.com&quot;</span>]<br>    start_urls = [<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guoji&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guonei&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=mil&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=ent&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=sports&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=tech&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=lady&quot;</span>,<br>    ]<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span><br>        category = &#123;<span class="hljs-string">&#x27;guoji&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u9645&#x27;</span>,<span class="hljs-string">&#x27;guonei&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u5185&#x27;</span>,<span class="hljs-string">&#x27;mil&#x27;</span>:<span class="hljs-string">u&#x27;\u519b\u4e8b&#x27;</span>,<span class="hljs-string">&#x27;ent&#x27;</span>:<span class="hljs-string">u&#x27;\u5a31\u4e50&#x27;</span>,<span class="hljs-string">&#x27;sports&#x27;</span>:<span class="hljs-string">u&#x27;\u4f53\u80b2&#x27;</span>,<span class="hljs-string">&#x27;tech&#x27;</span>:<span class="hljs-string">u&#x27;\u79d1\u6280&#x27;</span>,<span class="hljs-string">&#x27;lady&#x27;</span>:<span class="hljs-string">u&#x27;\u5973\u4eba&#x27;</span>&#125;<br>        <span class="hljs-keyword">for</span> sel <span class="hljs-keyword">in</span> response.xpath(<span class="hljs-string">&#x27;//div[@id=&quot;latest-news&quot;]/ul/li&#x27;</span>):<br>            item = BaiduNewsItem()<br>            item[<span class="hljs-string">&#x27;title&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;link&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/@href&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;time&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;span/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;category&#x27;</span>] = category[<span class="hljs-string">&quot;&quot;</span>.join(re.findall(<span class="hljs-string">&#x27;(^|&amp;)channel=([^&amp;]*)(&amp;|$)&#x27;</span>,response.url)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>])]<br>            <span class="hljs-keyword">yield</span> item<br></code></pre></td></tr></table></figure>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy crawl baidunews<br></code></pre></td></tr></table></figure>
+<h2 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h2><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">[<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦新增新冠肺炎确诊病例1748例，累计563..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667639131171773453&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;13:30&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;面临破产危机！法国警告雷诺：若不“返回”法国将不提..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667635925032421657&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;12:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;印度战机迫降到巴基斯坦，飞行员一句话瞬间就逗笑了在..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667630787025851625&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;11:18&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;法国地方政府用菠萝丈量社交距离，被批“太幼稚”&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667624101851668641&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;09:32&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;大疆：正与巴基斯坦洽谈无人机治蝗 初中毕业生5天就..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667620721060133107&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;08:38&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;离太近！德国警察“把错门”，错把卢森堡当成法国&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667617809556396961&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;07:51&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;温格：慎重面对外资进入法甲，不能毁了法国的足球文化&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667573388455325969&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:55&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;五角大楼终于松口，巴铁F-16将迎重大利好，该印度..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667581813539045925&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:20&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;致敬！巴基斯坦坠机事故未造成地面人员死亡原因曝光&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667575501812426929&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦官方：坠机事故97人遇难 2人幸存&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667574758558193863&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:29&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦坠机事件2人生还！幸存者：被火海包围 人们..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667565408074998538&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:59&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;里昂主席：西班牙患者更多却能复赛，我们法国真是太蠢..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667563640465920816&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:31&quot;</span>&#125;,<br>]<br></code></pre></td></tr></table></figure>
+<h2 id="附：中文乱码"><a href="#附：中文乱码" class="headerlink" title="附：中文乱码"></a>附：中文乱码</h2><p>如果结果中文乱码，则需要在<code>settings.py</code>中添加如下配置：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">FEED_EXPORT_ENCODING = <span class="hljs-string">&#x27;utf-8&#x27;</span><br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -731,81 +788,43 @@
       </tags>
   </entry>
   <entry>
-    <title>Python在全局代理下安装包报错</title>
-    <url>/p/1E56RCW.html</url>
-    <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Python<span class="hljs-string">&#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal</span><br></code></pre></td></tr></table></figure>
-<p>以下是解决办法:</p>
+    <title>Element输入框自动去除空格及校验</title>
+    <url>/p/2KGC076.html</url>
+    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
 <a id="more"></a>
 
-<p>首先去掉所有代理，和终端的<code>PROXY</code>属性，然后安装<code>pysocks</code>模块</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install pysocks<br></code></pre></td></tr></table></figure>
-<p>安装完毕后再加上代理或者终端<code>PROXY</code>属性，即可正常安装其他模块。</p>
+<p>可以自定义一个指令，代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br>Vue.directive(<span class="hljs-string">&#x27;trim&#x27;</span>, &#123;<br>  <span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params">el, binding, vnode</span>)</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> validateField = <span class="hljs-string">&#x27;&#x27;</span><br>      <span class="hljs-keyword">const</span> formItem = vnode.elm.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">if</span> (formItem) &#123;<br>        validateField = formItem.$options.propsData.prop<br>      &#125;<br>      <span class="hljs-keyword">const</span> form = vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">const</span> trimStr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> value = e.target.value<br>        <span class="hljs-keyword">if</span> (value) &#123;<br>          e.target.value = value.trim()<br>          e.target.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&#x27;input&#x27;</span>))<br>          <span class="hljs-keyword">if</span> (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(<span class="hljs-string">&#x27;blur&#x27;</span>, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
+<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
 ]]></content>
       <categories>
         <category>开发</category>
-        <category>Python</category>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Orcale日常记录</title>
+    <url>/p/3PN2K8A.html</url>
+    <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
+<a id="more"></a>
+
+<h1 id="建立用户和Scheme"><a href="#建立用户和Scheme" class="headerlink" title="建立用户和Scheme"></a>建立用户和Scheme</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>SPACE HBSLH_DBSPACE DATAFILE <span class="hljs-string">&#x27;/home/oracle/app/oradata/orcl/dbspace_hbslh.dbf&#x27;</span> SIZE <span class="hljs-number">2000</span>M AUTOEXTEND <span class="hljs-keyword">ON</span> EXTENT MANAGEMENT <span class="hljs-keyword">LOCAL</span> SEGMENT SPACE MANAGEMENT AUTO;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> HBS_LH IDENTIFIED <span class="hljs-keyword">BY</span> CWPASS <span class="hljs-keyword">DEFAULT</span> TABLESPACE HBSLH_DBSPACE;<br></code></pre></td></tr></table></figure>
+<h1 id="SQL回滚"><a href="#SQL回滚" class="headerlink" title="SQL回滚"></a>SQL回滚</h1><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> SW_WRW_DQWRPFL <span class="hljs-keyword">as</span> <span class="hljs-keyword">of</span> <span class="hljs-type">timestamp</span> to_timestamp(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL enable <span class="hljs-type">row</span> movement;<br>flashback <span class="hljs-keyword">table</span> SW_WRW_DQWRPFL <span class="hljs-keyword">to</span> <span class="hljs-type">timestamp</span> TO_TIMESTAMP(<span class="hljs-string">&#x27;2018-08-21 17:00:00&#x27;</span>, <span class="hljs-string">&#x27;yyyy-mm-dd hh24:mi:ss&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h1 id="查询锁与解锁"><a href="#查询锁与解锁" class="headerlink" title="查询锁与解锁"></a>查询锁与解锁</h1><h2 id="查询锁"><a href="#查询锁" class="headerlink" title="查询锁"></a>查询锁</h2><figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> v$lock;<br><span class="hljs-comment">--或</span><br><span class="hljs-keyword">select</span> object_name, machine, s.sid, s.serial#<br><span class="hljs-keyword">from</span> v$locked_object l,<br>     dba_objects o,<br>     v$session s<br><span class="hljs-keyword">where</span> l.object_id <span class="hljs-operator">=</span> o.object_id <span class="hljs-keyword">and</span> l.session_id<span class="hljs-operator">=</span>s.sid;<br></code></pre></td></tr></table></figure>
+<h2 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h2><p>‘Session id, serial id’</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">system</span> kill session <span class="hljs-string">&#x27;165,4528&#x27;</span>;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>SQL</category>
       </categories>
       <tags>
         <tag>Mac</tag>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用Scrapy抓取百度热点新闻</title>
-    <url>/p/QHV65K.html</url>
-    <content><![CDATA[<h2 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install Scrapy<br></code></pre></td></tr></table></figure>
-<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy startproject tutorial<br></code></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h2 id="编写Item"><a href="#编写Item" class="headerlink" title="编写Item"></a>编写Item</h2><p>修改<code>items.py</code>文件：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaiduNewsItem</span>(<span class="hljs-params">scrapy.Item</span>):</span><br>    <span class="hljs-comment"># define the fields for your item here like:</span><br>    <span class="hljs-comment"># name = scrapy.Field()</span><br>    title = scrapy.Field()<br>    link = scrapy.Field()<br>    time = scrapy.Field()<br>    category = scrapy.Field()<br></code></pre></td></tr></table></figure>
-<h2 id="编写爬虫-Spider"><a href="#编写爬虫-Spider" class="headerlink" title="编写爬虫(Spider)"></a>编写爬虫(Spider)</h2><p>在<code>spiders</code>文件夹下新建一个py文件，命名为<code>baidunews.py</code></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy,re<br><br><span class="hljs-keyword">from</span> tutorial.items <span class="hljs-keyword">import</span> BaiduNewsItem<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DmozSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span><br>    name = <span class="hljs-string">&quot;baidunews&quot;</span><br>    allowed_domains = [<span class="hljs-string">&quot;baidu.com&quot;</span>]<br>    start_urls = [<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guoji&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guonei&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=mil&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=ent&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=sports&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=tech&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=lady&quot;</span>,<br>    ]<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span><br>        category = &#123;<span class="hljs-string">&#x27;guoji&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u9645&#x27;</span>,<span class="hljs-string">&#x27;guonei&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u5185&#x27;</span>,<span class="hljs-string">&#x27;mil&#x27;</span>:<span class="hljs-string">u&#x27;\u519b\u4e8b&#x27;</span>,<span class="hljs-string">&#x27;ent&#x27;</span>:<span class="hljs-string">u&#x27;\u5a31\u4e50&#x27;</span>,<span class="hljs-string">&#x27;sports&#x27;</span>:<span class="hljs-string">u&#x27;\u4f53\u80b2&#x27;</span>,<span class="hljs-string">&#x27;tech&#x27;</span>:<span class="hljs-string">u&#x27;\u79d1\u6280&#x27;</span>,<span class="hljs-string">&#x27;lady&#x27;</span>:<span class="hljs-string">u&#x27;\u5973\u4eba&#x27;</span>&#125;<br>        <span class="hljs-keyword">for</span> sel <span class="hljs-keyword">in</span> response.xpath(<span class="hljs-string">&#x27;//div[@id=&quot;latest-news&quot;]/ul/li&#x27;</span>):<br>            item = BaiduNewsItem()<br>            item[<span class="hljs-string">&#x27;title&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;link&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/@href&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;time&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;span/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;category&#x27;</span>] = category[<span class="hljs-string">&quot;&quot;</span>.join(re.findall(<span class="hljs-string">&#x27;(^|&amp;)channel=([^&amp;]*)(&amp;|$)&#x27;</span>,response.url)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>])]<br>            <span class="hljs-keyword">yield</span> item<br></code></pre></td></tr></table></figure>
-<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy crawl baidunews<br></code></pre></td></tr></table></figure>
-<h2 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h2><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">[<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦新增新冠肺炎确诊病例1748例，累计563..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667639131171773453&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;13:30&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;面临破产危机！法国警告雷诺：若不“返回”法国将不提..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667635925032421657&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;12:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;印度战机迫降到巴基斯坦，飞行员一句话瞬间就逗笑了在..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667630787025851625&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;11:18&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;法国地方政府用菠萝丈量社交距离，被批“太幼稚”&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667624101851668641&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;09:32&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;大疆：正与巴基斯坦洽谈无人机治蝗 初中毕业生5天就..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667620721060133107&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;08:38&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;离太近！德国警察“把错门”，错把卢森堡当成法国&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667617809556396961&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;07:51&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;温格：慎重面对外资进入法甲，不能毁了法国的足球文化&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667573388455325969&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:55&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;五角大楼终于松口，巴铁F-16将迎重大利好，该印度..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667581813539045925&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:20&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;致敬！巴基斯坦坠机事故未造成地面人员死亡原因曝光&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667575501812426929&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦官方：坠机事故97人遇难 2人幸存&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667574758558193863&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:29&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦坠机事件2人生还！幸存者：被火海包围 人们..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667565408074998538&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:59&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;里昂主席：西班牙患者更多却能复赛，我们法国真是太蠢..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667563640465920816&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:31&quot;</span>&#125;,<br>]<br></code></pre></td></tr></table></figure>
-<h2 id="附：中文乱码"><a href="#附：中文乱码" class="headerlink" title="附：中文乱码"></a>附：中文乱码</h2><p>如果结果中文乱码，则需要在<code>settings.py</code>中添加如下配置：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">FEED_EXPORT_ENCODING = <span class="hljs-string">&#x27;utf-8&#x27;</span><br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python切片</title>
-    <url>/p/253PZX0.html</url>
-    <content><![CDATA[<p>记录下Python五个高级特性，分别是切片、迭代、列表生成式、生成器、迭代器，记录切片学习的笔记。</p>
-<a id="more"></a>
-
-<h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><p>取一个list或tuple的部分元素是非常常见的操作。比如，一个list如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L = [<span class="hljs-string">&#x27;Michael&#x27;</span>, <span class="hljs-string">&#x27;Sarah&#x27;</span>, <span class="hljs-string">&#x27;Tracy&#x27;</span>, <span class="hljs-string">&#x27;Bob&#x27;</span>, <span class="hljs-string">&#x27;Jack&#x27;</span>]<br></code></pre></td></tr></table></figure>
-<p>取前3个元素，应该怎么做？笨办法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">[L[<span class="hljs-number">0</span>], L[<span class="hljs-number">1</span>], L[<span class="hljs-number">2</span>]]<br></code></pre></td></tr></table></figure>
-<p>或者用循环，不过代码都很长，比如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">r = []<br>n = <span class="hljs-number">3</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>    r.append(L[i])<br></code></pre></td></tr></table></figure>
-<p>对这种经常取指定索引范围的操作，用循环十分繁琐，因此，Python提供了切片（Slice）操作符，能大大简化这种操作。<br>对应上面的问题，取前3个元素，用一行代码就可以完成切片：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
-<p><code>L[0:3]</code>表示，从索引<code>0</code>开始取，直到索引<code>3</code>为止，但不包括索引<code>3</code>。即索引<code>0</code>，<code>1</code>，<code>2</code>，正好是3个元素。<br>如果第一个索引是<code>0</code>，还可以省略：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[:<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
-<p>类似的，既然Python支持L[-1]取倒数第一个元素，那么它同样支持倒数切片，试试：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">L[-<span class="hljs-number">2</span>:]<br></code></pre></td></tr></table></figure>
-<p>倒数第一个元素的索引是<code>-1</code>。<br>有一个0-99的数列，前10个数，每两个取一个：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[:10:2]</span><br>[0, 2, 4, 6, 8]<br></code></pre></td></tr></table></figure>
-<p>所有数，每5个取一个：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[::5]</span><br>[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]<br></code></pre></td></tr></table></figure>
-<p>什么都不写，只写[:]就可以原样复制一个list：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; L[:]</span><br>[0, 1, 2, 3, ..., 99]<br></code></pre></td></tr></table></figure>
-<p>字符串’xxx’也可以看成是一种list，每个元素就是一个字符。因此，字符串也可以用切片操作，只是操作结果仍是字符串：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; <span class="hljs-string">&#x27;ABCDEFG&#x27;</span>[:3]</span><br>&#x27;ABC&#x27;<br><span class="hljs-meta">&gt;</span><span class="bash">&gt;&gt; <span class="hljs-string">&#x27;ABCDEFG&#x27;</span>[::2]</span><br>&#x27;ACEG&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
+        <tag>SQL</tag>
+        <tag>Orcale</tag>
       </tags>
   </entry>
   <entry>
@@ -839,104 +858,6 @@
       <tags>
         <tag>Mac</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Element输入框自动去除空格及校验</title>
-    <url>/p/2KGC076.html</url>
-    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
-<a id="more"></a>
-
-<p>可以自定义一个指令，代码如下</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br>Vue.directive(<span class="hljs-string">&#x27;trim&#x27;</span>, &#123;<br>  <span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params">el, binding, vnode</span>)</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> validateField = <span class="hljs-string">&#x27;&#x27;</span><br>      <span class="hljs-keyword">const</span> formItem = vnode.elm.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">if</span> (formItem) &#123;<br>        validateField = formItem.$options.propsData.prop<br>      &#125;<br>      <span class="hljs-keyword">const</span> form = vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">const</span> trimStr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> value = e.target.value<br>        <span class="hljs-keyword">if</span> (value) &#123;<br>          e.target.value = value.trim()<br>          e.target.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&#x27;input&#x27;</span>))<br>          <span class="hljs-keyword">if</span> (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(<span class="hljs-string">&#x27;blur&#x27;</span>, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
-<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
-<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Vue</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>[202006期] 有价值 iOS App</title>
-    <url>/p/2S9K9NA.html</url>
-    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
-<a id="more"></a>
-
-<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
-<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
-<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
-<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
-<li>价格：免费</li>
-<li>应用内购买：有</li>
-</ul>
-<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
-<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>Apple</category>
-      </categories>
-      <tags>
-        <tag>Netflix</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CarKey功能预测及介绍</title>
-    <url>/p/T5A9FS.html</url>
-    <content><![CDATA[<p>苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。</p>
-<a id="more"></a>
-
-<p><img src="https://file.moetu.org/images/2020/06/17/15923722550190178cd1a80bd5f90d.jpg" alt="CarKey"></p>
-<p>苹果称这种新功能叫做 “CarKey”，这就是我们今天介绍的主角。</p>
-<h2 id="什么是-CarKey-？"><a href="#什么是-CarKey-？" class="headerlink" title="什么是 CarKey ？"></a>什么是 CarKey ？</h2><p>CarKey 是一种数字协议，可以让配备了NFC功能的 iPhone 和 Apple Watch 解锁、锁定、启动、控制具有 NFC 功能的汽车。</p>
-<p>汽车通常上是不具备 NFC 功能的，就像现在已有的 CarPlay 功能一样，需要汽车制造商来适配这种功能。</p>
-<p>汽车制造商可以通过 CarKey 功能，实现 iPhone 对汽车的各种各样控制，但是最基本的控制——包括解锁、锁定、启动汽车是必须有的，这让 CarKey 可以代替物理钥匙。</p>
-<p>CarKey 工作原理基于汽车联机联盟（CCC）发布的基于 NFC 的 Digital Key 2.0 规范，苹果正是该联盟中的一员。 Digital Key 2.0 规范使得移动设备可以通过 NFC 与交通设备建立安全稳健的链接。</p>
-<h2 id="CarKey-如何工作？"><a href="#CarKey-如何工作？" class="headerlink" title="CarKey 如何工作？"></a>CarKey 如何工作？</h2><p>现如今，很多汽车都配备了可以近距离感应解锁汽车的卡片或者钥匙扣，就像特斯拉的钥匙是一张卡片，贴近车门框就能解锁。CarKey就跟这种卡片或者钥匙扣很相似，只不过CarKey是通过 NFC 功能实现的，并且可以将“钥匙”保存在 iPhone 上的“钱包”应用中。</p>
-<p>用 CarKey 解锁（或锁定）车辆需要将‌ Apple Watch ‌或 ‌iPhone 靠近汽车的 NFC 感应区。 当 NFC 感应区检测到存储在 iPhone 或 Apple Watch 中的 CarKey 时，汽车中的解锁程序将启动，汽车被解锁。</p>
-<p>使用“钱包”中的 CarKey 需要进行面容ID或者指纹解锁，但是苹果也推出一种快捷的方式，类似于快捷交通卡一样，不需要任何解锁即可使用该数字钥匙，从 iOS13 的代码中，苹果有这样一段描述：<br>“要使用 CarKey，请将‌ iPhone‌ 或 ‌Apple Watch‌ 靠近感应区。它会自动运行，不需要面容ID。 您可以在电子钱包中更改快速模式设置。”</p>
-<h2 id="CarKey-如何设置？"><a href="#CarKey-如何设置？" class="headerlink" title="CarKey 如何设置？"></a>CarKey 如何设置？</h2><p>‌iOS13 中的代码包含有关 CarKey 设置方式的详细信息。CarKey 用户需要将 iPhone 放在位于车内的 NFC 感应区上，配对过程可能需要几分钟即可完成。</p>
-<p>配对过程需要输入汽车制造商提供的配对密钥，有些汽车制造商的配对过程还可能需要下载相应的软件，在iOS中找到了以下描述：</p>
-<blockquote>
-<p>将此 iPhone 顶部靠近汽车的NFC感应区，配对过程可能需要几分钟，在配对成功之前，请不要移走 iPhone。<br>请输入汽车制造商提供的CarKey密钥，或者下载 $$汽车制造商$$ 的App进行连接。</p>
-</blockquote>
-<h2 id="CarKey在“钱包”应用中是什么样？"><a href="#CarKey在“钱包”应用中是什么样？" class="headerlink" title="CarKey在“钱包”应用中是什么样？"></a>CarKey在“钱包”应用中是什么样？</h2><p>CarKey在“钱包”中将会是一张卡片，就像交通卡，当你点击卡片的时候，会展示有关汽车的相关信息。</p>
-<p><img src="https://file.moetu.org/images/2020/06/10/15917714449109f37e1db416d6c9dd.jpg" alt="CarKey"></p>
-<p>也会有一个“快捷解锁模式”（无需面容ID和指纹解锁）的选项，或者与别人分享该 CarKey，分享的 CarKey 可以设定较少的权限，比如不能解锁汽车，只能控制车内空调温度。</p>
-<h2 id="我能与别人分享-CarKey-吗？"><a href="#我能与别人分享-CarKey-吗？" class="headerlink" title="我能与别人分享 CarKey 吗？"></a>我能与别人分享 CarKey 吗？</h2><p>答案是肯定的。将会有个选项可以通过“信息”App与别人分享你的 CarKey 数字钥匙，来解锁汽车。这种分享功能很实用，比如去酒店，服务人员代泊车，与亲戚朋友分享汽车，与配偶公用一辆汽车，维修点维修汽车等。</p>
-<p>不同的分享权限可以被车主人设定，这就意味着你可以把全部汽车权限分享给别人，也可以分享一部分权限，比如只允许解锁汽车，但是无法启动汽车。分享出去的CarKey有效时间也可以被控制，永久有效或者在某段时间内有效。开发者们从iOS中找到以下描述：</p>
-<blockquote>
-<p>$$汽车拥有者$$ 邀请您使用他的 $$汽车品牌$$ 汽车的解锁和驾驶权限。您可以使用您的iPhone 或者 Apple Watch 来解锁、锁定、启动、控制汽车。</p>
-</blockquote>
-<p>CarKey分享具有三种不同等级的权限：解锁汽车、解锁并启动汽车、解锁后备箱。</p>
-<p>在“信息”App中可以分享 CarKey 钥匙，就像给对方发送 Apple Cash（国内无此功能） 一样方便，而且，CarKey 只能在私聊中分享，在群聊中是不能分享的。</p>
-<p>拥有你汽车 CarKey 密钥的人可以用他们自己的 iPhone 或者 Apple Watch 解锁你的汽车，就像你解锁你自己汽车一样方便。</p>
-<h2 id="CarKey-可以在所有汽车上用吗？"><a href="#CarKey-可以在所有汽车上用吗？" class="headerlink" title="CarKey 可以在所有汽车上用吗？"></a>CarKey 可以在所有汽车上用吗？</h2><p>答案是不会。CarKey 只会在具有NFC功能、并且汽车制造商适配了该功能的汽车上使用。</p>
-<p>苹果公司正在与汽车制造商合作，而CarKey可能是工厂安装的选件，仅限于新车型。 但是，与“ CarPlay”一样，这种功能可能会是汽车高级版本的选配选项，某一种型号的低配版本可能不会配备。</p>
-<p>iOS 中的屏幕截图表明，苹果公司的首批合作伙伴之一将是宝马。 宝马已经支持在 BMW Connected 应用程序中使用 BMW Digital Key 锁定和解锁车辆并启动发动机，并计划将其引入其他平台，比如苹果的 CarKey。</p>
-<h2 id="iPhone-没电时-CarKey-会工作吗？"><a href="#iPhone-没电时-CarKey-会工作吗？" class="headerlink" title="iPhone 没电时 CarKey 会工作吗？"></a>iPhone 没电时 CarKey 会工作吗？</h2><p>会。CarKey 基于 NFC，即使 ‌iPhone ‌或 ‌Apple Watch‌ 电池电量过低自动关机，它仍将继续运行。 然而，并非总是可以用没电关机了的 iPhone 来开锁汽车，就像快捷公交卡一样，没电的 iPhone 仍可以刷4次，CarKey 能刷几次还不得而知。</p>
-<h2 id="苹果会有我使用CarKey的记录吗？"><a href="#苹果会有我使用CarKey的记录吗？" class="headerlink" title="苹果会有我使用CarKey的记录吗？"></a>苹果会有我使用CarKey的记录吗？</h2><p>不会。Apple 在 iOS13.5.1 中发布了 CarKey 隐私策略。 在设置过程中，为了防止欺诈，将必须输入的一次性兑换令牌与设置时的用户Apple帐户、设备和位置信息一起发送，以将车辆与“钱包”应用程序配对。</p>
-<p>唯一的设备标识符将发送给车辆制造商以设置 CarKey。 出于隐私保护目的，标识符对于每个制造商都是唯一的。 苹果公司表示，汽车制造商可以根据制造商的隐私权政策，将设备标识符与有关您的其他信息联系起来。</p>
-<p>虽然苹果不保留有关车辆使用情况的信息，但是车辆制造商根据协议了解你的使用记录。这就像使用信用卡，银行怎么会不知道使用记录呢？</p>
-<h2 id="CarKey-什么时候可以使用？"><a href="#CarKey-什么时候可以使用？" class="headerlink" title="CarKey 什么时候可以使用？"></a>CarKey 什么时候可以使用？</h2><p>CarKey 何时可用尚无消息。但是在 iOS 13 多个版本中都发现了 CarKey 的更新迹象，因此绝对是Apple积极开发和完善的东西。</p>
-<p>由于 iOS14 将于6月进行内测并于秋季推出，因此 CarKey 很有可能被设计为‌ iOS14 ‌功能，Apple 很有可能在 WWDC 上推出该功能。不过，CarKey 依赖于汽车制造商，因此苹果可能需要等汽车制造商适配完成再推出。</p>
-<h2 id="CarKey-未来怎样？"><a href="#CarKey-未来怎样？" class="headerlink" title="CarKey 未来怎样？"></a>CarKey 未来怎样？</h2><p>Digital Key 2.0 协议虽然在今年5月刚刚发布，汽车联机联盟（CCC）已经在研究 Digital Key 3.0 协议了，3.0协议将会基于蓝牙LE和超宽带感知，iPhone 11, iPhone 11 Pro, 和 iPhone 11 Pro 支持该超宽带感知功能。该 3.0 规范将允许被动的，位置感知的无钥匙访问，也就是说你靠近汽车，汽车就解锁了。</p>
-<blockquote>
-<p>关注”家有Apple”公众号，获取更多Apple资讯。<br><img src="https://file.moetu.org/images/2020/06/10/AppleInHomef80951724f2257d2.png" alt="AppleInHome"></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>Apple</category>
-      </categories>
   </entry>
   <entry>
     <title>iOS 14 新功能预料大合集</title>
@@ -1040,6 +961,85 @@
         <tag>HomeKit</tag>
         <tag>Mac</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>[202006期] 有价值 iOS App</title>
+    <url>/p/2S9K9NA.html</url>
+    <content><![CDATA[<p>AppStore上的游戏和应用程序很多，能找到一款好的软件或者游戏实属不容易，这一期给大家推荐几款实用软件和有意思的游戏。</p>
+<a id="more"></a>
+
+<h2 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a><strong>Tasks</strong></h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/app/tasks-stay-ahead/id1502903102">https://apps.apple.com/app/tasks-stay-ahead/id1502903102</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/Tasksd33ec320a6791c34.png" alt="Tasks"></p>
+<p>Tasks是一个待办事项应用程序，可让您随时随地创建需要处理的任务。 您可以将生活中的各项待办事项组织成不同的类别，例如“家庭”，“家庭”，“工作”等等，而且还能设置子任务，使得软件可以用于管理项目。Tasks可以根据任务的创建循序或或者任务到期时间进行排序整理，除此之外还有很多功能，例如标签，多用户支持，日期检测，图像支持等等。 Tasks是款免费软件，但要解锁高级功能则需要进行应用内购买。</p>
+<h2 id="New-on-Flix"><a href="#New-on-Flix" class="headerlink" title="New on Flix"></a>New on Flix</h2><ul>
+<li>下载地址：<a href="https://apps.apple.com/us/app/new-on-netflix/id1510913159">https://apps.apple.com/us/app/new-on-netflix/id1510913159</a></li>
+<li>价格：免费</li>
+<li>应用内购买：有</li>
+</ul>
+<p><img src="https://file.moetu.org/images/2020/06/11/New-on-Flix2913d199b90c1272.png" alt="New on Flix"></p>
+<p>如果您喜欢观看奈飞（Netflix），如果您常常剧荒，不知道看啥，那么这款软件就再适合不过了。它可以帮您寻找Netflix上的新剧集，虽然不是官方软件，但是小巧玲珑，每天展示奈飞上新增的剧集。移除广告需要应用内购买。</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>Apple</category>
+      </categories>
+      <tags>
+        <tag>Netflix</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CarKey功能预测及介绍</title>
+    <url>/p/T5A9FS.html</url>
+    <content><![CDATA[<p>苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。</p>
+<a id="more"></a>
+
+<p><img src="https://file.moetu.org/images/2020/06/17/15923722550190178cd1a80bd5f90d.jpg" alt="CarKey"></p>
+<p>苹果称这种新功能叫做 “CarKey”，这就是我们今天介绍的主角。</p>
+<h2 id="什么是-CarKey-？"><a href="#什么是-CarKey-？" class="headerlink" title="什么是 CarKey ？"></a>什么是 CarKey ？</h2><p>CarKey 是一种数字协议，可以让配备了NFC功能的 iPhone 和 Apple Watch 解锁、锁定、启动、控制具有 NFC 功能的汽车。</p>
+<p>汽车通常上是不具备 NFC 功能的，就像现在已有的 CarPlay 功能一样，需要汽车制造商来适配这种功能。</p>
+<p>汽车制造商可以通过 CarKey 功能，实现 iPhone 对汽车的各种各样控制，但是最基本的控制——包括解锁、锁定、启动汽车是必须有的，这让 CarKey 可以代替物理钥匙。</p>
+<p>CarKey 工作原理基于汽车联机联盟（CCC）发布的基于 NFC 的 Digital Key 2.0 规范，苹果正是该联盟中的一员。 Digital Key 2.0 规范使得移动设备可以通过 NFC 与交通设备建立安全稳健的链接。</p>
+<h2 id="CarKey-如何工作？"><a href="#CarKey-如何工作？" class="headerlink" title="CarKey 如何工作？"></a>CarKey 如何工作？</h2><p>现如今，很多汽车都配备了可以近距离感应解锁汽车的卡片或者钥匙扣，就像特斯拉的钥匙是一张卡片，贴近车门框就能解锁。CarKey就跟这种卡片或者钥匙扣很相似，只不过CarKey是通过 NFC 功能实现的，并且可以将“钥匙”保存在 iPhone 上的“钱包”应用中。</p>
+<p>用 CarKey 解锁（或锁定）车辆需要将‌ Apple Watch ‌或 ‌iPhone 靠近汽车的 NFC 感应区。 当 NFC 感应区检测到存储在 iPhone 或 Apple Watch 中的 CarKey 时，汽车中的解锁程序将启动，汽车被解锁。</p>
+<p>使用“钱包”中的 CarKey 需要进行面容ID或者指纹解锁，但是苹果也推出一种快捷的方式，类似于快捷交通卡一样，不需要任何解锁即可使用该数字钥匙，从 iOS13 的代码中，苹果有这样一段描述：<br>“要使用 CarKey，请将‌ iPhone‌ 或 ‌Apple Watch‌ 靠近感应区。它会自动运行，不需要面容ID。 您可以在电子钱包中更改快速模式设置。”</p>
+<h2 id="CarKey-如何设置？"><a href="#CarKey-如何设置？" class="headerlink" title="CarKey 如何设置？"></a>CarKey 如何设置？</h2><p>‌iOS13 中的代码包含有关 CarKey 设置方式的详细信息。CarKey 用户需要将 iPhone 放在位于车内的 NFC 感应区上，配对过程可能需要几分钟即可完成。</p>
+<p>配对过程需要输入汽车制造商提供的配对密钥，有些汽车制造商的配对过程还可能需要下载相应的软件，在iOS中找到了以下描述：</p>
+<blockquote>
+<p>将此 iPhone 顶部靠近汽车的NFC感应区，配对过程可能需要几分钟，在配对成功之前，请不要移走 iPhone。<br>请输入汽车制造商提供的CarKey密钥，或者下载 $$汽车制造商$$ 的App进行连接。</p>
+</blockquote>
+<h2 id="CarKey在“钱包”应用中是什么样？"><a href="#CarKey在“钱包”应用中是什么样？" class="headerlink" title="CarKey在“钱包”应用中是什么样？"></a>CarKey在“钱包”应用中是什么样？</h2><p>CarKey在“钱包”中将会是一张卡片，就像交通卡，当你点击卡片的时候，会展示有关汽车的相关信息。</p>
+<p><img src="https://file.moetu.org/images/2020/06/10/15917714449109f37e1db416d6c9dd.jpg" alt="CarKey"></p>
+<p>也会有一个“快捷解锁模式”（无需面容ID和指纹解锁）的选项，或者与别人分享该 CarKey，分享的 CarKey 可以设定较少的权限，比如不能解锁汽车，只能控制车内空调温度。</p>
+<h2 id="我能与别人分享-CarKey-吗？"><a href="#我能与别人分享-CarKey-吗？" class="headerlink" title="我能与别人分享 CarKey 吗？"></a>我能与别人分享 CarKey 吗？</h2><p>答案是肯定的。将会有个选项可以通过“信息”App与别人分享你的 CarKey 数字钥匙，来解锁汽车。这种分享功能很实用，比如去酒店，服务人员代泊车，与亲戚朋友分享汽车，与配偶公用一辆汽车，维修点维修汽车等。</p>
+<p>不同的分享权限可以被车主人设定，这就意味着你可以把全部汽车权限分享给别人，也可以分享一部分权限，比如只允许解锁汽车，但是无法启动汽车。分享出去的CarKey有效时间也可以被控制，永久有效或者在某段时间内有效。开发者们从iOS中找到以下描述：</p>
+<blockquote>
+<p>$$汽车拥有者$$ 邀请您使用他的 $$汽车品牌$$ 汽车的解锁和驾驶权限。您可以使用您的iPhone 或者 Apple Watch 来解锁、锁定、启动、控制汽车。</p>
+</blockquote>
+<p>CarKey分享具有三种不同等级的权限：解锁汽车、解锁并启动汽车、解锁后备箱。</p>
+<p>在“信息”App中可以分享 CarKey 钥匙，就像给对方发送 Apple Cash（国内无此功能） 一样方便，而且，CarKey 只能在私聊中分享，在群聊中是不能分享的。</p>
+<p>拥有你汽车 CarKey 密钥的人可以用他们自己的 iPhone 或者 Apple Watch 解锁你的汽车，就像你解锁你自己汽车一样方便。</p>
+<h2 id="CarKey-可以在所有汽车上用吗？"><a href="#CarKey-可以在所有汽车上用吗？" class="headerlink" title="CarKey 可以在所有汽车上用吗？"></a>CarKey 可以在所有汽车上用吗？</h2><p>答案是不会。CarKey 只会在具有NFC功能、并且汽车制造商适配了该功能的汽车上使用。</p>
+<p>苹果公司正在与汽车制造商合作，而CarKey可能是工厂安装的选件，仅限于新车型。 但是，与“ CarPlay”一样，这种功能可能会是汽车高级版本的选配选项，某一种型号的低配版本可能不会配备。</p>
+<p>iOS 中的屏幕截图表明，苹果公司的首批合作伙伴之一将是宝马。 宝马已经支持在 BMW Connected 应用程序中使用 BMW Digital Key 锁定和解锁车辆并启动发动机，并计划将其引入其他平台，比如苹果的 CarKey。</p>
+<h2 id="iPhone-没电时-CarKey-会工作吗？"><a href="#iPhone-没电时-CarKey-会工作吗？" class="headerlink" title="iPhone 没电时 CarKey 会工作吗？"></a>iPhone 没电时 CarKey 会工作吗？</h2><p>会。CarKey 基于 NFC，即使 ‌iPhone ‌或 ‌Apple Watch‌ 电池电量过低自动关机，它仍将继续运行。 然而，并非总是可以用没电关机了的 iPhone 来开锁汽车，就像快捷公交卡一样，没电的 iPhone 仍可以刷4次，CarKey 能刷几次还不得而知。</p>
+<h2 id="苹果会有我使用CarKey的记录吗？"><a href="#苹果会有我使用CarKey的记录吗？" class="headerlink" title="苹果会有我使用CarKey的记录吗？"></a>苹果会有我使用CarKey的记录吗？</h2><p>不会。Apple 在 iOS13.5.1 中发布了 CarKey 隐私策略。 在设置过程中，为了防止欺诈，将必须输入的一次性兑换令牌与设置时的用户Apple帐户、设备和位置信息一起发送，以将车辆与“钱包”应用程序配对。</p>
+<p>唯一的设备标识符将发送给车辆制造商以设置 CarKey。 出于隐私保护目的，标识符对于每个制造商都是唯一的。 苹果公司表示，汽车制造商可以根据制造商的隐私权政策，将设备标识符与有关您的其他信息联系起来。</p>
+<p>虽然苹果不保留有关车辆使用情况的信息，但是车辆制造商根据协议了解你的使用记录。这就像使用信用卡，银行怎么会不知道使用记录呢？</p>
+<h2 id="CarKey-什么时候可以使用？"><a href="#CarKey-什么时候可以使用？" class="headerlink" title="CarKey 什么时候可以使用？"></a>CarKey 什么时候可以使用？</h2><p>CarKey 何时可用尚无消息。但是在 iOS 13 多个版本中都发现了 CarKey 的更新迹象，因此绝对是Apple积极开发和完善的东西。</p>
+<p>由于 iOS14 将于6月进行内测并于秋季推出，因此 CarKey 很有可能被设计为‌ iOS14 ‌功能，Apple 很有可能在 WWDC 上推出该功能。不过，CarKey 依赖于汽车制造商，因此苹果可能需要等汽车制造商适配完成再推出。</p>
+<h2 id="CarKey-未来怎样？"><a href="#CarKey-未来怎样？" class="headerlink" title="CarKey 未来怎样？"></a>CarKey 未来怎样？</h2><p>Digital Key 2.0 协议虽然在今年5月刚刚发布，汽车联机联盟（CCC）已经在研究 Digital Key 3.0 协议了，3.0协议将会基于蓝牙LE和超宽带感知，iPhone 11, iPhone 11 Pro, 和 iPhone 11 Pro 支持该超宽带感知功能。该 3.0 规范将允许被动的，位置感知的无钥匙访问，也就是说你靠近汽车，汽车就解锁了。</p>
+<blockquote>
+<p>关注”家有Apple”公众号，获取更多Apple资讯。<br><img src="https://file.moetu.org/images/2020/06/10/AppleInHomef80951724f2257d2.png" alt="AppleInHome"></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>Apple</category>
+      </categories>
   </entry>
   <entry>
     <title>运用Live Template加快写代码速度</title>
@@ -1180,31 +1180,6 @@
       <tags>
         <tag>Java</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>How to download Wechat on iOS in india</title>
-    <url>/p/ESP3TJ.html</url>
-    <content><![CDATA[<p>WeChat has been removed from the App Store India, so how can friends in India download WeChat?</p>
-<a id="more"></a>
-
-<h2 id="Open-“App-Store”-on-home-screen"><a href="#Open-“App-Store”-on-home-screen" class="headerlink" title="Open “App Store” on home screen."></a>Open “App Store” on home screen.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled.png"></p>
-<h2 id="Click-on-the-avatar-in-the-upper-right-corner"><a href="#Click-on-the-avatar-in-the-upper-right-corner" class="headerlink" title="Click on the avatar in the upper right corner."></a>Click on the avatar in the upper right corner.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%201.png"></p>
-<h2 id="At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it"><a href="#At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it" class="headerlink" title="At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it."></a>At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%202.png"></p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%203.png"></p>
-<h2 id="Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button"><a href="#Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button" class="headerlink" title="Then, return to the top of the page, enter the account password provided, and click the sign in button."></a>Then, return to the top of the page, enter the account password provided, and click the sign in button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%204.png"></p>
-<h2 id="At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button"><a href="#At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button" class="headerlink" title="At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button."></a>At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%205.png"></p>
-<h2 id="In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade"><a href="#In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade" class="headerlink" title="In the “Protect your account” alert that pops up, select the second button(Do not upgrade)"></a>In the “Protect your account” alert that pops up, select the second button(Do not upgrade)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%206.png"></p>
-<h2 id="After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store"><a href="#After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store" class="headerlink" title="After the login is complete, click the “Done” button on the top right, and the store will switch to the US store."></a>After the login is complete, click the “Done” button on the top right, and the store will switch to the US store.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%207.png"></p>
-<h2 id="Search-amp-download-and-enjoy"><a href="#Search-amp-download-and-enjoy" class="headerlink" title="Search &amp; download and enjoy :-)"></a>Search &amp; download and enjoy :-)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%208.png"></p>
-<blockquote>
-<p>After the installation is complete, you can switch back to your Apple ID in the App Store</p>
-</blockquote>
-<p><strong>ATTENTION! DO NOT log in to the provided account in the settings app, otherwise the device may be locked.</strong></p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>技巧</category>
-      </categories>
   </entry>
   <entry>
     <title>Netflix各国价格对比(2019)</title>
@@ -1555,27 +1530,28 @@
       </tags>
   </entry>
   <entry>
-    <title>请记住人生中的“三”</title>
-    <url>/p/18JYVC6.html</url>
-    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
-<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
+    <title>How to download Wechat on iOS in india</title>
+    <url>/p/ESP3TJ.html</url>
+    <content><![CDATA[<p>WeChat has been removed from the App Store India, so how can friends in India download WeChat?</p>
 <a id="more"></a>
 
-<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
-<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
-<p>三样东西永不放弃:<br>童真、理想、希望</p>
-<p>三样东西最无常:<br>成功、财富、机遇</p>
-<p>三样东西最无价:<br>健康、善良、真情</p>
-<p>三样东西成就人:<br>天时、地利、人和</p>
-<p>三样东西要珍惜:<br>父母、家庭、健康</p>
-<p>三样东西助成功：<br>目标、方法、改进</p>
-<p>三样东西交朋友:<br>诚信、热情、互助</p>
-<p>三样东西把握好:<br>机会、工作、婚姻</p>
-<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
+<h2 id="Open-“App-Store”-on-home-screen"><a href="#Open-“App-Store”-on-home-screen" class="headerlink" title="Open “App Store” on home screen."></a>Open “App Store” on home screen.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled.png"></p>
+<h2 id="Click-on-the-avatar-in-the-upper-right-corner"><a href="#Click-on-the-avatar-in-the-upper-right-corner" class="headerlink" title="Click on the avatar in the upper right corner."></a>Click on the avatar in the upper right corner.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%201.png"></p>
+<h2 id="At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it"><a href="#At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it" class="headerlink" title="At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it."></a>At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%202.png"></p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%203.png"></p>
+<h2 id="Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button"><a href="#Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button" class="headerlink" title="Then, return to the top of the page, enter the account password provided, and click the sign in button."></a>Then, return to the top of the page, enter the account password provided, and click the sign in button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%204.png"></p>
+<h2 id="At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button"><a href="#At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button" class="headerlink" title="At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button."></a>At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%205.png"></p>
+<h2 id="In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade"><a href="#In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade" class="headerlink" title="In the “Protect your account” alert that pops up, select the second button(Do not upgrade)"></a>In the “Protect your account” alert that pops up, select the second button(Do not upgrade)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%206.png"></p>
+<h2 id="After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store"><a href="#After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store" class="headerlink" title="After the login is complete, click the “Done” button on the top right, and the store will switch to the US store."></a>After the login is complete, click the “Done” button on the top right, and the store will switch to the US store.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%207.png"></p>
+<h2 id="Search-amp-download-and-enjoy"><a href="#Search-amp-download-and-enjoy" class="headerlink" title="Search &amp; download and enjoy :-)"></a>Search &amp; download and enjoy :-)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%208.png"></p>
+<blockquote>
+<p>After the installation is complete, you can switch back to your Apple ID in the App Store</p>
+</blockquote>
+<p><strong>ATTENTION! DO NOT log in to the provided account in the settings app, otherwise the device may be locked.</strong></p>
 ]]></content>
       <categories>
         <category>日常</category>
-        <category>摘抄</category>
+        <category>技巧</category>
       </categories>
   </entry>
   <entry>
@@ -1611,6 +1587,30 @@
 <p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
 <p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
 <p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>摘抄</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>请记住人生中的“三”</title>
+    <url>/p/18JYVC6.html</url>
+    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
+<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
+<a id="more"></a>
+
+<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
+<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
+<p>三样东西永不放弃:<br>童真、理想、希望</p>
+<p>三样东西最无常:<br>成功、财富、机遇</p>
+<p>三样东西最无价:<br>健康、善良、真情</p>
+<p>三样东西成就人:<br>天时、地利、人和</p>
+<p>三样东西要珍惜:<br>父母、家庭、健康</p>
+<p>三样东西助成功：<br>目标、方法、改进</p>
+<p>三样东西交朋友:<br>诚信、热情、互助</p>
+<p>三样东西把握好:<br>机会、工作、婚姻</p>
+<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
 ]]></content>
       <categories>
         <category>日常</category>
