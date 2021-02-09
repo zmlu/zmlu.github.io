@@ -6,7 +6,7 @@
   <link href="https://zmlu.github.io/atom.xml" rel="self"/>
   
   <link href="https://zmlu.github.io/"/>
-  <updated>2021-01-20T02:40:22.417Z</updated>
+  <updated>2021-02-09T08:03:13.082Z</updated>
   <id>https://zmlu.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>How to download Wechat on iOS in india</title>
+    <link href="https://zmlu.github.io/p/ESP3TJ.html"/>
+    <id>https://zmlu.github.io/p/ESP3TJ.html</id>
+    <published>2021-02-08T16:00:00.000Z</published>
+    <updated>2021-02-09T08:03:13.082Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;How-to-download-Wechat-on-iOS&quot;&gt;&lt;a href=&quot;#How-to-download-Wechat-on-iOS&quot; class=&quot;headerlink&quot; title=&quot;How to download Wechat on</summary>
+        
+      
+    
+    
+    
+    <category term="日常" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="技巧" scheme="https://zmlu.github.io/categories/%E6%97%A5%E5%B8%B8/%E6%8A%80%E5%B7%A7/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Element输入框自动去除空格及校验</title>
@@ -453,28 +478,6 @@
     
     
     <category term="Netflix" scheme="https://zmlu.github.io/tags/Netflix/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>实现浏览器WebP图片自适应加载</title>
-    <link href="https://zmlu.github.io/p/3MDAQPQ.html"/>
-    <id>https://zmlu.github.io/p/3MDAQPQ.html</id>
-    <published>2020-01-05T16:00:00.000Z</published>
-    <updated>2021-01-20T02:40:21.972Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。&lt;/p&gt;
-&lt;h1 id=&quot;主要思路&quot;&gt;&lt;a href=&quot;#主要思路&quot; class=&quot;headerlink&quot; title=&quot;主要思路&quot;&gt;&lt;/a&gt;主要思路&lt;/h1&gt;&lt;p&gt;如何判断浏览器是否支持WebP格式的图片，除了在前端加载一个1×1像素的WebP图片来获取宽度的方法，还有个方法，那就是查看浏览器发出的请求头中的Accept字段，如果改字段中带着&lt;code&gt;image/webp&lt;/code&gt;说明浏览器支持WebP，反之则就是不持支。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="开发" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    <category term="Nginx" scheme="https://zmlu.github.io/categories/%E5%BC%80%E5%8F%91/Nginx/"/>
-    
-    
-    <category term="WebP" scheme="https://zmlu.github.io/tags/WebP/"/>
     
   </entry>
   
