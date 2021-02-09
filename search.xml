@@ -1,6 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>[Material Design] 尝试使用 Bottom Navigation</title>
+    <url>/p/GJ0Q47.html</url>
+    <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
+<p>Material Design的一些重要功能包括系统字体Roboto的升级版本，同时颜色更鲜艳，动画效果更突出。谷歌的想法是让谷歌平台上的开发者掌握这个新框架，从而让所有应用就有统一的外观，就像是苹果向开发者提出的设计原则一样。</p>
+<p>一直感觉Material Design设计很是好看，尤其是底部的导航栏，简约的图标以及透明的背景。决定自己体验一把。</p>
+<a id="more"></a>
+
+<p>先上效果图：</p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-14bd1b8c91c5f8b99.gif" alt="效果图"></p>
+<h1 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h1><p>Bottom Navigation经常用于底部导航栏。不过它所包含的标签页不应过多也不应该过少，<a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a>中表示，标签页的个数在3-5个左右合适。</p>
+<h1 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h1><h2 id="在Module的build-gradle中添加如下代码"><a href="#在Module的build-gradle中添加如下代码" class="headerlink" title="在Module的build.gradle中添加如下代码"></a>在Module的build.gradle中添加如下代码</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">compile &#x27;com.roughike:bottom-bar:2.0.2&#x27;<br></code></pre></td></tr></table></figure>
+<p>实现Bottom Navigation功能，比较好用的是第三方的BottomBar库，截止2017.1.8，最新的版本是2.0.2，如果需要最新版，请访问 <a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></p>
+<h2 id="在res下新建类型为xml的xml文件夹"><a href="#在res下新建类型为xml的xml文件夹" class="headerlink" title="在res下新建类型为xml的xml文件夹"></a>在res下新建类型为xml的xml文件夹</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-27a8c62661b42fd13.png"></p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/20210120100350.png"></p>
+<h2 id="在xml文件夹下新建bottombar-tabs-xml文件"><a href="#在xml文件夹下新建bottombar-tabs-xml文件" class="headerlink" title="在xml文件夹下新建bottombar_tabs.xml文件"></a>在xml文件夹下新建bottombar_tabs.xml文件</h2><p>res/xml/bottombar_tabs.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">PreferenceScreen</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">tabs</span>&gt;</span><br>        &lt;tab<br>            id=&quot;@+id/tab_one&quot;<br>            icon=&quot;@drawable/ic_3d_rotation_white_24dp&quot;<br>            title=&quot;财务&quot;<br>            barColorWhenSelected=&quot;#865242&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_two&quot;<br>            icon=&quot;@drawable/ic_account_balance_white_24dp&quot;<br>            title=&quot;群组&quot;<br>            barColorWhenSelected=&quot;#268434&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_three&quot;<br>            icon=&quot;@drawable/ic_accessibility_white_24dp&quot;<br>            title=&quot;朋友&quot;<br>            barColorWhenSelected=&quot;#8b2099&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">tabs</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">PreferenceScreen</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p><code>barColorWhenSelected</code>属性控制着当这个Tab被选择时，BottomBar的整体颜色。<code>inActiveColor</code>属性是这个Tab未激活时图片的颜色。与之相对应的<code>activeColor</code>属性，则是控制着激活时的图片颜色。</p>
+<h2 id="activity-main-xml"><a href="#activity-main-xml" class="headerlink" title="activity_main.xml"></a>activity_main.xml</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">RelativeLayout</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:app</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:tools</span>=<span class="hljs-string">&quot;http://schemas.android.com/tools&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/activity_main&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingBottom</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingLeft</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingRight</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingTop</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">tools:context</span>=<span class="hljs-string">&quot;me.luzhoumin.bottomnavigation.MainActivity&quot;</span>&gt;</span><br><br>    &lt;com.roughike.bottombar.BottomBar<br>        android:id=&quot;@+id/bottomBar&quot;<br>        android:layout_width=&quot;match_parent&quot;<br>        android:layout_height=&quot;60dp&quot;<br>        android:layout_alignParentBottom=&quot;true&quot;<br>        app:bb_tabXmlResource=&quot;@xml/bottombar_tabs&quot;<br>        app:bb_behavior=&quot;underNavbar&quot;<br>        app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>        app:bb_activeTabAlpha=&quot;1&quot;<br>        app:bb_showShadow=&quot;true&quot;/&gt;<br><br>    &lt;TextView<br>        android:id=&quot;@+id/textview&quot;<br>        android:layout_width=&quot;wrap_content&quot;<br>        android:layout_height=&quot;wrap_content&quot;<br>        android:textSize=&quot;36sp&quot;<br>        android:text=&quot;Hello World!&quot;<br>        android:layout_alignParentTop=&quot;true&quot;<br>        android:layout_alignParentStart=&quot;true&quot;<br>        android:layout_marginTop=&quot;51dp&quot; /&gt;<br><br><span class="hljs-tag">&lt;/<span class="hljs-name">RelativeLayout</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p><code>app:bb_tabXmlResource</code>指向的是第三步建的xml文件，里面有每个Tab的属性。</p>
+<h2 id="MainActivity-java"><a href="#MainActivity-java" class="headerlink" title="MainActivity.java"></a>MainActivity.java</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> android.support.annotation.IdRes;<br><span class="hljs-keyword">import</span> android.support.v7.app.AppCompatActivity;<br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> android.widget.TextView;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBar;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBarTab;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabReselectListener;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabSelectListener;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AppCompatActivity</span> </span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> </span>&#123;<br>        <span class="hljs-keyword">super</span>.onCreate(savedInstanceState);<br>        setContentView(R.layout.activity_main);<br>        <span class="hljs-comment">//获取Bottom Bar组件</span><br>        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);<br>        <span class="hljs-comment">//获取用来显示的TextView组件</span><br>        <span class="hljs-keyword">final</span> TextView tv = (TextView) findViewById(R.id.textview);<br>        <span class="hljs-comment">//设置Bottom Bar的选择监听器</span><br>        bottomBar.setOnTabSelectListener(<span class="hljs-keyword">new</span> OnTabSelectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_group 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Bottom Bar的重复选择监听器</span><br>        bottomBar.setOnTabReselectListener(<span class="hljs-keyword">new</span> OnTabReselectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabReSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_two 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 再次被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Tab的Badge</span><br>        BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_two);<br>        nearby.setBadgeCount(<span class="hljs-number">5</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="修改主题样式"><a href="#修改主题样式" class="headerlink" title="修改主题样式"></a>修改主题样式</h2><p>res/values/styles.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Base application theme. --&gt;</span><br>    <span class="hljs-comment">&lt;!--修改主题为无ActionBar--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;AppTheme&quot;</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">&quot;Theme.AppCompat.Light.NoActionBar&quot;</span>&gt;</span><br><span class="xml">        <span class="hljs-comment">&lt;!-- Customize your theme here. --&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-comment">&lt;!--添加--&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:navigationBarColor&quot;</span>&gt;</span>@android:color/transparent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowTranslucentNavigation&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowDrawsSystemBarBackgrounds&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="BottomBar-API"><a href="#BottomBar-API" class="headerlink" title="BottomBar API"></a>BottomBar API</h1><h2 id="For-the-BottomBar"><a href="#For-the-BottomBar" class="headerlink" title="For the BottomBar"></a>For the BottomBar</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;com.roughike.bottombar.BottomBar<br>    android:id=&quot;@+id/bottomBar&quot;<br>    android:layout_width=&quot;match_parent&quot;<br>    android:layout_height=&quot;60dp&quot;<br>    android:layout_alignParentBottom=&quot;true&quot;<br>    app:bb_tabXmlResource=&quot;@xml/bottombar_tabs_three&quot;<br>    app:bb_tabletMode=&quot;true&quot;<br>    app:bb_behavior=&quot;shifting|shy|underNavbar&quot;<br>    app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>    app:bb_activeTabAlpha=&quot;1&quot;<br>    app:bb_inActiveTabColor=&quot;#222222&quot;<br>    app:bb_activeTabColor=&quot;@color/colorPrimary&quot;<br>    app:bb_titleTextAppearance=&quot;@style/MyTextAppearance&quot;<br>    app:bb_titleTypeFace=&quot;fonts/MySuperDuperFont.ttf&quot;<br>    app:bb_showShadow=&quot;true&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>bb_tabXmlResource</strong></p>
+<p>the XML Resource id for your tabs, that reside in values/xml/</p>
+<p><strong>bb_tabletMode</strong></p>
+<p>if you want the BottomBar to behave differently for tablets. There’s an example of this in the sample project!</p>
+<p><strong>bb_behavior</strong></p>
+<ul>
+<li><code>shifting</code>: the selected tab is wider than the rest.</li>
+<li><code>shy</code>: put the BottomBar inside a CoordinatorLayout and it’ll automatically hide on scroll!</li>
+<li><code>underNavbar</code>: draw the BottomBar under the navBar!</li>
+</ul>
+<p><strong>bb_inActiveTabAlpha</strong></p>
+<p>the alpha value for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_activeTabAlpha</strong></p>
+<p>the alpha value for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_inActiveTabColor</strong></p>
+<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_activeTabColor</strong></p>
+<p>the color for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_badgeBackgroundColor</strong></p>
+<p>the background color for any Badges in this BottomBar.</p>
+<p><strong>bb_titleTextAppearance</strong></p>
+<p>custom textAppearance for the titles</p>
+<p><strong>bb_titleTypeFace</strong></p>
+<p>path for your custom font file, such as <code>fonts/MySuperDuperFont.ttf</code>. In that case your font path would look like <code>src/main/assets/fonts/MySuperDuperFont.ttf</code>, but you only need to provide <code>fonts/MySuperDuperFont.ttf</code>, as the asset folder will be auto-filled for you.</p>
+<p><strong>bb_showShadow</strong></p>
+<p>controls whether the shadow is shown or hidden, defaults to true.</p>
+<h2 id="For-the-tabs"><a href="#For-the-tabs" class="headerlink" title="For the tabs"></a>For the tabs</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;tab<br>    id=&quot;@+id/tab_recents&quot;<br>    title=&quot;Recents&quot;<br>    icon=&quot;@drawable/empty_icon&quot;<br>    inActiveColor=&quot;#00FF00&quot;<br>    activeColor=&quot;#FF0000&quot;<br>    barColorWhenSelected=&quot;#FF0000&quot;<br>    badgeBackgroundColor=&quot;#FF0000&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>inActiveColor</strong></p>
+<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>activeColor</strong></p>
+<p>the color for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>barColorWhenSelected</strong></p>
+<p>the color that the whole BottomBar should be when selected this tab.</p>
+<p><strong>badgeBackgroundColor</strong></p>
+<p>the background color for any Badges in this tab.</p>
+<h1 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h1><ul>
+<li>Tab的图标必须是<strong>全透明、纯黑、24dp、Padding = 0dp</strong>，而且最好所有分辨密度的图片都要有，否则图标会很大或者很小，影响显示效果。</li>
+<li>如果想保持在屏幕最底部，记得在布局xml的<code>&lt;com.roughike.bottombar.BottomBar&gt;</code>标签中添加属性<code>android:layout_alignParentBottom=&quot;true&quot;</code>，并且做好第六步工作。</li>
+</ul>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
+<li><a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a></li>
+<li><a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></li>
+</ul>
+<h1 id="与FloatingActionButton和SnackBar合作的效果"><a href="#与FloatingActionButton和SnackBar合作的效果" class="headerlink" title="与FloatingActionButton和SnackBar合作的效果"></a>与FloatingActionButton和SnackBar合作的效果</h1><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-4368fd9376e31ff43.gif"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Material Design</tag>
+        <tag>Android</tag>
+        <tag>Google</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ES镜像制作并启动</title>
     <url>/p/10C2G1E.html</url>
     <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
@@ -67,6 +147,39 @@
       </categories>
   </entry>
   <entry>
+    <title>gitignore文件不起作用</title>
+    <url>/p/TSMFKX.html</url>
+    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
+<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git设置代理</title>
+    <url>/p/35NJX8Y.html</url>
+    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
+<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
+<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
+<p>显示如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
+<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>加速</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HomeKit初始化</title>
     <url>/p/3XS9TP7.html</url>
     <content><![CDATA[<p>前段时间搬家，需要插排，买了个米家的只能插排，感觉用手机控制很方便。看到苹果有自己的Home App来管理智能家居，想试试米家的智能设备能不能接入苹果的HomeKit。首先需要先搭建一个HomeKit服务器。</p>
@@ -122,39 +235,6 @@
       <tags>
         <tag>HomeKit</tag>
         <tag>米家</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gitignore文件不起作用</title>
-    <url>/p/TSMFKX.html</url>
-    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
-<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git设置代理</title>
-    <url>/p/35NJX8Y.html</url>
-    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
-<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
-<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
-<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
-<p>显示如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
-<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>加速</tag>
       </tags>
   </entry>
   <entry>
@@ -269,142 +349,6 @@
       </tags>
   </entry>
   <entry>
-    <title>理解 JavaScript 的 async、await</title>
-    <url>/p/3Q3X94C.html</url>
-    <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
-<a id="more"></a>
-
-<h1 id="async-和-await-在干什么"><a href="#async-和-await-在干什么" class="headerlink" title="async 和 await 在干什么"></a>async 和 await 在干什么</h1><p>另外还有一个很有意思的语法规定，await 只能出现在 async 函数中。然后细心的朋友会产生一个疑问，如果 await 只能出现在 async 函数中，那这个 async 函数应该怎么调用？<br>如果需要通过 await 来调用一个 async 函数，那这个调用的外面必须得再包一个 async 函数，然后……进入死循环，永无出头之日……<br>如果 async 函数不需要 await 来调用，那 async 到底起个啥作用？</p>
-<h2 id="async-起什么作用"><a href="#async-起什么作用" class="headerlink" title="async 起什么作用"></a>async 起什么作用</h2><p>这个问题的关键在于，async 函数是怎么处理它的返回值的！<br>我们当然希望它能直接通过 return 语句返回我们想要的值，但是如果真是这样，似乎就没 await 什么事了。所以，写段代码来试试，看它到底会返回什么：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello async&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> result = testAsync();<br><span class="hljs-built_in">console</span>.log(result);<br></code></pre></td></tr></table></figure>
-<p>看到输出就恍然大悟了——输出的是一个 Promise 对象。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">c:\var\test&gt; node --harmony_async_await .<br>Promise &#123; &#x27;hello async&#x27; &#125;<br></code></pre></td></tr></table></figure>
-<p>所以，<code>async</code> 函数返回的是一个 Promise 对象。从文档中也可以得到这个信息。async 函数（包含函数语句、函数表达式、Lambda表达式）会返回一个 Promise 对象，如果在函数中 <code>return</code> 一个直接量，async 会把这个直接量通过 <code>Promise.resolve()</code> 封装成 Promise 对象。</p>
-<p>async 函数返回的是一个 Promise 对象，所以在最外层不能用 await 获取其返回值的情况下，我们当然应该用原来的方式：<code>then()</code> 链来处理这个 Promise 对象，就像这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">testAsync().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(v);    <span class="hljs-comment">// 输出 hello async</span><br>&#125;);<br></code></pre></td></tr></table></figure>
-<p>现在回过头来想下，如果 async 函数没有返回值，又该如何？很容易想到，它会返回<code>Promise.resolve(undefined)</code>。</p>
-<p>联想一下 Promise 的特点——无等待，所以在没有 await 的情况下执行 async 函数，它会立即执行，返回一个 Promise 对象，并且，绝不会阻塞后面的语句。这和普通返回 Promise 对象的函数并无二致。</p>
-<p>那么下一个关键点就在于 await 关键字了。</p>
-<h2 id="await-到底在等啥"><a href="#await-到底在等啥" class="headerlink" title="await 到底在等啥"></a>await 到底在等啥</h2><p>一般来说，都认为 await 是在等待一个 async 函数完成。不过按语法说明，await 等待的是一个表达式，这个表达式的计算结果是 Promise 对象或者其它值（换句话说，就是没有特殊限定）。</p>
-<p>因为 async 函数返回一个 Promise 对象，所以 await 可以用于等待一个 async 函数的返回值——这也可以说是 await 在等 async 函数，但要清楚，它等的实际是一个返回值。注意到 await 不仅仅用于等 Promise 对象，它可以等任意表达式的结果，所以，await 后面实际是可以接普通函数调用或者直接量的。所以下面这个示例完全可以正确运行</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSomething</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;something&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">&quot;hello async&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v1 = <span class="hljs-keyword">await</span> getSomething();<br>    <span class="hljs-keyword">const</span> v2 = <span class="hljs-keyword">await</span> testAsync();<br>    <span class="hljs-built_in">console</span>.log(v1, v2);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
-<h2 id="await-等到了要等的，然后呢"><a href="#await-等到了要等的，然后呢" class="headerlink" title="await 等到了要等的，然后呢"></a>await 等到了要等的，然后呢</h2><p>await 等到了它要等的东西，一个 Promise 对象，或者其它值，然后呢？我不得不先说，await 是个运算符，用于组成表达式，await 表达式的运算结果取决于它等的东西。</p>
-<p>如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。</p>
-<p>如果它等到的是一个 Promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。</p>
-<blockquote>
-<p>看到上面的阻塞一词，心慌了吧……放心，这就是 await 必须用在 async 函数中的原因。async 函数调用不会造成阻塞，它内部所有的阻塞都被封装在一个 Promise 对象中异步执行。</p>
-</blockquote>
-<h1 id="async-await-帮我们干了啥"><a href="#async-await-帮我们干了啥" class="headerlink" title="async/await 帮我们干了啥"></a>async/await 帮我们干了啥</h1><h2 id="作个简单的比较"><a href="#作个简单的比较" class="headerlink" title="作个简单的比较"></a>作个简单的比较</h2><p>上面已经说明了 async 会将其后的函数（函数表达式或 Lambda）的返回值封装成一个 Promise 对象，而 await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来。</p>
-<p>现在举例，用 <code>setTimeout</code> 模拟耗时的异步操作，先来看看不用 async/await 会怎么写</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br>takeLongTime().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;got&quot;</span>, v);<br>&#125;);<br></code></pre></td></tr></table></figure>
-<p>如果改用 async/await 呢，会是这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v = <span class="hljs-keyword">await</span> takeLongTime();<br>    <span class="hljs-built_in">console</span>.log(v);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
-<p>眼尖的同学已经发现 <code>takeLongTime()</code> 没有申明为 <code>async</code>。实际上，<code>takeLongTime()</code> 本身就是返回的 Promise 对象，加不加 <code>async</code> 结果都一样，如果没明白，请回过头再去看看上面的“async 起什么作用”。</p>
-<p>又一个疑问产生了，这两段代码，两种方式对异步调用的处理（实际就是对 Promise 对象的处理）差别并不明显，甚至使用 async/await 还需要多写一些代码，那它的优势到底在哪？</p>
-<h2 id="async-await-的优势在于处理-then-链"><a href="#async-await-的优势在于处理-then-链" class="headerlink" title="async/await 的优势在于处理 then 链"></a>async/await 的优势在于处理 then 链</h2><p>单一的 Promise 链并不能发现 async/await 的优势，但是，如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（很有意思，Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。</p>
-<p>假设一个业务，分多个步骤完成，每个步骤都是异步的，而且依赖于上一个步骤的结果。我们仍然用 <code>setTimeout</code> 来模拟异步操作：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 传入参数 n，表示这个函数执行的时间（毫秒）</span><br><span class="hljs-comment"> * 执行的结果是 n + 200，这个值将用于下一步骤</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(n + <span class="hljs-number">200</span>), n);<br>    &#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>现在用 Promise 方式来实现这三个步骤的处理</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> step2(time2))<br>        .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> step3(time3))<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 500</span><br><span class="hljs-comment">// step3 with 700</span><br><span class="hljs-comment">// result is 900</span><br><span class="hljs-comment">// doIt: 1507.251ms</span><br></code></pre></td></tr></table></figure>
-<p>输出结果 <code>result</code> 是 <code>step3()</code> 的参数 <code>700 + 200 = 900</code>。<code>doIt()</code> 顺序执行了三个步骤，一共用了 <code>300 + 500 + 700 = 1500</code> 毫秒，和 <code>console.time()/console.timeEnd()</code> 计算的结果一致。<br>如果用 async/await 来实现呢，会是这样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
-<p>结果和之前的 Promise 实现是一样的，但是这个代码看起来是不是清晰得多，几乎跟同步代码一样</p>
-<h2 id="还有更酷的"><a href="#还有更酷的" class="headerlink" title="还有更酷的"></a>还有更酷的</h2><p>现在把业务要求改一下，仍然是三个步骤，但每一个步骤都需要之前每个步骤的结果。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(m + n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">k, m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;k&#125;</span>, <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(k + m + n);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>这回先用 async/await 来写：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time1, time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time1, time2, time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 800 = 300 + 500</span><br><span class="hljs-comment">// step3 with 1800 = 300 + 500 + 1000</span><br><span class="hljs-comment">// result is 2000</span><br><span class="hljs-comment">// doIt: 2907.387ms</span><br></code></pre></td></tr></table></figure>
-<p>除了觉得执行时间变长了之外，似乎和之前的示例没啥区别啊！别急，认真想想如果把它写成 Promise 方式实现会是什么样子？</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> step2(time1, time2)<br>                .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> [time1, time2, time3]);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">times</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> [time1, time2, time3] = times;<br>            <span class="hljs-keyword">return</span> step3(time1, time2, time3);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
-<p>有没有感觉有点复杂的样子？那一堆参数处理，就是 Promise 方案的死穴—— 参数传递太麻烦了，看着就晕！</p>
-<blockquote>
-<p>参考：<a href="https://segmentfault.com/a/1190000007535316">理解 JavaScript 的 async/await - 边城</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Javascript</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
-    <url>/p/2JJ2AE2.html</url>
-    <content><![CDATA[<p>服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。</p>
-<p>Google推出了一种图片格式: WebP (<a href="https://developers.google.com/speed/webp/">Google官方网址</a>)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%</p>
-<a id="more"></a>
-
-<p><a href="https://caniuse.com/#feat=webp">查看支持率</a></p>
-<p><img src="https://file.moetu.org/images/2020/01/06/webp805caf2e553e4f3ad1.jpg" alt="WebP支持率"></p>
-<p>原图加载截图：（12.61s）</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/Chrome--d61d7c79a27fca39.jpg" alt="Chrome 原图 加载"></p>
-<p>WebP加载截图：（4.72s）</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/Chrome-Webp-7a40425fcab83529.jpg" alt="Chrome Webp 加载"></p>
-<p>可以看出加载Webp会大大提高加载速度</p>
-<h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
-<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>libwebp是图片转成webp的工具</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">yum install libwebp-tools<br></code></pre></td></tr></table></figure>
-<p>测试:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cwebp -q 100 1.jpg -o 1.webp<br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/libwebpd4b8956ec9f0cc80.jpg" alt="测试libwebp安装"></p>
-<p>如果出现以上信息，说明安装成功。</p>
-<h2 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><p>配置：</p>
-<p>让<code>.png.webp</code>、<code>.jpg.webp</code>、<code>.gif.webp</code>的请求执行转WebP的lua文件。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>    expires               365d;<br>    autoindex             on;<br>    autoindex_exact_size  on;<br>    try_files             $uri $uri/ @webp;<br>&#125;<br>    <br>location @webp &#123;    <br>    if ($uri ~ \.(png|jpg|gif)\.webp) &#123;<br>        content_by_lua_file  lua/imgProcess.lua;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/nginxwebplua03e80bf8dc3f9b85.jpg" alt="Nginx-Lua配置WebP转换"></p>
-<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span> <span class="hljs-comment">--判断文件是否存在的方法</span><br>    <span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-keyword">local</span> newFile = ngx.var.request_filename;<br> <span class="hljs-keyword">local</span> originalFile = newFile:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>, #newFile - <span class="hljs-number">5</span>); <span class="hljs-comment">--请求的webp图片去掉.webp后缀</span><br><br> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>   ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>   <span class="hljs-keyword">return</span>;<br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile);  <span class="hljs-comment">--用libwebp转换图片</span><br><br> <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>     ngx.exec(ngx.var.uri); <span class="hljs-comment">--重定向到转换成的webp图片</span><br> <span class="hljs-keyword">else</span><br>     ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>); <span class="hljs-comment">--转换失败：404</span><br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/weblua2dc97f3492a10817.jpg" alt="WebP转换的Lua"></p>
-<h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>访问前图片，服务器上没有WebP文件。</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/3123de3b82b6d0ef1761eac2796a88fa58aa0d2c178c2991.jpg" alt="访问前图片"></p>
-<p>当服务器接收到<code>.jpg.webp</code>的请求后，自动生成WebP文件：</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/webpdd22bfaefcb9faff.jpg" alt="访问后自动生成WebP"></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Google</tag>
-        <tag>WebP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实现浏览器WebP图片自适应加载</title>
-    <url>/p/3MDAQPQ.html</url>
-    <content><![CDATA[<p>让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。</p>
-<h1 id="主要思路"><a href="#主要思路" class="headerlink" title="主要思路"></a>主要思路</h1><p>如何判断浏览器是否支持WebP格式的图片，除了在前端加载一个1×1像素的WebP图片来获取宽度的方法，还有个方法，那就是查看浏览器发出的请求头中的Accept字段，如果改字段中带着<code>image/webp</code>说明浏览器支持WebP，反之则就是不持支。</p>
-<a id="more"></a>
-
-<p>不支持WebP的IE的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/WebPIEAccept14c6d4ecc012785f.jpg" alt="不支持WebP的IE的请求头Accept字段"></p>
-<p>支持WebP的Firefox的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/WebPFirefoxAccept08877c383da9747a.jpg" alt="支持WebP的Firefox的请求头Accept字段"></p>
-<p>支持WebP的Chrome的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/ChromeAcceptad5df29d04e6d935.jpg" alt="支持WebP的Chrome的请求头Accept字段"></p>
-<p>根据这个，我们可以修改Nginx的配置文件，让以**<code>.jgp</code>、<code>.jpeg</code>和<code>.png</code>结尾的请求**并且请求头Accept字段包含<code>image/webp</code>的请求进行WebP文件的判断，这个判断我们写在Lua文件中。在Lua文件中，先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
-<p>有了这个思路，我们进行尝试。</p>
-<h1 id="修改准备"><a href="#修改准备" class="headerlink" title="修改准备"></a>修改准备</h1><h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
-<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>参考：<a href="https://zmlu.me/p/2jj2ae2.html">Nginx+Lua+libwebp实现服务器图片自动转WebP</a></p>
-<h2 id="Nginx-conf"><a href="#Nginx-conf" class="headerlink" title="Nginx.conf"></a>Nginx.conf</h2><p>因为if不能同时判断多个条件，所以我们定义一个变量，用if修改变量值，最后根据该变量的值来判断是否满足所有的条件。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>        set                   $cwebp_flag 0;<br>    <br>        if ($uri ~ \.(png|jpg|jpeg)$) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($http_accept ~ image/webp) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($cwebp_flag = 011) &#123;<br>            content_by_lua_file  lua/imgProcess.lua;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
-<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><p>这个文件主要工作是：先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
-<figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span><br>	<span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br> <br><span class="hljs-keyword">local</span> originalFile = ngx.var.request_filename;<br><span class="hljs-keyword">local</span> newFile = ngx.var.request_filename .. <span class="hljs-string">&quot;.webp&quot;</span>;<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><br>  <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile); <br><br>  <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>    ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>    ngx.header.x_webp = <span class="hljs-string">&#x27;generate&#x27;</span>;<br>    ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>    ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>    <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br>  <span class="hljs-keyword">else</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">500</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">else</span><br>  ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>  ngx.header.x_webp = <span class="hljs-string">&#x27;read&#x27;</span>;<br>  ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>  ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>  <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br><span class="hljs-keyword">end</span><br><br> <br><br></code></pre></td></tr></table></figure>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>用不支持WebP的IE和支持WebP的Chrome打开同一张图片的地址，我们发现服务器给他们返回的响应内容是不一样的。</p>
-<p>支持WebP的Chrome的相应内容是WebP格式的图片：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/Chrome546a1f0b913288f7.jpg" alt="Chrome的响应内容"></p>
-<p>而不支持WebP的IE的相应内容就是普通的jpg图片：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/IEa287039efc97d622.jpg" alt="IE的响应内容"></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>WebP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「翻译」Java 14带来了许多新功能</title>
     <url>/p/2305442.html</url>
     <content><![CDATA[<p>Java 14包含比前两个发行版更多的新功能-其中大多数旨在简化编程开发工作。</p>
@@ -496,83 +440,98 @@
       </tags>
   </entry>
   <entry>
-    <title>[Material Design] 尝试使用 Bottom Navigation</title>
-    <url>/p/GJ0Q47.html</url>
-    <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
-<p>Material Design的一些重要功能包括系统字体Roboto的升级版本，同时颜色更鲜艳，动画效果更突出。谷歌的想法是让谷歌平台上的开发者掌握这个新框架，从而让所有应用就有统一的外观，就像是苹果向开发者提出的设计原则一样。</p>
-<p>一直感觉Material Design设计很是好看，尤其是底部的导航栏，简约的图标以及透明的背景。决定自己体验一把。</p>
+    <title>理解 JavaScript 的 async、await</title>
+    <url>/p/3Q3X94C.html</url>
+    <content><![CDATA[<p>任意一个名称都是有意义的，先从字面意思来理解。async 是“异步”的简写，而 await 可以认为是 async wait 的简写。所以应该很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。</p>
 <a id="more"></a>
 
-<p>先上效果图：</p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-14bd1b8c91c5f8b99.gif" alt="效果图"></p>
-<h1 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h1><p>Bottom Navigation经常用于底部导航栏。不过它所包含的标签页不应过多也不应该过少，<a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a>中表示，标签页的个数在3-5个左右合适。</p>
-<h1 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h1><h2 id="在Module的build-gradle中添加如下代码"><a href="#在Module的build-gradle中添加如下代码" class="headerlink" title="在Module的build.gradle中添加如下代码"></a>在Module的build.gradle中添加如下代码</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">compile &#x27;com.roughike:bottom-bar:2.0.2&#x27;<br></code></pre></td></tr></table></figure>
-<p>实现Bottom Navigation功能，比较好用的是第三方的BottomBar库，截止2017.1.8，最新的版本是2.0.2，如果需要最新版，请访问 <a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></p>
-<h2 id="在res下新建类型为xml的xml文件夹"><a href="#在res下新建类型为xml的xml文件夹" class="headerlink" title="在res下新建类型为xml的xml文件夹"></a>在res下新建类型为xml的xml文件夹</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-27a8c62661b42fd13.png"></p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/20210120100350.png"></p>
-<h2 id="在xml文件夹下新建bottombar-tabs-xml文件"><a href="#在xml文件夹下新建bottombar-tabs-xml文件" class="headerlink" title="在xml文件夹下新建bottombar_tabs.xml文件"></a>在xml文件夹下新建bottombar_tabs.xml文件</h2><p>res/xml/bottombar_tabs.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">PreferenceScreen</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">tabs</span>&gt;</span><br>        &lt;tab<br>            id=&quot;@+id/tab_one&quot;<br>            icon=&quot;@drawable/ic_3d_rotation_white_24dp&quot;<br>            title=&quot;财务&quot;<br>            barColorWhenSelected=&quot;#865242&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_two&quot;<br>            icon=&quot;@drawable/ic_account_balance_white_24dp&quot;<br>            title=&quot;群组&quot;<br>            barColorWhenSelected=&quot;#268434&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_three&quot;<br>            icon=&quot;@drawable/ic_accessibility_white_24dp&quot;<br>            title=&quot;朋友&quot;<br>            barColorWhenSelected=&quot;#8b2099&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">tabs</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">PreferenceScreen</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<p><code>barColorWhenSelected</code>属性控制着当这个Tab被选择时，BottomBar的整体颜色。<code>inActiveColor</code>属性是这个Tab未激活时图片的颜色。与之相对应的<code>activeColor</code>属性，则是控制着激活时的图片颜色。</p>
-<h2 id="activity-main-xml"><a href="#activity-main-xml" class="headerlink" title="activity_main.xml"></a>activity_main.xml</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">RelativeLayout</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:app</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:tools</span>=<span class="hljs-string">&quot;http://schemas.android.com/tools&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/activity_main&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingBottom</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingLeft</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingRight</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingTop</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">tools:context</span>=<span class="hljs-string">&quot;me.luzhoumin.bottomnavigation.MainActivity&quot;</span>&gt;</span><br><br>    &lt;com.roughike.bottombar.BottomBar<br>        android:id=&quot;@+id/bottomBar&quot;<br>        android:layout_width=&quot;match_parent&quot;<br>        android:layout_height=&quot;60dp&quot;<br>        android:layout_alignParentBottom=&quot;true&quot;<br>        app:bb_tabXmlResource=&quot;@xml/bottombar_tabs&quot;<br>        app:bb_behavior=&quot;underNavbar&quot;<br>        app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>        app:bb_activeTabAlpha=&quot;1&quot;<br>        app:bb_showShadow=&quot;true&quot;/&gt;<br><br>    &lt;TextView<br>        android:id=&quot;@+id/textview&quot;<br>        android:layout_width=&quot;wrap_content&quot;<br>        android:layout_height=&quot;wrap_content&quot;<br>        android:textSize=&quot;36sp&quot;<br>        android:text=&quot;Hello World!&quot;<br>        android:layout_alignParentTop=&quot;true&quot;<br>        android:layout_alignParentStart=&quot;true&quot;<br>        android:layout_marginTop=&quot;51dp&quot; /&gt;<br><br><span class="hljs-tag">&lt;/<span class="hljs-name">RelativeLayout</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<p><code>app:bb_tabXmlResource</code>指向的是第三步建的xml文件，里面有每个Tab的属性。</p>
-<h2 id="MainActivity-java"><a href="#MainActivity-java" class="headerlink" title="MainActivity.java"></a>MainActivity.java</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> android.support.annotation.IdRes;<br><span class="hljs-keyword">import</span> android.support.v7.app.AppCompatActivity;<br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> android.widget.TextView;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBar;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBarTab;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabReselectListener;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabSelectListener;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AppCompatActivity</span> </span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> </span>&#123;<br>        <span class="hljs-keyword">super</span>.onCreate(savedInstanceState);<br>        setContentView(R.layout.activity_main);<br>        <span class="hljs-comment">//获取Bottom Bar组件</span><br>        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);<br>        <span class="hljs-comment">//获取用来显示的TextView组件</span><br>        <span class="hljs-keyword">final</span> TextView tv = (TextView) findViewById(R.id.textview);<br>        <span class="hljs-comment">//设置Bottom Bar的选择监听器</span><br>        bottomBar.setOnTabSelectListener(<span class="hljs-keyword">new</span> OnTabSelectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_group 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Bottom Bar的重复选择监听器</span><br>        bottomBar.setOnTabReselectListener(<span class="hljs-keyword">new</span> OnTabReselectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabReSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_two 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 再次被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Tab的Badge</span><br>        BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_two);<br>        nearby.setBadgeCount(<span class="hljs-number">5</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="修改主题样式"><a href="#修改主题样式" class="headerlink" title="修改主题样式"></a>修改主题样式</h2><p>res/values/styles.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Base application theme. --&gt;</span><br>    <span class="hljs-comment">&lt;!--修改主题为无ActionBar--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;AppTheme&quot;</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">&quot;Theme.AppCompat.Light.NoActionBar&quot;</span>&gt;</span><br><span class="xml">        <span class="hljs-comment">&lt;!-- Customize your theme here. --&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-comment">&lt;!--添加--&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:navigationBarColor&quot;</span>&gt;</span>@android:color/transparent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowTranslucentNavigation&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowDrawsSystemBarBackgrounds&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<h1 id="BottomBar-API"><a href="#BottomBar-API" class="headerlink" title="BottomBar API"></a>BottomBar API</h1><h2 id="For-the-BottomBar"><a href="#For-the-BottomBar" class="headerlink" title="For the BottomBar"></a>For the BottomBar</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;com.roughike.bottombar.BottomBar<br>    android:id=&quot;@+id/bottomBar&quot;<br>    android:layout_width=&quot;match_parent&quot;<br>    android:layout_height=&quot;60dp&quot;<br>    android:layout_alignParentBottom=&quot;true&quot;<br>    app:bb_tabXmlResource=&quot;@xml/bottombar_tabs_three&quot;<br>    app:bb_tabletMode=&quot;true&quot;<br>    app:bb_behavior=&quot;shifting|shy|underNavbar&quot;<br>    app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>    app:bb_activeTabAlpha=&quot;1&quot;<br>    app:bb_inActiveTabColor=&quot;#222222&quot;<br>    app:bb_activeTabColor=&quot;@color/colorPrimary&quot;<br>    app:bb_titleTextAppearance=&quot;@style/MyTextAppearance&quot;<br>    app:bb_titleTypeFace=&quot;fonts/MySuperDuperFont.ttf&quot;<br>    app:bb_showShadow=&quot;true&quot; /&gt;<br></code></pre></td></tr></table></figure>
-<p><strong>bb_tabXmlResource</strong></p>
-<p>the XML Resource id for your tabs, that reside in values/xml/</p>
-<p><strong>bb_tabletMode</strong></p>
-<p>if you want the BottomBar to behave differently for tablets. There’s an example of this in the sample project!</p>
-<p><strong>bb_behavior</strong></p>
-<ul>
-<li><code>shifting</code>: the selected tab is wider than the rest.</li>
-<li><code>shy</code>: put the BottomBar inside a CoordinatorLayout and it’ll automatically hide on scroll!</li>
-<li><code>underNavbar</code>: draw the BottomBar under the navBar!</li>
-</ul>
-<p><strong>bb_inActiveTabAlpha</strong></p>
-<p>the alpha value for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_activeTabAlpha</strong></p>
-<p>the alpha value for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_inActiveTabColor</strong></p>
-<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_activeTabColor</strong></p>
-<p>the color for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_badgeBackgroundColor</strong></p>
-<p>the background color for any Badges in this BottomBar.</p>
-<p><strong>bb_titleTextAppearance</strong></p>
-<p>custom textAppearance for the titles</p>
-<p><strong>bb_titleTypeFace</strong></p>
-<p>path for your custom font file, such as <code>fonts/MySuperDuperFont.ttf</code>. In that case your font path would look like <code>src/main/assets/fonts/MySuperDuperFont.ttf</code>, but you only need to provide <code>fonts/MySuperDuperFont.ttf</code>, as the asset folder will be auto-filled for you.</p>
-<p><strong>bb_showShadow</strong></p>
-<p>controls whether the shadow is shown or hidden, defaults to true.</p>
-<h2 id="For-the-tabs"><a href="#For-the-tabs" class="headerlink" title="For the tabs"></a>For the tabs</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;tab<br>    id=&quot;@+id/tab_recents&quot;<br>    title=&quot;Recents&quot;<br>    icon=&quot;@drawable/empty_icon&quot;<br>    inActiveColor=&quot;#00FF00&quot;<br>    activeColor=&quot;#FF0000&quot;<br>    barColorWhenSelected=&quot;#FF0000&quot;<br>    badgeBackgroundColor=&quot;#FF0000&quot; /&gt;<br></code></pre></td></tr></table></figure>
-<p><strong>inActiveColor</strong></p>
-<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>activeColor</strong></p>
-<p>the color for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>barColorWhenSelected</strong></p>
-<p>the color that the whole BottomBar should be when selected this tab.</p>
-<p><strong>badgeBackgroundColor</strong></p>
-<p>the background color for any Badges in this tab.</p>
-<h1 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h1><ul>
-<li>Tab的图标必须是<strong>全透明、纯黑、24dp、Padding = 0dp</strong>，而且最好所有分辨密度的图片都要有，否则图标会很大或者很小，影响显示效果。</li>
-<li>如果想保持在屏幕最底部，记得在布局xml的<code>&lt;com.roughike.bottombar.BottomBar&gt;</code>标签中添加属性<code>android:layout_alignParentBottom=&quot;true&quot;</code>，并且做好第六步工作。</li>
-</ul>
-<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
-<li><a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a></li>
-<li><a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></li>
-</ul>
-<h1 id="与FloatingActionButton和SnackBar合作的效果"><a href="#与FloatingActionButton和SnackBar合作的效果" class="headerlink" title="与FloatingActionButton和SnackBar合作的效果"></a>与FloatingActionButton和SnackBar合作的效果</h1><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-4368fd9376e31ff43.gif"></p>
+<h1 id="async-和-await-在干什么"><a href="#async-和-await-在干什么" class="headerlink" title="async 和 await 在干什么"></a>async 和 await 在干什么</h1><p>另外还有一个很有意思的语法规定，await 只能出现在 async 函数中。然后细心的朋友会产生一个疑问，如果 await 只能出现在 async 函数中，那这个 async 函数应该怎么调用？<br>如果需要通过 await 来调用一个 async 函数，那这个调用的外面必须得再包一个 async 函数，然后……进入死循环，永无出头之日……<br>如果 async 函数不需要 await 来调用，那 async 到底起个啥作用？</p>
+<h2 id="async-起什么作用"><a href="#async-起什么作用" class="headerlink" title="async 起什么作用"></a>async 起什么作用</h2><p>这个问题的关键在于，async 函数是怎么处理它的返回值的！<br>我们当然希望它能直接通过 return 语句返回我们想要的值，但是如果真是这样，似乎就没 await 什么事了。所以，写段代码来试试，看它到底会返回什么：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello async&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> result = testAsync();<br><span class="hljs-built_in">console</span>.log(result);<br></code></pre></td></tr></table></figure>
+<p>看到输出就恍然大悟了——输出的是一个 Promise 对象。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">c:\var\test&gt; node --harmony_async_await .<br>Promise &#123; &#x27;hello async&#x27; &#125;<br></code></pre></td></tr></table></figure>
+<p>所以，<code>async</code> 函数返回的是一个 Promise 对象。从文档中也可以得到这个信息。async 函数（包含函数语句、函数表达式、Lambda表达式）会返回一个 Promise 对象，如果在函数中 <code>return</code> 一个直接量，async 会把这个直接量通过 <code>Promise.resolve()</code> 封装成 Promise 对象。</p>
+<p>async 函数返回的是一个 Promise 对象，所以在最外层不能用 await 获取其返回值的情况下，我们当然应该用原来的方式：<code>then()</code> 链来处理这个 Promise 对象，就像这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">testAsync().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(v);    <span class="hljs-comment">// 输出 hello async</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>现在回过头来想下，如果 async 函数没有返回值，又该如何？很容易想到，它会返回<code>Promise.resolve(undefined)</code>。</p>
+<p>联想一下 Promise 的特点——无等待，所以在没有 await 的情况下执行 async 函数，它会立即执行，返回一个 Promise 对象，并且，绝不会阻塞后面的语句。这和普通返回 Promise 对象的函数并无二致。</p>
+<p>那么下一个关键点就在于 await 关键字了。</p>
+<h2 id="await-到底在等啥"><a href="#await-到底在等啥" class="headerlink" title="await 到底在等啥"></a>await 到底在等啥</h2><p>一般来说，都认为 await 是在等待一个 async 函数完成。不过按语法说明，await 等待的是一个表达式，这个表达式的计算结果是 Promise 对象或者其它值（换句话说，就是没有特殊限定）。</p>
+<p>因为 async 函数返回一个 Promise 对象，所以 await 可以用于等待一个 async 函数的返回值——这也可以说是 await 在等 async 函数，但要清楚，它等的实际是一个返回值。注意到 await 不仅仅用于等 Promise 对象，它可以等任意表达式的结果，所以，await 后面实际是可以接普通函数调用或者直接量的。所以下面这个示例完全可以正确运行</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSomething</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;something&quot;</span>;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">testAsync</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">&quot;hello async&quot;</span>);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v1 = <span class="hljs-keyword">await</span> getSomething();<br>    <span class="hljs-keyword">const</span> v2 = <span class="hljs-keyword">await</span> testAsync();<br>    <span class="hljs-built_in">console</span>.log(v1, v2);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
+<h2 id="await-等到了要等的，然后呢"><a href="#await-等到了要等的，然后呢" class="headerlink" title="await 等到了要等的，然后呢"></a>await 等到了要等的，然后呢</h2><p>await 等到了它要等的东西，一个 Promise 对象，或者其它值，然后呢？我不得不先说，await 是个运算符，用于组成表达式，await 表达式的运算结果取决于它等的东西。</p>
+<p>如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。</p>
+<p>如果它等到的是一个 Promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。</p>
+<blockquote>
+<p>看到上面的阻塞一词，心慌了吧……放心，这就是 await 必须用在 async 函数中的原因。async 函数调用不会造成阻塞，它内部所有的阻塞都被封装在一个 Promise 对象中异步执行。</p>
+</blockquote>
+<h1 id="async-await-帮我们干了啥"><a href="#async-await-帮我们干了啥" class="headerlink" title="async/await 帮我们干了啥"></a>async/await 帮我们干了啥</h1><h2 id="作个简单的比较"><a href="#作个简单的比较" class="headerlink" title="作个简单的比较"></a>作个简单的比较</h2><p>上面已经说明了 async 会将其后的函数（函数表达式或 Lambda）的返回值封装成一个 Promise 对象，而 await 会等待这个 Promise 完成，并将其 resolve 的结果返回出来。</p>
+<p>现在举例，用 <code>setTimeout</code> 模拟耗时的异步操作，先来看看不用 async/await 会怎么写</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br>takeLongTime().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> &#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;got&quot;</span>, v);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>如果改用 async/await 呢，会是这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(<span class="hljs-string">&quot;long_time_value&quot;</span>), <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> v = <span class="hljs-keyword">await</span> takeLongTime();<br>    <span class="hljs-built_in">console</span>.log(v);<br>&#125;<br><br>test();<br></code></pre></td></tr></table></figure>
+<p>眼尖的同学已经发现 <code>takeLongTime()</code> 没有申明为 <code>async</code>。实际上，<code>takeLongTime()</code> 本身就是返回的 Promise 对象，加不加 <code>async</code> 结果都一样，如果没明白，请回过头再去看看上面的“async 起什么作用”。</p>
+<p>又一个疑问产生了，这两段代码，两种方式对异步调用的处理（实际就是对 Promise 对象的处理）差别并不明显，甚至使用 async/await 还需要多写一些代码，那它的优势到底在哪？</p>
+<h2 id="async-await-的优势在于处理-then-链"><a href="#async-await-的优势在于处理-then-链" class="headerlink" title="async/await 的优势在于处理 then 链"></a>async/await 的优势在于处理 then 链</h2><p>单一的 Promise 链并不能发现 async/await 的优势，但是，如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（很有意思，Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。</p>
+<p>假设一个业务，分多个步骤完成，每个步骤都是异步的，而且依赖于上一个步骤的结果。我们仍然用 <code>setTimeout</code> 来模拟异步操作：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 传入参数 n，表示这个函数执行的时间（毫秒）</span><br><span class="hljs-comment"> * 执行的结果是 n + 200，这个值将用于下一步骤</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">takeLongTime</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(n + <span class="hljs-number">200</span>), n);<br>    &#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>现在用 Promise 方式来实现这三个步骤的处理</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> step2(time2))<br>        .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> step3(time3))<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 500</span><br><span class="hljs-comment">// step3 with 700</span><br><span class="hljs-comment">// result is 900</span><br><span class="hljs-comment">// doIt: 1507.251ms</span><br></code></pre></td></tr></table></figure>
+<p>输出结果 <code>result</code> 是 <code>step3()</code> 的参数 <code>700 + 200 = 900</code>。<code>doIt()</code> 顺序执行了三个步骤，一共用了 <code>300 + 500 + 700 = 1500</code> 毫秒，和 <code>console.time()/console.timeEnd()</code> 计算的结果一致。<br>如果用 async/await 来实现呢，会是这样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
+<p>结果和之前的 Promise 实现是一样的，但是这个代码看起来是不是清晰得多，几乎跟同步代码一样</p>
+<h2 id="还有更酷的"><a href="#还有更酷的" class="headerlink" title="还有更酷的"></a>还有更酷的</h2><p>现在把业务要求改一下，仍然是三个步骤，但每一个步骤都需要之前每个步骤的结果。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step1</span>(<span class="hljs-params">n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step1 with <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step2</span>(<span class="hljs-params">m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step2 with <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(m + n);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step3</span>(<span class="hljs-params">k, m, n</span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`step3 with <span class="hljs-subst">$&#123;k&#125;</span>, <span class="hljs-subst">$&#123;m&#125;</span> and <span class="hljs-subst">$&#123;n&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> takeLongTime(k + m + n);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这回先用 async/await 来写：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    <span class="hljs-keyword">const</span> time2 = <span class="hljs-keyword">await</span> step1(time1);<br>    <span class="hljs-keyword">const</span> time3 = <span class="hljs-keyword">await</span> step2(time1, time2);<br>    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> step3(time1, time2, time3);<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>&#125;<br><br>doIt();<br><br><span class="hljs-comment">// c:\var\test&gt;node --harmony_async_await .</span><br><span class="hljs-comment">// step1 with 300</span><br><span class="hljs-comment">// step2 with 800 = 300 + 500</span><br><span class="hljs-comment">// step3 with 1800 = 300 + 500 + 1000</span><br><span class="hljs-comment">// result is 2000</span><br><span class="hljs-comment">// doIt: 2907.387ms</span><br></code></pre></td></tr></table></figure>
+<p>除了觉得执行时间变长了之外，似乎和之前的示例没啥区别啊！别急，认真想想如果把它写成 Promise 方式实现会是什么样子？</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doIt</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&quot;doIt&quot;</span>);<br>    <span class="hljs-keyword">const</span> time1 = <span class="hljs-number">300</span>;<br>    step1(time1)<br>        .then(<span class="hljs-function"><span class="hljs-params">time2</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> step2(time1, time2)<br>                .then(<span class="hljs-function"><span class="hljs-params">time3</span> =&gt;</span> [time1, time2, time3]);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">times</span> =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> [time1, time2, time3] = times;<br>            <span class="hljs-keyword">return</span> step3(time1, time2, time3);<br>        &#125;)<br>        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`result is <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>            <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&quot;doIt&quot;</span>);<br>        &#125;);<br>&#125;<br><br>doIt();<br></code></pre></td></tr></table></figure>
+<p>有没有感觉有点复杂的样子？那一堆参数处理，就是 Promise 方案的死穴—— 参数传递太麻烦了，看着就晕！</p>
+<blockquote>
+<p>参考：<a href="https://segmentfault.com/a/1190000007535316">理解 JavaScript 的 async/await - 边城</a></p>
+</blockquote>
 ]]></content>
       <categories>
         <category>开发</category>
-        <category>Android</category>
+        <category>Javascript</category>
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Google</tag>
-        <tag>Material Design</tag>
-        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实现浏览器WebP图片自适应加载</title>
+    <url>/p/3MDAQPQ.html</url>
+    <content><![CDATA[<p>让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。</p>
+<h1 id="主要思路"><a href="#主要思路" class="headerlink" title="主要思路"></a>主要思路</h1><p>如何判断浏览器是否支持WebP格式的图片，除了在前端加载一个1×1像素的WebP图片来获取宽度的方法，还有个方法，那就是查看浏览器发出的请求头中的Accept字段，如果改字段中带着<code>image/webp</code>说明浏览器支持WebP，反之则就是不持支。</p>
+<a id="more"></a>
+
+<p>不支持WebP的IE的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/WebPIEAccept14c6d4ecc012785f.jpg" alt="不支持WebP的IE的请求头Accept字段"></p>
+<p>支持WebP的Firefox的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/WebPFirefoxAccept08877c383da9747a.jpg" alt="支持WebP的Firefox的请求头Accept字段"></p>
+<p>支持WebP的Chrome的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/ChromeAcceptad5df29d04e6d935.jpg" alt="支持WebP的Chrome的请求头Accept字段"></p>
+<p>根据这个，我们可以修改Nginx的配置文件，让以**<code>.jgp</code>、<code>.jpeg</code>和<code>.png</code>结尾的请求**并且请求头Accept字段包含<code>image/webp</code>的请求进行WebP文件的判断，这个判断我们写在Lua文件中。在Lua文件中，先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
+<p>有了这个思路，我们进行尝试。</p>
+<h1 id="修改准备"><a href="#修改准备" class="headerlink" title="修改准备"></a>修改准备</h1><h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
+<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>参考：<a href="https://zmlu.me/p/2jj2ae2.html">Nginx+Lua+libwebp实现服务器图片自动转WebP</a></p>
+<h2 id="Nginx-conf"><a href="#Nginx-conf" class="headerlink" title="Nginx.conf"></a>Nginx.conf</h2><p>因为if不能同时判断多个条件，所以我们定义一个变量，用if修改变量值，最后根据该变量的值来判断是否满足所有的条件。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>        set                   $cwebp_flag 0;<br>    <br>        if ($uri ~ \.(png|jpg|jpeg)$) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($http_accept ~ image/webp) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($cwebp_flag = 011) &#123;<br>            content_by_lua_file  lua/imgProcess.lua;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><p>这个文件主要工作是：先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span><br>	<span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br> <br><span class="hljs-keyword">local</span> originalFile = ngx.var.request_filename;<br><span class="hljs-keyword">local</span> newFile = ngx.var.request_filename .. <span class="hljs-string">&quot;.webp&quot;</span>;<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><br>  <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile); <br><br>  <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>    ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>    ngx.header.x_webp = <span class="hljs-string">&#x27;generate&#x27;</span>;<br>    ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>    ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>    <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br>  <span class="hljs-keyword">else</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">500</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">else</span><br>  ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>  ngx.header.x_webp = <span class="hljs-string">&#x27;read&#x27;</span>;<br>  ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>  ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>  <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br><span class="hljs-keyword">end</span><br><br> <br><br></code></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>用不支持WebP的IE和支持WebP的Chrome打开同一张图片的地址，我们发现服务器给他们返回的响应内容是不一样的。</p>
+<p>支持WebP的Chrome的相应内容是WebP格式的图片：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/Chrome546a1f0b913288f7.jpg" alt="Chrome的响应内容"></p>
+<p>而不支持WebP的IE的相应内容就是普通的jpg图片：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/IEa287039efc97d622.jpg" alt="IE的响应内容"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>WebP</tag>
       </tags>
   </entry>
   <entry>
@@ -592,6 +551,68 @@
       </categories>
       <tags>
         <tag>Composer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
+    <url>/p/2JJ2AE2.html</url>
+    <content><![CDATA[<p>服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。</p>
+<p>Google推出了一种图片格式: WebP (<a href="https://developers.google.com/speed/webp/">Google官方网址</a>)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%</p>
+<a id="more"></a>
+
+<p><a href="https://caniuse.com/#feat=webp">查看支持率</a></p>
+<p><img src="https://file.moetu.org/images/2020/01/06/webp805caf2e553e4f3ad1.jpg" alt="WebP支持率"></p>
+<p>原图加载截图：（12.61s）</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/Chrome--d61d7c79a27fca39.jpg" alt="Chrome 原图 加载"></p>
+<p>WebP加载截图：（4.72s）</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/Chrome-Webp-7a40425fcab83529.jpg" alt="Chrome Webp 加载"></p>
+<p>可以看出加载Webp会大大提高加载速度</p>
+<h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
+<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>libwebp是图片转成webp的工具</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">yum install libwebp-tools<br></code></pre></td></tr></table></figure>
+<p>测试:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cwebp -q 100 1.jpg -o 1.webp<br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/libwebpd4b8956ec9f0cc80.jpg" alt="测试libwebp安装"></p>
+<p>如果出现以上信息，说明安装成功。</p>
+<h2 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><p>配置：</p>
+<p>让<code>.png.webp</code>、<code>.jpg.webp</code>、<code>.gif.webp</code>的请求执行转WebP的lua文件。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>    expires               365d;<br>    autoindex             on;<br>    autoindex_exact_size  on;<br>    try_files             $uri $uri/ @webp;<br>&#125;<br>    <br>location @webp &#123;    <br>    if ($uri ~ \.(png|jpg|gif)\.webp) &#123;<br>        content_by_lua_file  lua/imgProcess.lua;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/nginxwebplua03e80bf8dc3f9b85.jpg" alt="Nginx-Lua配置WebP转换"></p>
+<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span> <span class="hljs-comment">--判断文件是否存在的方法</span><br>    <span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-keyword">local</span> newFile = ngx.var.request_filename;<br> <span class="hljs-keyword">local</span> originalFile = newFile:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>, #newFile - <span class="hljs-number">5</span>); <span class="hljs-comment">--请求的webp图片去掉.webp后缀</span><br><br> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>   ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>   <span class="hljs-keyword">return</span>;<br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile);  <span class="hljs-comment">--用libwebp转换图片</span><br><br> <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>     ngx.exec(ngx.var.uri); <span class="hljs-comment">--重定向到转换成的webp图片</span><br> <span class="hljs-keyword">else</span><br>     ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>); <span class="hljs-comment">--转换失败：404</span><br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/weblua2dc97f3492a10817.jpg" alt="WebP转换的Lua"></p>
+<h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>访问前图片，服务器上没有WebP文件。</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/3123de3b82b6d0ef1761eac2796a88fa58aa0d2c178c2991.jpg" alt="访问前图片"></p>
+<p>当服务器接收到<code>.jpg.webp</code>的请求后，自动生成WebP文件：</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/webpdd22bfaefcb9faff.jpg" alt="访问后自动生成WebP"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Google</tag>
+        <tag>WebP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python在全局代理下安装包报错</title>
+    <url>/p/1E56RCW.html</url>
+    <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Python<span class="hljs-string">&#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal</span><br></code></pre></td></tr></table></figure>
+<p>以下是解决办法:</p>
+<a id="more"></a>
+
+<p>首先去掉所有代理，和终端的<code>PROXY</code>属性，然后安装<code>pysocks</code>模块</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install pysocks<br></code></pre></td></tr></table></figure>
+<p>安装完毕后再加上代理或者终端<code>PROXY</code>属性，即可正常安装其他模块。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>Mac</tag>
       </tags>
   </entry>
   <entry>
@@ -617,27 +638,6 @@
       <tags>
         <tag>Composer</tag>
         <tag>PHP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python在全局代理下安装包报错</title>
-    <url>/p/1E56RCW.html</url>
-    <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Python<span class="hljs-string">&#x27;s requests “Missing dependencies for SOCKS support” when using SOCKS5 from Terminal</span><br></code></pre></td></tr></table></figure>
-<p>以下是解决办法:</p>
-<a id="more"></a>
-
-<p>首先去掉所有代理，和终端的<code>PROXY</code>属性，然后安装<code>pysocks</code>模块</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install pysocks<br></code></pre></td></tr></table></figure>
-<p>安装完毕后再加上代理或者终端<code>PROXY</code>属性，即可正常安装其他模块。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>Mac</tag>
       </tags>
   </entry>
   <entry>
@@ -841,25 +841,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Element输入框自动去除空格及校验</title>
-    <url>/p/2KGC076.html</url>
-    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
-<a id="more"></a>
-
-<p>可以自定义一个指令，代码如下</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br>Vue.directive(<span class="hljs-string">&#x27;trim&#x27;</span>, &#123;<br>  <span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params">el, binding, vnode</span>)</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> validateField = <span class="hljs-string">&#x27;&#x27;</span><br>      <span class="hljs-keyword">const</span> formItem = vnode.elm.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">if</span> (formItem) &#123;<br>        validateField = formItem.$options.propsData.prop<br>      &#125;<br>      <span class="hljs-keyword">const</span> form = vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">const</span> trimStr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> value = e.target.value<br>        <span class="hljs-keyword">if</span> (value) &#123;<br>          e.target.value = value.trim()<br>          e.target.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&#x27;input&#x27;</span>))<br>          <span class="hljs-keyword">if</span> (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(<span class="hljs-string">&#x27;blur&#x27;</span>, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
-<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
-<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Vue</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>iOS 14 新功能预料大合集</title>
     <url>/p/2RSHAR.html</url>
     <content><![CDATA[<p>iOS14还有几天就能与大家在WWDC20(6月22日)上见面了，苹果一直在加利福尼亚的库比蒂诺总部研发该系统，并且适用设备据说与iOS13相同。本文汇总并且根据功能分类了“自古以来”有关iOS14新功能的爆料。</p>
@@ -957,8 +938,8 @@
         <category>Apple</category>
       </categories>
       <tags>
-        <tag>HomeKit</tag>
         <tag>Android</tag>
+        <tag>HomeKit</tag>
         <tag>Mac</tag>
       </tags>
   </entry>
@@ -1042,68 +1023,23 @@
       </categories>
   </entry>
   <entry>
-    <title>How to download Wechat on iOS in india</title>
-    <url>/p/ESP3TJ.html</url>
-    <content><![CDATA[<p>WeChat has been removed from the App Store India, so how can friends in India download WeChat?</p>
+    <title>Element输入框自动去除空格及校验</title>
+    <url>/p/2KGC076.html</url>
+    <content><![CDATA[<p>有的时候需要用输入框输入数据，但是需要数据去除前后空格</p>
 <a id="more"></a>
 
-<h2 id="Open-“App-Store”-on-home-screen"><a href="#Open-“App-Store”-on-home-screen" class="headerlink" title="Open “App Store” on home screen."></a>Open “App Store” on home screen.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled.png"></p>
-<h2 id="Click-on-the-avatar-in-the-upper-right-corner"><a href="#Click-on-the-avatar-in-the-upper-right-corner" class="headerlink" title="Click on the avatar in the upper right corner."></a>Click on the avatar in the upper right corner.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%201.png"></p>
-<h2 id="At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it"><a href="#At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it" class="headerlink" title="At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it."></a>At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%202.png"></p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%203.png"></p>
-<h2 id="Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button"><a href="#Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button" class="headerlink" title="Then, return to the top of the page, enter the account password provided, and click the sign in button."></a>Then, return to the top of the page, enter the account password provided, and click the sign in button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%204.png"></p>
-<h2 id="At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button"><a href="#At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button" class="headerlink" title="At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button."></a>At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%205.png"></p>
-<h2 id="In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade"><a href="#In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade" class="headerlink" title="In the “Protect your account” alert that pops up, select the second button(Do not upgrade)"></a>In the “Protect your account” alert that pops up, select the second button(Do not upgrade)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%206.png"></p>
-<h2 id="After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store"><a href="#After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store" class="headerlink" title="After the login is complete, click the “Done” button on the top right, and the store will switch to the US store."></a>After the login is complete, click the “Done” button on the top right, and the store will switch to the US store.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%207.png"></p>
-<h2 id="Search-amp-download-and-enjoy"><a href="#Search-amp-download-and-enjoy" class="headerlink" title="Search &amp; download and enjoy :-)"></a>Search &amp; download and enjoy :-)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%208.png"></p>
-<blockquote>
-<p>After the installation is complete, you can switch back to your Apple ID in the App Store</p>
-</blockquote>
-<p><strong>ATTENTION! DO NOT log in to the provided account in the settings app, otherwise the device may be locked.</strong></p>
+<p>可以自定义一个指令，代码如下</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br>Vue.directive(<span class="hljs-string">&#x27;trim&#x27;</span>, &#123;<br>  <span class="hljs-function"><span class="hljs-title">bind</span>(<span class="hljs-params">el, binding, vnode</span>)</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> validateField = <span class="hljs-string">&#x27;&#x27;</span><br>      <span class="hljs-keyword">const</span> formItem = vnode.elm.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">if</span> (formItem) &#123;<br>        validateField = formItem.$options.propsData.prop<br>      &#125;<br>      <span class="hljs-keyword">const</span> form = vnode.elm.parentNode.parentNode.parentNode.__vue__<br>      <span class="hljs-keyword">const</span> trimStr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;<br>        <span class="hljs-keyword">const</span> value = e.target.value<br>        <span class="hljs-keyword">if</span> (value) &#123;<br>          e.target.value = value.trim()<br>          e.target.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&#x27;input&#x27;</span>))<br>          <span class="hljs-keyword">if</span> (form &amp;&amp; validateField) &#123;<br>            form.validateField(validateField)<br>          &#125;<br>        &#125;<br>      &#125;<br>      vnode.elm.__vue__.$refs.input.addEventListener(<span class="hljs-string">&#x27;blur&#x27;</span>, trimStr)<br>    &#125;)<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p>使用的时候只需要在<code>el-input</code>标签上添加<code>v-trim</code>属性即可。</p>
+<p>效果是在input失去焦点的时候，自动把输入的值前后空格去掉，如果输入框有校验，则去掉后触发校验。</p>
 ]]></content>
       <categories>
-        <category>日常</category>
-        <category>技巧</category>
+        <category>开发</category>
+        <category>Vue</category>
       </categories>
-  </entry>
-  <entry>
-    <title>真正的自律，就是战胜你自己</title>
-    <url>/p/ZAB5E7.html</url>
-    <content><![CDATA[<p>1</p>
-<p>问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。</p>
-<p>三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。</p>
-<p>他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。</p>
-<a id="more"></a>
-
-<p>不知你是否发现，很多人空有一颗求上进的心，但在实际生活中，却活得敷衍、潦草、不自律。他们一边痛恨自己总是拖延和懒散，一边又纵容自己，贪图片刻的满足和安逸。</p>
-<p>其实，<strong>人这一辈子就是战胜自己的过程。如果你管住了自己，就可以拥有更多的自由。如果你管不好自己，就只能被现实左右</strong>。</p>
-<p>2</p>
-<p>大概你也曾经历过无数个失败的自律计划。</p>
-<p>坚持早起，但第二天实在起不来，就放弃了。坚持读书，但刚读了几页还是忍不住看手机，就放弃了。坚持减肥，刚确立这个信念，但美食一出现又放弃了。</p>
-<p>放弃，其实很简单。只要你的思想稍微松动一下，就可以让自己轻松地逃避那些原本你不愿做的事。但想要坚持就太难了，因为你面对的困难和挫折，经受的挑战和诱惑实在太多了。</p>
-<p>人与人之间最大的差距就在于自律。优秀的人想要做成一件事，几乎是言出必行，说到即能做到。但很多人虽然也想改变自己，却很难克服自身的惰性。</p>
-<p>自律最难的地方，在于它没法一蹴而就。<strong>大多数时刻，你需要反复跟自己做斗争，需要对自己下狠手，需要对自己更严苛，不能给自己丝毫的犹豫和退路。</strong></p>
-<p>3</p>
-<p>人在什么时刻会意识到自律的重要性？</p>
-<p>大概不是在早晨睡到日上三竿时，也不是在深夜吃着炸鸡喝着啤酒时，更不是在一有空闲就盯着手机追剧时，而是当你发现自己的身材越来越胖、生活越来越无聊、人生越来越失去掌控时，才会感受到巨大的压力。</p>
-<p>人在什么时刻会意识到自律的好处？</p>
-<p>大概不是在寒冷的冬天逼着自己五点起床时，也不是在感到疲惫依旧锻炼身体时，更不是一个人在书房独自读书写作时，而是当你发现自己的身体越来越好、事业越来越有所成、生活越来越有趣时，为此感到无比欣慰。</p>
-<p>于不自律的人而言，轻松是暂时的，痛苦却是长久的。于自律的人来说，过程是痛苦的，结果却是令人满意的。</p>
-<p>记得网上有一个问题：“高度自律是一种什么体验”。有个回答是“不再被生活拖曳着前进，而是未来变得可控，一切有条不紊，想要的生活触手可及”。</p>
-<p>当你觉得管不住自己，想要偷懒、想要懈怠时，想一想自己理想的生活，大概就不会沉迷于安逸享乐。<strong>当你觉得坚持不下去，想要泄气、放弃时，想一想放任的后果，大概就有了自我约束的紧迫感。</strong></p>
-<p>4</p>
-<p>人人都渴望更出色，但无论做什么都没有捷径，都要做到自律。</p>
-<p>成绩比你好的人可能并没有比你更聪明，不过是在一日又一日的枯燥学业中，坚持不断地练题、背书、做笔记。</p>
-<p>身体比你好的人可能并不是天生体质好，而是在一天又一天的单调重复中，坚持不断地早睡、早起、多运动。</p>
-<p>文采比你好的人可能并不是有特殊的天赋，而是在一年又一年的平淡光阴里坚持不断地读书、沉淀和积累。</p>
-<p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
-<p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
-<p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>摘抄</category>
-      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
   </entry>
   <entry>
     <title>运用Live Template加快写代码速度</title>
@@ -1246,27 +1182,28 @@
       </tags>
   </entry>
   <entry>
-    <title>请记住人生中的“三”</title>
-    <url>/p/18JYVC6.html</url>
-    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
-<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
+    <title>How to download Wechat on iOS in india</title>
+    <url>/p/ESP3TJ.html</url>
+    <content><![CDATA[<p>WeChat has been removed from the App Store India, so how can friends in India download WeChat?</p>
 <a id="more"></a>
 
-<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
-<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
-<p>三样东西永不放弃:<br>童真、理想、希望</p>
-<p>三样东西最无常:<br>成功、财富、机遇</p>
-<p>三样东西最无价:<br>健康、善良、真情</p>
-<p>三样东西成就人:<br>天时、地利、人和</p>
-<p>三样东西要珍惜:<br>父母、家庭、健康</p>
-<p>三样东西助成功：<br>目标、方法、改进</p>
-<p>三样东西交朋友:<br>诚信、热情、互助</p>
-<p>三样东西把握好:<br>机会、工作、婚姻</p>
-<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
+<h2 id="Open-“App-Store”-on-home-screen"><a href="#Open-“App-Store”-on-home-screen" class="headerlink" title="Open “App Store” on home screen."></a>Open “App Store” on home screen.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled.png"></p>
+<h2 id="Click-on-the-avatar-in-the-upper-right-corner"><a href="#Click-on-the-avatar-in-the-upper-right-corner" class="headerlink" title="Click on the avatar in the upper right corner."></a>Click on the avatar in the upper right corner.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%201.png"></p>
+<h2 id="At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it"><a href="#At-this-time-the-profile-page-will-be-displayed-let-us-slide-to-the-bottom-of-the-page-there-is-a-logout-button-click-on-it" class="headerlink" title="At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it."></a>At this time, the profile page will be displayed, let us slide to the bottom of the page, there is a logout button, click on it.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%202.png"></p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%203.png"></p>
+<h2 id="Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button"><a href="#Then-return-to-the-top-of-the-page-enter-the-account-password-provided-and-click-the-sign-in-button" class="headerlink" title="Then, return to the top of the page, enter the account password provided, and click the sign in button."></a>Then, return to the top of the page, enter the account password provided, and click the sign in button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%204.png"></p>
+<h2 id="At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button"><a href="#At-this-time-a-security-dialog-box-will-pop-up-let’s-click-on-the-“Other-options”-below-the-blue-button" class="headerlink" title="At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button."></a>At this time, a security dialog box will pop up, let’s click on the “Other options” below the blue button.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%205.png"></p>
+<h2 id="In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade"><a href="#In-the-“Protect-your-account”-alert-that-pops-up-select-the-second-button-Do-not-upgrade" class="headerlink" title="In the “Protect your account” alert that pops up, select the second button(Do not upgrade)"></a>In the “Protect your account” alert that pops up, select the second button(Do not upgrade)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%206.png"></p>
+<h2 id="After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store"><a href="#After-the-login-is-complete-click-the-“Done”-button-on-the-top-right-and-the-store-will-switch-to-the-US-store" class="headerlink" title="After the login is complete, click the “Done” button on the top right, and the store will switch to the US store."></a>After the login is complete, click the “Done” button on the top right, and the store will switch to the US store.</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%207.png"></p>
+<h2 id="Search-amp-download-and-enjoy"><a href="#Search-amp-download-and-enjoy" class="headerlink" title="Search &amp; download and enjoy :-)"></a>Search &amp; download and enjoy :-)</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/Untitled%208.png"></p>
+<blockquote>
+<p>After the installation is complete, you can switch back to your Apple ID in the App Store</p>
+</blockquote>
+<p><strong>ATTENTION! DO NOT log in to the provided account in the settings app, otherwise the device may be locked.</strong></p>
 ]]></content>
       <categories>
         <category>日常</category>
-        <category>摘抄</category>
+        <category>技巧</category>
       </categories>
   </entry>
   <entry>
@@ -1616,5 +1553,68 @@
       <tags>
         <tag>总结</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>真正的自律，就是战胜你自己</title>
+    <url>/p/ZAB5E7.html</url>
+    <content><![CDATA[<p>1</p>
+<p>问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。</p>
+<p>三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。</p>
+<p>他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。</p>
+<a id="more"></a>
+
+<p>不知你是否发现，很多人空有一颗求上进的心，但在实际生活中，却活得敷衍、潦草、不自律。他们一边痛恨自己总是拖延和懒散，一边又纵容自己，贪图片刻的满足和安逸。</p>
+<p>其实，<strong>人这一辈子就是战胜自己的过程。如果你管住了自己，就可以拥有更多的自由。如果你管不好自己，就只能被现实左右</strong>。</p>
+<p>2</p>
+<p>大概你也曾经历过无数个失败的自律计划。</p>
+<p>坚持早起，但第二天实在起不来，就放弃了。坚持读书，但刚读了几页还是忍不住看手机，就放弃了。坚持减肥，刚确立这个信念，但美食一出现又放弃了。</p>
+<p>放弃，其实很简单。只要你的思想稍微松动一下，就可以让自己轻松地逃避那些原本你不愿做的事。但想要坚持就太难了，因为你面对的困难和挫折，经受的挑战和诱惑实在太多了。</p>
+<p>人与人之间最大的差距就在于自律。优秀的人想要做成一件事，几乎是言出必行，说到即能做到。但很多人虽然也想改变自己，却很难克服自身的惰性。</p>
+<p>自律最难的地方，在于它没法一蹴而就。<strong>大多数时刻，你需要反复跟自己做斗争，需要对自己下狠手，需要对自己更严苛，不能给自己丝毫的犹豫和退路。</strong></p>
+<p>3</p>
+<p>人在什么时刻会意识到自律的重要性？</p>
+<p>大概不是在早晨睡到日上三竿时，也不是在深夜吃着炸鸡喝着啤酒时，更不是在一有空闲就盯着手机追剧时，而是当你发现自己的身材越来越胖、生活越来越无聊、人生越来越失去掌控时，才会感受到巨大的压力。</p>
+<p>人在什么时刻会意识到自律的好处？</p>
+<p>大概不是在寒冷的冬天逼着自己五点起床时，也不是在感到疲惫依旧锻炼身体时，更不是一个人在书房独自读书写作时，而是当你发现自己的身体越来越好、事业越来越有所成、生活越来越有趣时，为此感到无比欣慰。</p>
+<p>于不自律的人而言，轻松是暂时的，痛苦却是长久的。于自律的人来说，过程是痛苦的，结果却是令人满意的。</p>
+<p>记得网上有一个问题：“高度自律是一种什么体验”。有个回答是“不再被生活拖曳着前进，而是未来变得可控，一切有条不紊，想要的生活触手可及”。</p>
+<p>当你觉得管不住自己，想要偷懒、想要懈怠时，想一想自己理想的生活，大概就不会沉迷于安逸享乐。<strong>当你觉得坚持不下去，想要泄气、放弃时，想一想放任的后果，大概就有了自我约束的紧迫感。</strong></p>
+<p>4</p>
+<p>人人都渴望更出色，但无论做什么都没有捷径，都要做到自律。</p>
+<p>成绩比你好的人可能并没有比你更聪明，不过是在一日又一日的枯燥学业中，坚持不断地练题、背书、做笔记。</p>
+<p>身体比你好的人可能并不是天生体质好，而是在一天又一天的单调重复中，坚持不断地早睡、早起、多运动。</p>
+<p>文采比你好的人可能并不是有特殊的天赋，而是在一年又一年的平淡光阴里坚持不断地读书、沉淀和积累。</p>
+<p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
+<p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
+<p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>摘抄</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>请记住人生中的“三”</title>
+    <url>/p/18JYVC6.html</url>
+    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
+<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
+<a id="more"></a>
+
+<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
+<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
+<p>三样东西永不放弃:<br>童真、理想、希望</p>
+<p>三样东西最无常:<br>成功、财富、机遇</p>
+<p>三样东西最无价:<br>健康、善良、真情</p>
+<p>三样东西成就人:<br>天时、地利、人和</p>
+<p>三样东西要珍惜:<br>父母、家庭、健康</p>
+<p>三样东西助成功：<br>目标、方法、改进</p>
+<p>三样东西交朋友:<br>诚信、热情、互助</p>
+<p>三样东西把握好:<br>机会、工作、婚姻</p>
+<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>摘抄</category>
+      </categories>
   </entry>
 </search>
