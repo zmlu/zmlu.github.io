@@ -156,11 +156,11 @@
     <category term="Apple" scheme="https://blog.aah.im/categories/%E6%97%A5%E5%B8%B8/Apple/"/>
     
     
+    <category term="Android" scheme="https://blog.aah.im/tags/Android/"/>
+    
     <category term="HomeKit" scheme="https://blog.aah.im/tags/HomeKit/"/>
     
     <category term="Mac" scheme="https://blog.aah.im/tags/Mac/"/>
-    
-    <category term="Android" scheme="https://blog.aah.im/tags/Android/"/>
     
   </entry>
   
@@ -324,9 +324,9 @@
     <category term="Java" scheme="https://blog.aah.im/categories/%E5%BC%80%E5%8F%91/Java/"/>
     
     
-    <category term="总结" scheme="https://blog.aah.im/tags/%E6%80%BB%E7%BB%93/"/>
-    
     <category term="Java" scheme="https://blog.aah.im/tags/Java/"/>
+    
+    <category term="总结" scheme="https://blog.aah.im/tags/%E6%80%BB%E7%BB%93/"/>
     
   </entry>
   

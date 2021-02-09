@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ES镜像制作并启动</title>
+    <url>/p/10C2G1E.html</url>
+    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
+<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
+<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
+<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
+<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
+<p>在配置文件最下面，添加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
+<p>修改完成后，执行此命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
+<p>然后，重新启动elasticsearch，即可启动成功；</p>
+<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
+<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
+<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
+<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
+<p>均改为 512m</p>
+<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
+<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Elasticsearch</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ES文件挂载</title>
     <url>/p/PW04BF.html</url>
     <content><![CDATA[<h2 id="文件挂载前准备"><a href="#文件挂载前准备" class="headerlink" title="文件挂载前准备"></a>文件挂载前准备</h2><p>进入启动的 test_es 容器中，找到配置文件所在位置，进入容器命令如下：</p>
@@ -31,6 +65,86 @@
         <category>开发</category>
         <category>Elasticsearch</category>
       </categories>
+  </entry>
+  <entry>
+    <title>[Material Design] 尝试使用 Bottom Navigation</title>
+    <url>/p/GJ0Q47.html</url>
+    <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
+<p>Material Design的一些重要功能包括系统字体Roboto的升级版本，同时颜色更鲜艳，动画效果更突出。谷歌的想法是让谷歌平台上的开发者掌握这个新框架，从而让所有应用就有统一的外观，就像是苹果向开发者提出的设计原则一样。</p>
+<p>一直感觉Material Design设计很是好看，尤其是底部的导航栏，简约的图标以及透明的背景。决定自己体验一把。</p>
+<a id="more"></a>
+
+<p>先上效果图：</p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-14bd1b8c91c5f8b99.gif" alt="效果图"></p>
+<h1 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h1><p>Bottom Navigation经常用于底部导航栏。不过它所包含的标签页不应过多也不应该过少，<a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a>中表示，标签页的个数在3-5个左右合适。</p>
+<h1 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h1><h2 id="在Module的build-gradle中添加如下代码"><a href="#在Module的build-gradle中添加如下代码" class="headerlink" title="在Module的build.gradle中添加如下代码"></a>在Module的build.gradle中添加如下代码</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">compile &#x27;com.roughike:bottom-bar:2.0.2&#x27;<br></code></pre></td></tr></table></figure>
+<p>实现Bottom Navigation功能，比较好用的是第三方的BottomBar库，截止2017.1.8，最新的版本是2.0.2，如果需要最新版，请访问 <a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></p>
+<h2 id="在res下新建类型为xml的xml文件夹"><a href="#在res下新建类型为xml的xml文件夹" class="headerlink" title="在res下新建类型为xml的xml文件夹"></a>在res下新建类型为xml的xml文件夹</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-27a8c62661b42fd13.png"></p>
+<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/20210120100350.png"></p>
+<h2 id="在xml文件夹下新建bottombar-tabs-xml文件"><a href="#在xml文件夹下新建bottombar-tabs-xml文件" class="headerlink" title="在xml文件夹下新建bottombar_tabs.xml文件"></a>在xml文件夹下新建bottombar_tabs.xml文件</h2><p>res/xml/bottombar_tabs.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">PreferenceScreen</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">tabs</span>&gt;</span><br>        &lt;tab<br>            id=&quot;@+id/tab_one&quot;<br>            icon=&quot;@drawable/ic_3d_rotation_white_24dp&quot;<br>            title=&quot;财务&quot;<br>            barColorWhenSelected=&quot;#865242&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_two&quot;<br>            icon=&quot;@drawable/ic_account_balance_white_24dp&quot;<br>            title=&quot;群组&quot;<br>            barColorWhenSelected=&quot;#268434&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_three&quot;<br>            icon=&quot;@drawable/ic_accessibility_white_24dp&quot;<br>            title=&quot;朋友&quot;<br>            barColorWhenSelected=&quot;#8b2099&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">tabs</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">PreferenceScreen</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p><code>barColorWhenSelected</code>属性控制着当这个Tab被选择时，BottomBar的整体颜色。<code>inActiveColor</code>属性是这个Tab未激活时图片的颜色。与之相对应的<code>activeColor</code>属性，则是控制着激活时的图片颜色。</p>
+<h2 id="activity-main-xml"><a href="#activity-main-xml" class="headerlink" title="activity_main.xml"></a>activity_main.xml</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">RelativeLayout</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:app</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:tools</span>=<span class="hljs-string">&quot;http://schemas.android.com/tools&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/activity_main&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingBottom</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingLeft</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingRight</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingTop</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">tools:context</span>=<span class="hljs-string">&quot;me.luzhoumin.bottomnavigation.MainActivity&quot;</span>&gt;</span><br><br>    &lt;com.roughike.bottombar.BottomBar<br>        android:id=&quot;@+id/bottomBar&quot;<br>        android:layout_width=&quot;match_parent&quot;<br>        android:layout_height=&quot;60dp&quot;<br>        android:layout_alignParentBottom=&quot;true&quot;<br>        app:bb_tabXmlResource=&quot;@xml/bottombar_tabs&quot;<br>        app:bb_behavior=&quot;underNavbar&quot;<br>        app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>        app:bb_activeTabAlpha=&quot;1&quot;<br>        app:bb_showShadow=&quot;true&quot;/&gt;<br><br>    &lt;TextView<br>        android:id=&quot;@+id/textview&quot;<br>        android:layout_width=&quot;wrap_content&quot;<br>        android:layout_height=&quot;wrap_content&quot;<br>        android:textSize=&quot;36sp&quot;<br>        android:text=&quot;Hello World!&quot;<br>        android:layout_alignParentTop=&quot;true&quot;<br>        android:layout_alignParentStart=&quot;true&quot;<br>        android:layout_marginTop=&quot;51dp&quot; /&gt;<br><br><span class="hljs-tag">&lt;/<span class="hljs-name">RelativeLayout</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p><code>app:bb_tabXmlResource</code>指向的是第三步建的xml文件，里面有每个Tab的属性。</p>
+<h2 id="MainActivity-java"><a href="#MainActivity-java" class="headerlink" title="MainActivity.java"></a>MainActivity.java</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> android.support.annotation.IdRes;<br><span class="hljs-keyword">import</span> android.support.v7.app.AppCompatActivity;<br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> android.widget.TextView;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBar;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBarTab;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabReselectListener;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabSelectListener;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AppCompatActivity</span> </span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> </span>&#123;<br>        <span class="hljs-keyword">super</span>.onCreate(savedInstanceState);<br>        setContentView(R.layout.activity_main);<br>        <span class="hljs-comment">//获取Bottom Bar组件</span><br>        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);<br>        <span class="hljs-comment">//获取用来显示的TextView组件</span><br>        <span class="hljs-keyword">final</span> TextView tv = (TextView) findViewById(R.id.textview);<br>        <span class="hljs-comment">//设置Bottom Bar的选择监听器</span><br>        bottomBar.setOnTabSelectListener(<span class="hljs-keyword">new</span> OnTabSelectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_group 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Bottom Bar的重复选择监听器</span><br>        bottomBar.setOnTabReselectListener(<span class="hljs-keyword">new</span> OnTabReselectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabReSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_two 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 再次被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Tab的Badge</span><br>        BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_two);<br>        nearby.setBadgeCount(<span class="hljs-number">5</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="修改主题样式"><a href="#修改主题样式" class="headerlink" title="修改主题样式"></a>修改主题样式</h2><p>res/values/styles.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Base application theme. --&gt;</span><br>    <span class="hljs-comment">&lt;!--修改主题为无ActionBar--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;AppTheme&quot;</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">&quot;Theme.AppCompat.Light.NoActionBar&quot;</span>&gt;</span><br><span class="xml">        <span class="hljs-comment">&lt;!-- Customize your theme here. --&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-comment">&lt;!--添加--&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:navigationBarColor&quot;</span>&gt;</span>@android:color/transparent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowTranslucentNavigation&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowDrawsSystemBarBackgrounds&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="BottomBar-API"><a href="#BottomBar-API" class="headerlink" title="BottomBar API"></a>BottomBar API</h1><h2 id="For-the-BottomBar"><a href="#For-the-BottomBar" class="headerlink" title="For the BottomBar"></a>For the BottomBar</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;com.roughike.bottombar.BottomBar<br>    android:id=&quot;@+id/bottomBar&quot;<br>    android:layout_width=&quot;match_parent&quot;<br>    android:layout_height=&quot;60dp&quot;<br>    android:layout_alignParentBottom=&quot;true&quot;<br>    app:bb_tabXmlResource=&quot;@xml/bottombar_tabs_three&quot;<br>    app:bb_tabletMode=&quot;true&quot;<br>    app:bb_behavior=&quot;shifting|shy|underNavbar&quot;<br>    app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>    app:bb_activeTabAlpha=&quot;1&quot;<br>    app:bb_inActiveTabColor=&quot;#222222&quot;<br>    app:bb_activeTabColor=&quot;@color/colorPrimary&quot;<br>    app:bb_titleTextAppearance=&quot;@style/MyTextAppearance&quot;<br>    app:bb_titleTypeFace=&quot;fonts/MySuperDuperFont.ttf&quot;<br>    app:bb_showShadow=&quot;true&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>bb_tabXmlResource</strong></p>
+<p>the XML Resource id for your tabs, that reside in values/xml/</p>
+<p><strong>bb_tabletMode</strong></p>
+<p>if you want the BottomBar to behave differently for tablets. There’s an example of this in the sample project!</p>
+<p><strong>bb_behavior</strong></p>
+<ul>
+<li><code>shifting</code>: the selected tab is wider than the rest.</li>
+<li><code>shy</code>: put the BottomBar inside a CoordinatorLayout and it’ll automatically hide on scroll!</li>
+<li><code>underNavbar</code>: draw the BottomBar under the navBar!</li>
+</ul>
+<p><strong>bb_inActiveTabAlpha</strong></p>
+<p>the alpha value for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_activeTabAlpha</strong></p>
+<p>the alpha value for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_inActiveTabColor</strong></p>
+<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_activeTabColor</strong></p>
+<p>the color for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>bb_badgeBackgroundColor</strong></p>
+<p>the background color for any Badges in this BottomBar.</p>
+<p><strong>bb_titleTextAppearance</strong></p>
+<p>custom textAppearance for the titles</p>
+<p><strong>bb_titleTypeFace</strong></p>
+<p>path for your custom font file, such as <code>fonts/MySuperDuperFont.ttf</code>. In that case your font path would look like <code>src/main/assets/fonts/MySuperDuperFont.ttf</code>, but you only need to provide <code>fonts/MySuperDuperFont.ttf</code>, as the asset folder will be auto-filled for you.</p>
+<p><strong>bb_showShadow</strong></p>
+<p>controls whether the shadow is shown or hidden, defaults to true.</p>
+<h2 id="For-the-tabs"><a href="#For-the-tabs" class="headerlink" title="For the tabs"></a>For the tabs</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;tab<br>    id=&quot;@+id/tab_recents&quot;<br>    title=&quot;Recents&quot;<br>    icon=&quot;@drawable/empty_icon&quot;<br>    inActiveColor=&quot;#00FF00&quot;<br>    activeColor=&quot;#FF0000&quot;<br>    barColorWhenSelected=&quot;#FF0000&quot;<br>    badgeBackgroundColor=&quot;#FF0000&quot; /&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>inActiveColor</strong></p>
+<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
+<p><strong>activeColor</strong></p>
+<p>the color for active tabs, that’s used in the tab icons and titles.</p>
+<p><strong>barColorWhenSelected</strong></p>
+<p>the color that the whole BottomBar should be when selected this tab.</p>
+<p><strong>badgeBackgroundColor</strong></p>
+<p>the background color for any Badges in this tab.</p>
+<h1 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h1><ul>
+<li>Tab的图标必须是<strong>全透明、纯黑、24dp、Padding = 0dp</strong>，而且最好所有分辨密度的图片都要有，否则图标会很大或者很小，影响显示效果。</li>
+<li>如果想保持在屏幕最底部，记得在布局xml的<code>&lt;com.roughike.bottombar.BottomBar&gt;</code>标签中添加属性<code>android:layout_alignParentBottom=&quot;true&quot;</code>，并且做好第六步工作。</li>
+</ul>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
+<li><a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a></li>
+<li><a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></li>
+</ul>
+<h1 id="与FloatingActionButton和SnackBar合作的效果"><a href="#与FloatingActionButton和SnackBar合作的效果" class="headerlink" title="与FloatingActionButton和SnackBar合作的效果"></a>与FloatingActionButton和SnackBar合作的效果</h1><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-4368fd9376e31ff43.gif"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Material Design</tag>
+        <tag>Android</tag>
+        <tag>Google</tag>
+      </tags>
   </entry>
   <entry>
     <title>HomeKit初始化</title>
@@ -91,71 +205,94 @@
       </tags>
   </entry>
   <entry>
-    <title>使用Gulp加速Hexo</title>
-    <url>/p/8VNSFG.html</url>
-    <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
-<h1 id="安装Gulp到Hexo博客"><a href="#安装Gulp到Hexo博客" class="headerlink" title="安装Gulp到Hexo博客"></a>安装Gulp到Hexo博客</h1><p>参见文章：<a href="https://zmlu.github.io/p/14JCGNP.html">安装Gulp</a></p>
-<p>进入hexo博客的根目录（public文件夹所在的目录），安装一些必要的组件。</p>
+    <title>「翻译」Java 14带来了许多新功能</title>
+    <url>/p/2305442.html</url>
+    <content><![CDATA[<p>Java 14包含比前两个发行版更多的新功能-其中大多数旨在简化编程开发工作。</p>
+<p>Java 14计划于3月17日发布。版本14包含的<a href="https://openjdk.java.net/projects/jdk/14/">JEP</a>（Java Enhancement Proposals）比Java 12和13的总和还多。 那么，对于每天编写和维护代码的Java开发人员来说，最重要的是什么呢？</p>
+<p>在本文中，我研究了以下主要方面：</p>
+<ul>
+<li>改进的<code>switch</code>表达式，该表达式最初在Java 12和Java 13中作为预览出现，现在已完全成为Java 14的一部分</li>
+<li>新增<code>instanceof</code>的模式匹配（语法糖）</li>
+<li>增强的<code>NullPointerExceptions</code>提示（JVM功能）</li>
+</ul>
+<p>如果您阅读本文并尝试在代码库中使用其中的某些功能，建议您通过<a href="mailto:amber-dev@openjdk.java.net">向Java团队提供反馈</a>来分享您的经验。 这样，您就有机会为Java的发展做出贡献。</p>
 <a id="more"></a>
 
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp gulp-babel gulp-clean-css gulp-htmlclean gulp-htmlmin gulp-uglify @babel/core @babel/preset-env @babel/register<br></code></pre></td></tr></table></figure>
-<h1 id="新建-babelrc"><a href="#新建-babelrc" class="headerlink" title="新建.babelrc"></a>新建.babelrc</h1><p>依然在hexo博客根目录下新建.babelrc文件</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;presets&quot;</span>: [ <span class="hljs-string">&quot;@babel/preset-env&quot;</span> ]<br>&#125;<br></code></pre></td></tr></table></figure>
-<h1 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h1><p>在hexo博客根目录下新建gulpfile.js文件，内容如下：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);<br><span class="hljs-keyword">var</span> babel = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-babel&#x27;</span>);<br><span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>);<br><span class="hljs-keyword">var</span> cleanCSS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-clean-css&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlmin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlmin&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlclean = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlclean&#x27;</span>);<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * css</span><br><span class="hljs-comment"> */</span><br>gulp.task(<span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.css&#x27;</span>)<br>			.pipe(cleanCSS())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-js&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src([<span class="hljs-string">&#x27;./public/**/*.js&#x27;</span>, <span class="hljs-string">&#x27;!./public/**/*.min.js&#x27;</span>])<br>			.pipe(babel())<br>			.pipe(uglify())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.html&#x27;</span>)<br>			.pipe(htmlclean())<br>			.pipe(htmlmin(&#123;<br>				removeComments: <span class="hljs-literal">true</span>,<br>				minifyJS: <span class="hljs-literal">true</span>,<br>				minifyCSS: <span class="hljs-literal">true</span>,<br>				minifyURLs: <span class="hljs-literal">true</span>,<br>			&#125;))<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,gulp.parallel(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-string">&#x27;minify-js&#x27;</span>));<br></code></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>执行完<code>hexo g</code>产生编译文件后，再手动执行执行<code>gulp</code></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[15:03:44] Using gulpfile E:\dev\hexoBlog\gulpfile.js<br>[15:03:44] Starting &#x27;default&#x27;...<br>[15:03:44] Starting &#x27;minify-html&#x27;...<br>[15:03:44] Starting &#x27;minify-css&#x27;...<br>[15:03:44] Starting &#x27;minify-js&#x27;...<br>[15:03:47] Finished &#x27;minify-css&#x27; after 3.52 s<br>[15:03:48] Finished &#x27;minify-html&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;minify-js&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;default&#x27; after 4.63 s<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Gulp</category>
-      </categories>
-      <tags>
-        <tag>Gulp</tag>
-        <tag>Hexo</tag>
-        <tag>总结</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安装Gulp</title>
-    <url>/p/14JCGNP.html</url>
-    <content><![CDATA[<p>记录一下安装Gulp的过程，参考官方文档，参考地址见文章末尾。</p>
-<p>如果你先前将gulp安装到全局环境中了，请执行<code>npm rm --global gulp</code>将<code>gulp</code>删除再继续以下操作。更多信息请参考<a href="https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467">Sip</a>。</p>
-<a id="more"></a>
-
-<h1 id="检查-node、npm-和-npx-是否正确安装"><a href="#检查-node、npm-和-npx-是否正确安装" class="headerlink" title="检查 node、npm 和 npx 是否正确安装"></a>检查 node、npm 和 npx 是否正确安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">node --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-node-version-command.png" alt="Output:v8.11.1"></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-npm-version-command.png" alt="Output:5.6.0"></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx --version<br></code></pre></td></tr></table></figure>
-<p><img src="https://gulpjs.com/img/docs-npx-version-command.png" alt="Output:9.7.1"></p>
-<p>如果上述工具还没安装，请参考<a href="https://nodejs.org/en/">这里</a>。</p>
-<h1 id="安装-gulp-命令行工具"><a href="#安装-gulp-命令行工具" class="headerlink" title="安装 gulp 命令行工具"></a>安装 gulp 命令行工具</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --global gulp-cli<br></code></pre></td></tr></table></figure>
-<h1 id="创建项目目录并进入"><a href="#创建项目目录并进入" class="headerlink" title="创建项目目录并进入"></a>创建项目目录并进入</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx mkdirp my-project<br>cd my-project<br></code></pre></td></tr></table></figure>
-<h1 id="在项目目录下创建-package-json-文件"><a href="#在项目目录下创建-package-json-文件" class="headerlink" title="在项目目录下创建 package.json 文件"></a>在项目目录下创建 package.json 文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm init<br></code></pre></td></tr></table></figure>
-<p>上述命令将指引你设置项目名、版本、描述信息等。</p>
-<h1 id="安装-gulp，作为开发时依赖项"><a href="#安装-gulp，作为开发时依赖项" class="headerlink" title="安装 gulp，作为开发时依赖项"></a>安装 gulp，作为开发时依赖项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp<br></code></pre></td></tr></table></figure>
-<h1 id="检查-gulp-版本"><a href="#检查-gulp-版本" class="headerlink" title="检查 gulp 版本"></a>检查 gulp 版本</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp --version<br></code></pre></td></tr></table></figure>
-<p>确保输出与下面的屏幕截图匹配，否则你可能需要执行本指南中的上述步骤。</p>
-<p><img src="https://gulpjs.com/img/docs-gulp-version-command.png" alt="Output: CLI version 2.0.1 &amp; Local version 4.0.0"></p>
-<h1 id="创建-gulpfile-文件"><a href="#创建-gulpfile-文件" class="headerlink" title="创建 gulpfile 文件"></a>创建 gulpfile 文件</h1><p>利用任何文本编辑器在项目大的根目录下创建一个名为 gulpfile.js 的文件，并在文件中输入以下内容：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultTask</span>(<span class="hljs-params">cb</span>) </span>&#123;<br>  <span class="hljs-comment">// place code for your default task here</span><br>  cb();<br>&#125;<br><br><span class="hljs-built_in">exports</span>.default = defaultTask<br></code></pre></td></tr></table></figure>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在项目根目录下执行 gulp 命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp<br></code></pre></td></tr></table></figure>
-<p>如需运行多个任务（task），可以执行<code>gulp &lt;task&gt; &lt;othertask&gt;</code>。</p>
-<h1 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h1><p>默认任务（task）将执行，因为任务为空，因此没有实际动作。</p>
-<p><img src="https://gulpjs.com/img/docs-gulp-command.png" alt="Output:Starting default &amp; Finished default"></p>
+<h1 id="switch-表达式"><a href="#switch-表达式" class="headerlink" title="switch 表达式"></a>switch 表达式</h1><p>在Java 14中，switch 表达式被保留变为正式版本。</p>
+<p>在早期版本中，switch 表达式是Beta功能。 提醒一下，将特征指定为 Beta 以收集反馈，并且根据反馈可能会更改甚至删除这些特征。 但预计大多数最终将在 Java 中被保留下来。</p>
+<p>新的 switch 表达式的优点让出bug的几率降低。 作为一个刷新示例，switch表达式现在可以利用箭头语法，例如在以下示例中：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> log = <span class="hljs-keyword">switch</span> (event) &#123;<br>    <span class="hljs-keyword">case</span> PLAY -&gt; <span class="hljs-string">&quot;User has triggered the play button&quot;</span>;<br>    <span class="hljs-keyword">case</span> STOP, PAUSE -&gt; <span class="hljs-string">&quot;User needs a break&quot;</span>;<br>    <span class="hljs-keyword">default</span> -&gt; &#123;<br>        String message = event.toString();<br>        LocalDateTime now = LocalDateTime.now();<br>        yield <span class="hljs-string">&quot;Unknown event &quot;</span> + message + <br>              <span class="hljs-string">&quot; logged on &quot;</span> + now;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h1 id="Text-Block-Beta"><a href="#Text-Block-Beta" class="headerlink" title="Text Block (Beta)"></a>Text Block (Beta)</h1><p>Java 13引入了<code>Text Block</code>作为Beta功能。 <code>Text Block</code>使使用多行字符串文字更加容易。 此功能在Java 14将是第二个版本的Beta功能，并进行了一些调整。 作为回顾，编写带有许多字符串连接和转义序列的代码以提供适当的多行文本格式非常普遍。 下面的代码显示了HTML格式的示例：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String html = <span class="hljs-string">&quot;&lt;HTML&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t&quot;</span> + <span class="hljs-string">&quot;&lt;BODY&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t\t&quot;</span> + <span class="hljs-string">&quot;&lt;H1&gt;\&quot;Java 14 is here!\&quot;&lt;/H1&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t&quot;</span> + <span class="hljs-string">&quot;&lt;/BODY&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n&quot;</span> + <span class="hljs-string">&quot;&lt;/HTML&gt;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>使用<code>Text Block</code>，您可以简化此过程并使用界定<code>Text Block</code>开头和结尾的三个引号来编写更优雅的代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String html = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">&lt;HTML&gt;</span><br><span class="hljs-string">  &lt;BODY&gt;</span><br><span class="hljs-string">    &lt;H1&gt;&quot;</span>Java <span class="hljs-number">14</span> is here!<span class="hljs-string">&quot;&lt;/H1&gt;</span><br><span class="hljs-string">  &lt;/BODY&gt;</span><br><span class="hljs-string">&lt;/HTML&gt;&quot;</span><span class="hljs-string">&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>与普通字符串文字相比，<code>Text Block</code>还提供了更高的表达能力。</p>
+<p>Java 14中添加了两个新的转义序列。首先，您可以使用新的<code>\s</code>转义序列表示单个空格。 其次，您可以使用反斜杠<code>\</code>来禁止在行尾插入新行字符。 当您想分隔很长的行以简化<code>Text Block</code>内的可读性时，这很有用。</p>
+<p>例如，当前处理多行字符串的方法是：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String literal = <br>         <span class="hljs-string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing &quot;</span> +<br>         <span class="hljs-string">&quot;elit, sed do eiusmod tempor incididunt ut labore &quot;</span> +<br>         <span class="hljs-string">&quot;et dolore magna aliqua.&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>使用<code>Text Block</code>中的<code>\</code>转义序列，可以表示如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String text = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">    Lorem ipsum dolor sit amet, consectetur adipiscing \</span><br><span class="hljs-string">    elit, sed do eiusmod tempor incididunt ut labore \</span><br><span class="hljs-string">    et dolore magna aliqua.\</span><br><span class="hljs-string">    &quot;</span><span class="hljs-string">&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<h1 id="instanceof-的模式匹配-Beta"><a href="#instanceof-的模式匹配-Beta" class="headerlink" title="instanceof 的模式匹配 (Beta)"></a>instanceof 的模式匹配 (Beta)</h1><p>Java 14引入了该Beta功能，该功能有助于消除对在有条件的<code>instanceof</code>检查之前进行显式强制转换的需求。 例如，考虑以下代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> Group) &#123;<br>  Group group = (Group) obj;<br><br>  <span class="hljs-comment">// use group specific methods</span><br>  <span class="hljs-keyword">var</span> entries = group.getEntries();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以使用<code>instanceof</code>的模式匹配功能将其重构为：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> Group group) &#123;<br>  <span class="hljs-keyword">var</span> entries = group.getEntries();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>由于条件检查断言<code>obj</code>是<code>Group</code>类型，为什么还要在第一个代码段中把<code>obj</code>强制转换为<code>Group</code>类型？ 这可能会增加错误几率。`</p>
+<p>较短的语法将删除典型Java程序中的许多强制转换。 （2011年一项提出相关语言功能的研究报告指出，所有演员表中约有24％遵循条件语句中的<code>instanceof</code>。）</p>
+<p>JEP 305涵盖了此更改，并从Joshua Bloch的Effective Java书中指出了一个示例，该示例通过以下相等方法进行说明：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123; <br>    <span class="hljs-keyword">return</span> (o <span class="hljs-keyword">instanceof</span> CaseInsensitiveString) &amp;&amp; <br>            ((CaseInsensitiveString) o).s.equalsIgnoreCase(s); <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>通过删除对CaseInsensitiveString的冗余显式转换，可以将前面的代码简化为以下形式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123; <br>    <span class="hljs-keyword">return</span> (o <span class="hljs-keyword">instanceof</span> CaseInsensitiveString cis) &amp;&amp;<br>            cis.s.equalsIgnoreCase(s); <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这是一个有趣的预览功能，因为它为更广泛的模式匹配打开了大门。 模式匹配的思想是为语言功能提供方便的语法，以根据某些条件提取对象的成分。 <code>instanceof</code>运算符就是这种情况，因为条件是类型检查，并且提取操作正在调用适当的方法或访问特定字段。</p>
+<p>换句话说，此预览功能仅仅是个开始，您可以期待一种语言功能，它可以帮助进一步减少冗长性，从而减少错误的可能性。</p>
+<h1 id="record-修饰符-Beta"><a href="#record-修饰符-Beta" class="headerlink" title="record 修饰符 (Beta)"></a>record 修饰符 (Beta)</h1><p>本次更新中还有另一种Beta功能：<code>record</code>修饰符。 像到目前为止提出的其他想法一样，此功能遵循减少Java冗长并帮助开发人员编写更简洁的代码的趋势。 记录集中在某些域类上，这些类仅用于将数据存储在字段中，并且不声明任何自定义行为。</p>
+<p>为了直接解决问题，用一个简单的类<code>BankTransaction</code>进行举例，该类使用三个字段对交易进行建模：<code>date</code>，<code>amount</code>和<code>description</code>。 声明类时，您需要担心多个问题：</p>
+<ul>
+<li>构造方法</li>
+<li><code>Getter</code> 方法</li>
+<li><code>toString()</code> 方法</li>
+<li><code>hashCode()</code> 和 <code>equals()</code> 方法</li>
+</ul>
+<p>此类组件的代码通常由IDE自动生成，并占用大量空间。 这是<code>BankTransaction</code>类的完整生成的实现：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BankTransaction</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> LocalDate date;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> amount;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String description;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BankTransaction</span><span class="hljs-params">(<span class="hljs-keyword">final</span> LocalDate date, </span></span><br><span class="hljs-function"><span class="hljs-params">                           <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> amount, </span></span><br><span class="hljs-function"><span class="hljs-params">                           <span class="hljs-keyword">final</span> String description)</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>.date = date;<br>        <span class="hljs-keyword">this</span>.amount = amount;<br>        <span class="hljs-keyword">this</span>.description = description;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> LocalDate <span class="hljs-title">date</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> date;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">amount</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> amount;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">description</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> description;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;BankTransaction&#123;&quot;</span> +<br>                <span class="hljs-string">&quot;date=&quot;</span> + date +<br>                <span class="hljs-string">&quot;, amount=&quot;</span> + amount +<br>                <span class="hljs-string">&quot;, description=&#x27;&quot;</span> + description + <span class="hljs-string">&#x27;\&#x27;&#x27;</span> +<br>                <span class="hljs-string">&#x27;&#125;&#x27;</span>;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> == o) <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>        <span class="hljs-keyword">if</span> (o == <span class="hljs-keyword">null</span> || getClass() != o.getClass()) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>        BankTransaction that = (BankTransaction) o;<br>        <span class="hljs-keyword">return</span> Double.compare(that.amount, amount) == <span class="hljs-number">0</span> &amp;&amp;<br>                date.equals(that.date) &amp;&amp;<br>                description.equals(that.description);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">hashCode</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> Objects.hash(date, amount, description);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Java 14提供了一种消除冗长且明确意图的方法，即您所需要的只是一个仅将数据与<code>equals</code>，<code>hashCode</code>和<code>toString</code>方法的实现一起聚合的类。 您可以按以下方式重构<code>BankTransaction</code>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> record <span class="hljs-title">BankTransaction</span><span class="hljs-params">(LocalDate date,</span></span><br><span class="hljs-function"><span class="hljs-params">                              <span class="hljs-keyword">double</span> amount,</span></span><br><span class="hljs-function"><span class="hljs-params">                              String description)</span> </span>&#123;&#125;<br></code></pre></td></tr></table></figure>
+<p>使用<code>record</code>修饰符，您可以“自动”获取除构造函数和获取器之外的<code>equals</code>，<code>hashCode</code>和<code>toString</code>方法的实现。</p>
+<p>要尝试该示例，请记住您需要使用预览标志来编译文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">javac --enable-preview --release 14 BankTransaction.java<br></code></pre></td></tr></table></figure>
+<p>被<code>record</code>修饰的类是隐式的<code>final</code>类。 这意味着您无法重新分配它们。 请注意，但这并不意味着整个记录都是不变的。 存储在字段中的对象本身可以是可变的。</p>
+<p>如果您对有关<code>record</code>的更详细的文章感兴趣，请查看<a href="https://blogs.oracle.com/javamagazine/records-come-to-java">Java杂志上Ben Evans的最新文章</a>。</p>
+<p>敬请关注。 从教育的角度来看，<code>record</code>还为下一代Java开发人员提出了有趣的问题。 例如，如果您指导初级开发人员，那么什么时候应该在课程中引入<code>record</code>：在引入OOP和类之前或之后？</p>
+<h1 id="增强的-NullPointerExceptions-Beta"><a href="#增强的-NullPointerExceptions-Beta" class="headerlink" title="增强的 NullPointerExceptions (Beta)"></a>增强的 NullPointerExceptions (Beta)</h1><p>有人说抛出<code>NullPointerExceptions</code>应该是Java中新的<code>“Hello world”</code>，因为您无法逃避它们。 撇开笑话，它们会引起挫败感，因为当代码在生产环境中运行时，它们经常出现在应用程序日志中，这可能使调试变得困难，因为原码不容易获得。 例如，考虑以下代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> name = user.getLocation().getCity().getName();<br></code></pre></td></tr></table></figure>
+<p>在Java 14之前，您可能会收到以下错误：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Exception in thread &quot;main&quot; java.lang.NullPointerException<br>    at NullPointerExample.main(NullPointerExample.java:5)<br></code></pre></td></tr></table></figure>
+<p>不幸的是，如果在第5行，有一个具有多个方法调用的赋值——<code>getLocation()</code>和<code>getCity()</code>——两者都可能返回<code>null</code>。 实际上，变量<code>user</code>也可以为<code>null</code>。 因此，尚不清楚是什么导致了<strong>NullPointerException</strong>。</p>
+<p>现在，使用Java 14，有一个新的JVM功能，通过它您可以接收更多信息的诊断：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Exception in thread &quot;main&quot; java.lang.NullPointerException: Cannot invoke &quot;Location.getCity()&quot; because the return value of &quot;User.getLocation()&quot; is null<br></code></pre></td></tr></table></figure>
+<p>该消息现在具有两个明确的组成部分：</p>
+<ul>
+<li><strong>结果</strong>：无法调用<code>Location.getCity()</code>。</li>
+<li><strong>原因</strong>：<code>User.getLocation()</code>的返回值为<code>null</code>。</li>
+</ul>
+<p>仅当您使用以下标志运行Java时，增强型诊断才有效：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">-XX:+ShowCodeDetailsInExceptionMessages<br></code></pre></td></tr></table></figure>
+<p>这是一个例子：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">java -XX:+ShowCodeDetailsInExceptionMessages NullPointerExample<br></code></pre></td></tr></table></figure>
+<p>在Java的未来版本中，此功能可能默认启用，如<a href="https://bugs.openjdk.java.net/browse/JDK-8233014">此处报告</a>。</p>
+<p>此增强功能不仅可用于方法调用，还可用于可以导致<code>NullPointerException</code>异常的其他地方，包括字段访问，数组访问和赋值。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在Java 14中，有新的Beta功能和更新可帮助开发人员进行日常工作。 例如，Java 14引入了<code>instanceof</code>模式匹配，这是减少显式强制转换的一种方式。 而且，Java 14引入了<code>record</code>，这是一种新的结构，用于简洁地声明仅用于聚合数据的类。 此外，<code>NullPointerException</code>消息已得到改进，具有更好的诊断功能，并且<code>switch</code>表达式现在已成为Java 14的一部分。<code>Text Block</code>是一种可帮助您处理多行字符串值的功能，在引入了两个新的转义序列后，将进行另一轮预览。 Java操作的一部分技术人员可能会感兴趣的另一项更改是<a href="https://openjdk.java.net/jeps/349">JDK Flight Recorder中的事件流</a>。 Ben Evans在<a href="https://blogs.oracle.com/javamagazine/java-flight-recorder-and-jfr-event-streaming-in-java-14">他的文章中</a>中讨论了该功能。</p>
+<p>如您所见，Java 14带来了很多创新。 您绝对应该考虑一下，并将有关Beta功能的反馈发送给Java团队。</p>
 <blockquote>
-<p>参考： <a href="https://gulpjs.com/docs/en/getting-started/quick-start">Gulp Quick Start</a></p>
+<p>原文：<a href="https://blogs.oracle.com/javamagazine/java-14-arrives-with-a-host-of-new-features">Java 14 Arrives with a Host of New Features</a></p>
 </blockquote>
 ]]></content>
       <categories>
         <category>开发</category>
-        <category>Gulp</category>
+        <category>Java</category>
       </categories>
       <tags>
-        <tag>Gulp</tag>
         <tag>Java</tag>
+        <tag>总结</tag>
       </tags>
   </entry>
   <entry>
@@ -199,6 +336,183 @@
       <tags>
         <tag>Java</tag>
         <tag>JSP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gitignore文件不起作用</title>
+    <url>/p/TSMFKX.html</url>
+    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
+<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git设置代理</title>
+    <url>/p/35NJX8Y.html</url>
+    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
+<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
+<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
+<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
+<p>显示如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
+<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>加速</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Gulp加速Hexo</title>
+    <url>/p/8VNSFG.html</url>
+    <content><![CDATA[<p>使用Gulp工具来压缩Hexo生成的public文件，可以通过压缩css、js、html文件来提升网站的访问速度，不过查了网上的一些方法，按照做发现了许多坑。比如gulp和babel版本问题、gulpfile.js文件编写问题。通过一下午的尝试，总结出了一套可行的安装方法。</p>
+<h1 id="安装Gulp到Hexo博客"><a href="#安装Gulp到Hexo博客" class="headerlink" title="安装Gulp到Hexo博客"></a>安装Gulp到Hexo博客</h1><p>参见文章：<a href="https://zmlu.github.io/p/14JCGNP.html">安装Gulp</a></p>
+<p>进入hexo博客的根目录（public文件夹所在的目录），安装一些必要的组件。</p>
+<a id="more"></a>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp gulp-babel gulp-clean-css gulp-htmlclean gulp-htmlmin gulp-uglify @babel/core @babel/preset-env @babel/register<br></code></pre></td></tr></table></figure>
+<h1 id="新建-babelrc"><a href="#新建-babelrc" class="headerlink" title="新建.babelrc"></a>新建.babelrc</h1><p>依然在hexo博客根目录下新建.babelrc文件</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;presets&quot;</span>: [ <span class="hljs-string">&quot;@babel/preset-env&quot;</span> ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h1><p>在hexo博客根目录下新建gulpfile.js文件，内容如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);<br><span class="hljs-keyword">var</span> babel = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-babel&#x27;</span>);<br><span class="hljs-keyword">var</span> uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>);<br><span class="hljs-keyword">var</span> cleanCSS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-clean-css&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlmin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlmin&#x27;</span>);<br><span class="hljs-keyword">var</span> htmlclean = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-htmlclean&#x27;</span>);<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * css</span><br><span class="hljs-comment"> */</span><br>gulp.task(<span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.css&#x27;</span>)<br>			.pipe(cleanCSS())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-js&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src([<span class="hljs-string">&#x27;./public/**/*.js&#x27;</span>, <span class="hljs-string">&#x27;!./public/**/*.min.js&#x27;</span>])<br>			.pipe(babel())<br>			.pipe(uglify())<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>	<span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">&#x27;./public/**/*.html&#x27;</span>)<br>			.pipe(htmlclean())<br>			.pipe(htmlmin(&#123;<br>				removeComments: <span class="hljs-literal">true</span>,<br>				minifyJS: <span class="hljs-literal">true</span>,<br>				minifyCSS: <span class="hljs-literal">true</span>,<br>				minifyURLs: <span class="hljs-literal">true</span>,<br>			&#125;))<br>			.pipe(gulp.dest(<span class="hljs-string">&#x27;./public&#x27;</span>));<br>&#125;);<br><br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,gulp.parallel(<span class="hljs-string">&#x27;minify-html&#x27;</span>, <span class="hljs-string">&#x27;minify-css&#x27;</span>, <span class="hljs-string">&#x27;minify-js&#x27;</span>));<br></code></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>执行完<code>hexo g</code>产生编译文件后，再手动执行执行<code>gulp</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[15:03:44] Using gulpfile E:\dev\hexoBlog\gulpfile.js<br>[15:03:44] Starting &#x27;default&#x27;...<br>[15:03:44] Starting &#x27;minify-html&#x27;...<br>[15:03:44] Starting &#x27;minify-css&#x27;...<br>[15:03:44] Starting &#x27;minify-js&#x27;...<br>[15:03:47] Finished &#x27;minify-css&#x27; after 3.52 s<br>[15:03:48] Finished &#x27;minify-html&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;minify-js&#x27; after 4.62 s<br>[15:03:48] Finished &#x27;default&#x27; after 4.63 s<br></code></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Gulp</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>总结</tag>
+        <tag>Gulp</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装Gulp</title>
+    <url>/p/14JCGNP.html</url>
+    <content><![CDATA[<p>记录一下安装Gulp的过程，参考官方文档，参考地址见文章末尾。</p>
+<p>如果你先前将gulp安装到全局环境中了，请执行<code>npm rm --global gulp</code>将<code>gulp</code>删除再继续以下操作。更多信息请参考<a href="https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467">Sip</a>。</p>
+<a id="more"></a>
+
+<h1 id="检查-node、npm-和-npx-是否正确安装"><a href="#检查-node、npm-和-npx-是否正确安装" class="headerlink" title="检查 node、npm 和 npx 是否正确安装"></a>检查 node、npm 和 npx 是否正确安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">node --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-node-version-command.png" alt="Output:v8.11.1"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-npm-version-command.png" alt="Output:5.6.0"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx --version<br></code></pre></td></tr></table></figure>
+<p><img src="https://gulpjs.com/img/docs-npx-version-command.png" alt="Output:9.7.1"></p>
+<p>如果上述工具还没安装，请参考<a href="https://nodejs.org/en/">这里</a>。</p>
+<h1 id="安装-gulp-命令行工具"><a href="#安装-gulp-命令行工具" class="headerlink" title="安装 gulp 命令行工具"></a>安装 gulp 命令行工具</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --global gulp-cli<br></code></pre></td></tr></table></figure>
+<h1 id="创建项目目录并进入"><a href="#创建项目目录并进入" class="headerlink" title="创建项目目录并进入"></a>创建项目目录并进入</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npx mkdirp my-project<br>cd my-project<br></code></pre></td></tr></table></figure>
+<h1 id="在项目目录下创建-package-json-文件"><a href="#在项目目录下创建-package-json-文件" class="headerlink" title="在项目目录下创建 package.json 文件"></a>在项目目录下创建 package.json 文件</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm init<br></code></pre></td></tr></table></figure>
+<p>上述命令将指引你设置项目名、版本、描述信息等。</p>
+<h1 id="安装-gulp，作为开发时依赖项"><a href="#安装-gulp，作为开发时依赖项" class="headerlink" title="安装 gulp，作为开发时依赖项"></a>安装 gulp，作为开发时依赖项</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm install --save-dev gulp<br></code></pre></td></tr></table></figure>
+<h1 id="检查-gulp-版本"><a href="#检查-gulp-版本" class="headerlink" title="检查 gulp 版本"></a>检查 gulp 版本</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp --version<br></code></pre></td></tr></table></figure>
+<p>确保输出与下面的屏幕截图匹配，否则你可能需要执行本指南中的上述步骤。</p>
+<p><img src="https://gulpjs.com/img/docs-gulp-version-command.png" alt="Output: CLI version 2.0.1 &amp; Local version 4.0.0"></p>
+<h1 id="创建-gulpfile-文件"><a href="#创建-gulpfile-文件" class="headerlink" title="创建 gulpfile 文件"></a>创建 gulpfile 文件</h1><p>利用任何文本编辑器在项目大的根目录下创建一个名为 gulpfile.js 的文件，并在文件中输入以下内容：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultTask</span>(<span class="hljs-params">cb</span>) </span>&#123;<br>  <span class="hljs-comment">// place code for your default task here</span><br>  cb();<br>&#125;<br><br><span class="hljs-built_in">exports</span>.default = defaultTask<br></code></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在项目根目录下执行 gulp 命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gulp<br></code></pre></td></tr></table></figure>
+<p>如需运行多个任务（task），可以执行<code>gulp &lt;task&gt; &lt;othertask&gt;</code>。</p>
+<h1 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h1><p>默认任务（task）将执行，因为任务为空，因此没有实际动作。</p>
+<p><img src="https://gulpjs.com/img/docs-gulp-command.png" alt="Output:Starting default &amp; Finished default"></p>
+<blockquote>
+<p>参考： <a href="https://gulpjs.com/docs/en/getting-started/quick-start">Gulp Quick Start</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Gulp</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Gulp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
+    <url>/p/2JJ2AE2.html</url>
+    <content><![CDATA[<p>服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。</p>
+<p>Google推出了一种图片格式: WebP (<a href="https://developers.google.com/speed/webp/">Google官方网址</a>)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%</p>
+<a id="more"></a>
+
+<p><a href="https://caniuse.com/#feat=webp">查看支持率</a></p>
+<p><img src="https://file.moetu.org/images/2020/01/06/webp805caf2e553e4f3ad1.jpg" alt="WebP支持率"></p>
+<p>原图加载截图：（12.61s）</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/Chrome--d61d7c79a27fca39.jpg" alt="Chrome 原图 加载"></p>
+<p>WebP加载截图：（4.72s）</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/Chrome-Webp-7a40425fcab83529.jpg" alt="Chrome Webp 加载"></p>
+<p>可以看出加载Webp会大大提高加载速度</p>
+<h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
+<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>libwebp是图片转成webp的工具</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">yum install libwebp-tools<br></code></pre></td></tr></table></figure>
+<p>测试:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cwebp -q 100 1.jpg -o 1.webp<br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/libwebpd4b8956ec9f0cc80.jpg" alt="测试libwebp安装"></p>
+<p>如果出现以上信息，说明安装成功。</p>
+<h2 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><p>配置：</p>
+<p>让<code>.png.webp</code>、<code>.jpg.webp</code>、<code>.gif.webp</code>的请求执行转WebP的lua文件。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>    expires               365d;<br>    autoindex             on;<br>    autoindex_exact_size  on;<br>    try_files             $uri $uri/ @webp;<br>&#125;<br>    <br>location @webp &#123;    <br>    if ($uri ~ \.(png|jpg|gif)\.webp) &#123;<br>        content_by_lua_file  lua/imgProcess.lua;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/nginxwebplua03e80bf8dc3f9b85.jpg" alt="Nginx-Lua配置WebP转换"></p>
+<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span> <span class="hljs-comment">--判断文件是否存在的方法</span><br>    <span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-keyword">local</span> newFile = ngx.var.request_filename;<br> <span class="hljs-keyword">local</span> originalFile = newFile:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>, #newFile - <span class="hljs-number">5</span>); <span class="hljs-comment">--请求的webp图片去掉.webp后缀</span><br><br> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>   ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>   <span class="hljs-keyword">return</span>;<br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile);  <span class="hljs-comment">--用libwebp转换图片</span><br><br> <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>     ngx.exec(ngx.var.uri); <span class="hljs-comment">--重定向到转换成的webp图片</span><br> <span class="hljs-keyword">else</span><br>     ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>); <span class="hljs-comment">--转换失败：404</span><br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p><img src="https://file.moetu.org/images/2020/01/06/weblua2dc97f3492a10817.jpg" alt="WebP转换的Lua"></p>
+<h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>访问前图片，服务器上没有WebP文件。</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/3123de3b82b6d0ef1761eac2796a88fa58aa0d2c178c2991.jpg" alt="访问前图片"></p>
+<p>当服务器接收到<code>.jpg.webp</code>的请求后，自动生成WebP文件：</p>
+<p><img src="https://file.moetu.org/images/2020/01/06/webpdd22bfaefcb9faff.jpg" alt="访问后自动生成WebP"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Google</tag>
+        <tag>WebP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实现浏览器WebP图片自适应加载</title>
+    <url>/p/3MDAQPQ.html</url>
+    <content><![CDATA[<p>让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。</p>
+<h1 id="主要思路"><a href="#主要思路" class="headerlink" title="主要思路"></a>主要思路</h1><p>如何判断浏览器是否支持WebP格式的图片，除了在前端加载一个1×1像素的WebP图片来获取宽度的方法，还有个方法，那就是查看浏览器发出的请求头中的Accept字段，如果改字段中带着<code>image/webp</code>说明浏览器支持WebP，反之则就是不持支。</p>
+<a id="more"></a>
+
+<p>不支持WebP的IE的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/WebPIEAccept14c6d4ecc012785f.jpg" alt="不支持WebP的IE的请求头Accept字段"></p>
+<p>支持WebP的Firefox的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/WebPFirefoxAccept08877c383da9747a.jpg" alt="支持WebP的Firefox的请求头Accept字段"></p>
+<p>支持WebP的Chrome的请求头Accept字段：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/ChromeAcceptad5df29d04e6d935.jpg" alt="支持WebP的Chrome的请求头Accept字段"></p>
+<p>根据这个，我们可以修改Nginx的配置文件，让以**<code>.jgp</code>、<code>.jpeg</code>和<code>.png</code>结尾的请求**并且请求头Accept字段包含<code>image/webp</code>的请求进行WebP文件的判断，这个判断我们写在Lua文件中。在Lua文件中，先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
+<p>有了这个思路，我们进行尝试。</p>
+<h1 id="修改准备"><a href="#修改准备" class="headerlink" title="修改准备"></a>修改准备</h1><h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
+<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>参考：<a href="https://zmlu.me/p/2jj2ae2.html">Nginx+Lua+libwebp实现服务器图片自动转WebP</a></p>
+<h2 id="Nginx-conf"><a href="#Nginx-conf" class="headerlink" title="Nginx.conf"></a>Nginx.conf</h2><p>因为if不能同时判断多个条件，所以我们定义一个变量，用if修改变量值，最后根据该变量的值来判断是否满足所有的条件。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>        set                   $cwebp_flag 0;<br>    <br>        if ($uri ~ \.(png|jpg|jpeg)$) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($http_accept ~ image/webp) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($cwebp_flag = 011) &#123;<br>            content_by_lua_file  lua/imgProcess.lua;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><p>这个文件主要工作是：先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span><br>	<span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br> <br><span class="hljs-keyword">local</span> originalFile = ngx.var.request_filename;<br><span class="hljs-keyword">local</span> newFile = ngx.var.request_filename .. <span class="hljs-string">&quot;.webp&quot;</span>;<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><br>  <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile); <br><br>  <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>    ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>    ngx.header.x_webp = <span class="hljs-string">&#x27;generate&#x27;</span>;<br>    ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>    ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>    <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br>  <span class="hljs-keyword">else</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">500</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">else</span><br>  ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>  ngx.header.x_webp = <span class="hljs-string">&#x27;read&#x27;</span>;<br>  ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>  ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>  <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br><span class="hljs-keyword">end</span><br><br> <br><br></code></pre></td></tr></table></figure>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>用不支持WebP的IE和支持WebP的Chrome打开同一张图片的地址，我们发现服务器给他们返回的响应内容是不一样的。</p>
+<p>支持WebP的Chrome的相应内容是WebP格式的图片：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/Chrome546a1f0b913288f7.jpg" alt="Chrome的响应内容"></p>
+<p>而不支持WebP的IE的相应内容就是普通的jpg图片：</p>
+<p><img src="https://file.moetu.org/images/2020/01/08/IEa287039efc97d622.jpg" alt="IE的响应内容"></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>WebP</tag>
       </tags>
   </entry>
   <entry>
@@ -262,115 +576,6 @@
       </tags>
   </entry>
   <entry>
-    <title>gitignore文件不起作用</title>
-    <url>/p/TSMFKX.html</url>
-    <content><![CDATA[<p>.gitignore中已经标明忽略的文件目录下的文件，git push的时候还会出现在push的目录中，原因是因为在git忽略目录中，新建的文件在git中会有缓存，如果某些文件已经被纳入了版本管理中，就算是在.gitignore中已经声明了忽略路径也是不起作用的。</p>
-<p>这时候我们就应该先把本地缓存删除，然后再进行git的push，这样就不会出现忽略的文件了。git清除本地缓存命令如下：</p>
-<a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git rm -r --cached .<br>git add .<br>git commit -m &#x27;update .gitignore&#x27;<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git设置代理</title>
-    <url>/p/35NJX8Y.html</url>
-    <content><![CDATA[<p>git下载克隆github的速度在国内很慢，我们可以通过代理的方式加速</p>
-<h1 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h1><h2 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h2><a id="more"></a>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global http.proxy socks5://127.0.0.1:1080<br>git config --global https.proxy socks5://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
-<h2 id="http"><a href="#http" class="headerlink" title="http"></a>http</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global https.proxy http://127.0.0.1:1087<br>git config --global https.proxy http://127.0.0.1:1087<br></code></pre></td></tr></table></figure>
-<h1 id="查看全局-config"><a href="#查看全局-config" class="headerlink" title="查看全局 config"></a>查看全局 config</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cat ~/.gitconfig<br></code></pre></td></tr></table></figure>
-<p>显示如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[http]<br>	postBuffer = 524288000<br>	proxy = socks5://127.0.0.1:1086<br>[https]<br>	proxy = socks5://127.0.0.1:1086<br></code></pre></td></tr></table></figure>
-<h1 id="停用代理"><a href="#停用代理" class="headerlink" title="停用代理"></a>停用代理</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">git config --global --unset http.proxy<br>git config --global --unset https.proxy<br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Git</category>
-      </categories>
-      <tags>
-        <tag>加速</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实现浏览器WebP图片自适应加载</title>
-    <url>/p/3MDAQPQ.html</url>
-    <content><![CDATA[<p>让网站根据浏览器是否支持WebP来自适应加载相应格式的图片，如果在代码中进行判断，那工作量是巨大的，因为要修改代码中每一个图片的引用方式，有没有一种简便高效的方法呢？答案还是有的，那就是修改Nginx的配置。</p>
-<h1 id="主要思路"><a href="#主要思路" class="headerlink" title="主要思路"></a>主要思路</h1><p>如何判断浏览器是否支持WebP格式的图片，除了在前端加载一个1×1像素的WebP图片来获取宽度的方法，还有个方法，那就是查看浏览器发出的请求头中的Accept字段，如果改字段中带着<code>image/webp</code>说明浏览器支持WebP，反之则就是不持支。</p>
-<a id="more"></a>
-
-<p>不支持WebP的IE的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/WebPIEAccept14c6d4ecc012785f.jpg" alt="不支持WebP的IE的请求头Accept字段"></p>
-<p>支持WebP的Firefox的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/WebPFirefoxAccept08877c383da9747a.jpg" alt="支持WebP的Firefox的请求头Accept字段"></p>
-<p>支持WebP的Chrome的请求头Accept字段：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/ChromeAcceptad5df29d04e6d935.jpg" alt="支持WebP的Chrome的请求头Accept字段"></p>
-<p>根据这个，我们可以修改Nginx的配置文件，让以**<code>.jgp</code>、<code>.jpeg</code>和<code>.png</code>结尾的请求**并且请求头Accept字段包含<code>image/webp</code>的请求进行WebP文件的判断，这个判断我们写在Lua文件中。在Lua文件中，先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
-<p>有了这个思路，我们进行尝试。</p>
-<h1 id="修改准备"><a href="#修改准备" class="headerlink" title="修改准备"></a>修改准备</h1><h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
-<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>参考：<a href="https://zmlu.me/p/2jj2ae2.html">Nginx+Lua+libwebp实现服务器图片自动转WebP</a></p>
-<h2 id="Nginx-conf"><a href="#Nginx-conf" class="headerlink" title="Nginx.conf"></a>Nginx.conf</h2><p>因为if不能同时判断多个条件，所以我们定义一个变量，用if修改变量值，最后根据该变量的值来判断是否满足所有的条件。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>        set                   $cwebp_flag 0;<br>    <br>        if ($uri ~ \.(png|jpg|jpeg)$) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($http_accept ~ image/webp) &#123;<br>            set  $cwebp_flag &#x27;$&#123;cwebp_flag&#125;1&#x27;;<br>        &#125;<br>    <br>        if ($cwebp_flag = 011) &#123;<br>            content_by_lua_file  lua/imgProcess.lua;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
-<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><p>这个文件主要工作是：先判断该文件对应的WebP文件是否存在，如果存在，则直接重定向到WebP文件，如果不存在，先调用libwebp方法生成WebP文件，再进行重定向。</p>
-<figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span><br>	<span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br> <br><span class="hljs-keyword">local</span> originalFile = ngx.var.request_filename;<br><span class="hljs-keyword">local</span> newFile = ngx.var.request_filename .. <span class="hljs-string">&quot;.webp&quot;</span>;<br><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><br>  <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile); <br><br>  <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>    ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>    ngx.header.x_webp = <span class="hljs-string">&#x27;generate&#x27;</span>;<br>    ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>    ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>    <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br>  <span class="hljs-keyword">else</span><br>    ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">500</span>);<br>    <span class="hljs-keyword">return</span>;<br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">else</span><br>  ngx.header.vary = <span class="hljs-string">&#x27;accept, accept-encoding&#x27;</span>;<br>  ngx.header.x_webp = <span class="hljs-string">&#x27;read&#x27;</span>;<br>  ngx.header.real_source_url = ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>;<br>  ngx.header.content_type = <span class="hljs-string">&quot;image/webp&quot;</span>;<br>  <span class="hljs-keyword">return</span> ngx.exec(ngx.var.uri .. <span class="hljs-string">&quot;.webp&quot;</span>);<br><span class="hljs-keyword">end</span><br><br> <br><br></code></pre></td></tr></table></figure>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>用不支持WebP的IE和支持WebP的Chrome打开同一张图片的地址，我们发现服务器给他们返回的响应内容是不一样的。</p>
-<p>支持WebP的Chrome的相应内容是WebP格式的图片：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/Chrome546a1f0b913288f7.jpg" alt="Chrome的响应内容"></p>
-<p>而不支持WebP的IE的相应内容就是普通的jpg图片：</p>
-<p><img src="https://file.moetu.org/images/2020/01/08/IEa287039efc97d622.jpg" alt="IE的响应内容"></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>WebP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx+Lua+libwebp实现服务器图片自动转WebP</title>
-    <url>/p/2JJ2AE2.html</url>
-    <content><![CDATA[<p>服务器的流量和加载速度一直是优化的重点，既能保证图片的清晰，又能节省流量、提高加载速度才是一个优秀网页需要达到的目标。</p>
-<p>Google推出了一种图片格式: WebP (<a href="https://developers.google.com/speed/webp/">Google官方网址</a>)，比同类图片压缩率更高，相同画质下，文件的体积更小40%。而且主流浏览器的支持率已经达到80%</p>
-<a id="more"></a>
-
-<p><a href="https://caniuse.com/#feat=webp">查看支持率</a></p>
-<p><img src="https://file.moetu.org/images/2020/01/06/webp805caf2e553e4f3ad1.jpg" alt="WebP支持率"></p>
-<p>原图加载截图：（12.61s）</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/Chrome--d61d7c79a27fca39.jpg" alt="Chrome 原图 加载"></p>
-<p>WebP加载截图：（4.72s）</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/Chrome-Webp-7a40425fcab83529.jpg" alt="Chrome Webp 加载"></p>
-<p>可以看出加载Webp会大大提高加载速度</p>
-<h2 id="Nginx安装Lua模块"><a href="#Nginx安装Lua模块" class="headerlink" title="Nginx安装Lua模块"></a>Nginx安装Lua模块</h2><p>略</p>
-<h2 id="服务器安装libwebp"><a href="#服务器安装libwebp" class="headerlink" title="服务器安装libwebp"></a>服务器安装libwebp</h2><p>libwebp是图片转成webp的工具</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">yum install libwebp-tools<br></code></pre></td></tr></table></figure>
-<p>测试:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cwebp -q 100 1.jpg -o 1.webp<br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/libwebpd4b8956ec9f0cc80.jpg" alt="测试libwebp安装"></p>
-<p>如果出现以上信息，说明安装成功。</p>
-<h2 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><p>配置：</p>
-<p>让<code>.png.webp</code>、<code>.jpg.webp</code>、<code>.gif.webp</code>的请求执行转WebP的lua文件。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">location /img &#123;<br>    expires               365d;<br>    autoindex             on;<br>    autoindex_exact_size  on;<br>    try_files             $uri $uri/ @webp;<br>&#125;<br>    <br>location @webp &#123;    <br>    if ($uri ~ \.(png|jpg|gif)\.webp) &#123;<br>        content_by_lua_file  lua/imgProcess.lua;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/nginxwebplua03e80bf8dc3f9b85.jpg" alt="Nginx-Lua配置WebP转换"></p>
-<h2 id="imgProcess-lua"><a href="#imgProcess-lua" class="headerlink" title="imgProcess.lua"></a>imgProcess.lua</h2><figure class="highlight lua"><table><tr><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">file_exists</span><span class="hljs-params">(name)</span></span> <span class="hljs-comment">--判断文件是否存在的方法</span><br>    <span class="hljs-keyword">local</span> f=<span class="hljs-built_in">io</span>.<span class="hljs-built_in">open</span>(name,<span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> f~=<span class="hljs-literal">nil</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">close</span>(f) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">end</span><br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-keyword">local</span> newFile = ngx.var.request_filename;<br> <span class="hljs-keyword">local</span> originalFile = newFile:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>, #newFile - <span class="hljs-number">5</span>); <span class="hljs-comment">--请求的webp图片去掉.webp后缀</span><br><br> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> file_exists(originalFile) <span class="hljs-keyword">then</span><br>   ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>);<br>   <span class="hljs-keyword">return</span>;<br> <span class="hljs-keyword">end</span><br> <br> <span class="hljs-built_in">os</span>.<span class="hljs-built_in">execute</span>(<span class="hljs-string">&quot;cwebp -q 75 &quot;</span> .. originalFile  .. <span class="hljs-string">&quot; -o &quot;</span> .. newFile);  <span class="hljs-comment">--用libwebp转换图片</span><br><br> <span class="hljs-keyword">if</span> file_exists(newFile) <span class="hljs-keyword">then</span><br>     ngx.exec(ngx.var.uri); <span class="hljs-comment">--重定向到转换成的webp图片</span><br> <span class="hljs-keyword">else</span><br>     ngx.<span class="hljs-built_in">exit</span>(<span class="hljs-number">404</span>); <span class="hljs-comment">--转换失败：404</span><br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
-<p><img src="https://file.moetu.org/images/2020/01/06/weblua2dc97f3492a10817.jpg" alt="WebP转换的Lua"></p>
-<h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>访问前图片，服务器上没有WebP文件。</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/3123de3b82b6d0ef1761eac2796a88fa58aa0d2c178c2991.jpg" alt="访问前图片"></p>
-<p>当服务器接收到<code>.jpg.webp</code>的请求后，自动生成WebP文件：</p>
-<p><img src="https://file.moetu.org/images/2020/01/06/webpdd22bfaefcb9faff.jpg" alt="访问后自动生成WebP"></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>WebP</tag>
-        <tag>Google</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python在全局代理下安装包报错</title>
     <url>/p/1E56RCW.html</url>
     <content><![CDATA[<p>之前配置小飞机的时候，在我的mac上把终端设置了<code>ALL_PROXY</code>属性，让全局代理。<br>不过在使用Python安装模块的时候报错了。</p>
@@ -392,37 +597,26 @@
       </tags>
   </entry>
   <entry>
-    <title>ES镜像制作并启动</title>
-    <url>/p/10C2G1E.html</url>
-    <content><![CDATA[<h1 id="拉取镜像及相关配置"><a href="#拉取镜像及相关配置" class="headerlink" title="拉取镜像及相关配置"></a>拉取镜像及相关配置</h1><h2 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker pull elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker run --name=test_es -d -p 9200:9200 -p 9300:9300 docker.io/elasticsearch:6.8.3<br></code></pre></td></tr></table></figure>
+    <title>使用Scrapy抓取百度热点新闻</title>
+    <url>/p/QHV65K.html</url>
+    <content><![CDATA[<h2 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install Scrapy<br></code></pre></td></tr></table></figure>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy startproject tutorial<br></code></pre></td></tr></table></figure>
 <a id="more"></a>
 
-<h2 id="查看容器启动情况"><a href="#查看容器启动情况" class="headerlink" title="查看容器启动情况"></a>查看容器启动情况</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker ps<br></code></pre></td></tr></table></figure>
-<h2 id="如果启动成功则访问"><a href="#如果启动成功则访问" class="headerlink" title="如果启动成功则访问"></a>如果启动成功则访问</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">你的ip:9200，可以访问则可以直接启动成功，不成功则进行如下操作<br></code></pre></td></tr></table></figure>
-<h1 id="服务器中配置（主机配置）"><a href="#服务器中配置（主机配置）" class="headerlink" title="服务器中配置（主机配置）"></a>服务器中配置（主机配置）</h1><h2 id="查看启动报错日志（情况1）"><a href="#查看启动报错日志（情况1）" class="headerlink" title="查看启动报错日志（情况1）"></a>查看启动报错日志（情况1）</h2><h3 id="如果报如下错误"><a href="#如果报如下错误" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[2019-10-27T14:38:59,356][INFO ][o.e.n.Node               ] [kniXCrn] starting ...<br>[2019-10-27T14:38:59,712][INFO ][o.e.t.TransportService   ] [kniXCrn] publish_address &#123;172.17.0.6:9300&#125;, bound_addresses &#123;[::]:9300&#125;<br>[2019-10-27T14:38:59,754][INFO ][o.e.b.BootstrapChecks    ] [kniXCrn] bound or publishing to a non-loopback address, enforcing bootstrap checks<br>ERROR: [1] bootstrap checks failed<br>[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]<br>[2019-10-27T14:38:59,827][INFO ][o.e.n.Node               ] [kniXCrn] stopping ...<br>[2019-10-27T14:38:59,855][INFO ][o.e.n.Node <br></code></pre></td></tr></table></figure>
-<p>出现此错误：ERROR: [1] bootstrap checks failed<br>则修改 /etc/sysctl.conf 配置，修改如下：</p>
-<h3 id="打开配置文件-sysctl-conf"><a href="#打开配置文件-sysctl-conf" class="headerlink" title="打开配置文件 sysctl.conf"></a>打开配置文件 sysctl.conf</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /etc/sysctl.conf <br></code></pre></td></tr></table></figure>
-<p>在配置文件最下面，添加如下配置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vm.max_map_count=655360<br></code></pre></td></tr></table></figure>
-<p>修改完成后，执行此命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sysctl -p<br></code></pre></td></tr></table></figure>
-<p>然后，重新启动elasticsearch，即可启动成功；</p>
-<h2 id="查看启动报错日志（情况2）"><a href="#查看启动报错日志（情况2）" class="headerlink" title="查看启动报错日志（情况2）"></a>查看启动报错日志（情况2）</h2><h3 id="如果报如下错误-1"><a href="#如果报如下错误-1" class="headerlink" title="如果报如下错误"></a>如果报如下错误</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Java HotSpot(TM) 64-Bit Server VM warning: INFO:<br>os::commit_memory(0x0000000085330000, 2060255232, 0) failed;<br>error=’Cannot allocate memory’ (errno=12)<br></code></pre></td></tr></table></figure>
-<p>这是由于elasticsearch:tag 默认分配 jvm 空间太大，内存不足以分配导致。<br>解决方法就是修改jvm空间分配。</p>
-<h3 id="查找-jvm-options-文件"><a href="#查找-jvm-options-文件" class="headerlink" title="查找 jvm.options 文件"></a>查找 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">find /var/lib/ -name jvm.options<br></code></pre></td></tr></table></figure>
-<h3 id="修改查找到的-jvm-options-文件"><a href="#修改查找到的-jvm-options-文件" class="headerlink" title="修改查找到的 jvm.options 文件"></a>修改查找到的 jvm.options 文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">vim /var/lib/docker/overlay2/1ff5019ead459b4d090b4a72e95e3cc17dc7a8432ce0051e470a3c99ac35c4a6/diff/usr/share/elasticsearch/config/jvm.options<br></code></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Xms represents the initial size of total heap space</span><br><span class="hljs-meta">#</span><span class="bash"> Xmx represents the maximum size of total heap space</span><br><br>-Xms512m<br>-Xmx512m<br><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># Expert settings</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment">###############################################################</span></span><br></code></pre></td></tr></table></figure>
-<p>均改为 512m</p>
-<p>保存退出，再次运行创建运行elasticsearch命令，成功启动。</p>
-<h3 id="在浏览其中访问"><a href="#在浏览其中访问" class="headerlink" title="在浏览其中访问"></a>在浏览其中访问</h3><p>如果访问不了，在服务器中访问，测试一下是否启动起来了</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">curl localhost:9200<br></code></pre></td></tr></table></figure>]]></content>
+<h2 id="编写Item"><a href="#编写Item" class="headerlink" title="编写Item"></a>编写Item</h2><p>修改<code>items.py</code>文件：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaiduNewsItem</span>(<span class="hljs-params">scrapy.Item</span>):</span><br>    <span class="hljs-comment"># define the fields for your item here like:</span><br>    <span class="hljs-comment"># name = scrapy.Field()</span><br>    title = scrapy.Field()<br>    link = scrapy.Field()<br>    time = scrapy.Field()<br>    category = scrapy.Field()<br></code></pre></td></tr></table></figure>
+<h2 id="编写爬虫-Spider"><a href="#编写爬虫-Spider" class="headerlink" title="编写爬虫(Spider)"></a>编写爬虫(Spider)</h2><p>在<code>spiders</code>文件夹下新建一个py文件，命名为<code>baidunews.py</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy,re<br><br><span class="hljs-keyword">from</span> tutorial.items <span class="hljs-keyword">import</span> BaiduNewsItem<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DmozSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span><br>    name = <span class="hljs-string">&quot;baidunews&quot;</span><br>    allowed_domains = [<span class="hljs-string">&quot;baidu.com&quot;</span>]<br>    start_urls = [<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guoji&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guonei&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=mil&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=ent&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=sports&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=tech&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=lady&quot;</span>,<br>    ]<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span><br>        category = &#123;<span class="hljs-string">&#x27;guoji&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u9645&#x27;</span>,<span class="hljs-string">&#x27;guonei&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u5185&#x27;</span>,<span class="hljs-string">&#x27;mil&#x27;</span>:<span class="hljs-string">u&#x27;\u519b\u4e8b&#x27;</span>,<span class="hljs-string">&#x27;ent&#x27;</span>:<span class="hljs-string">u&#x27;\u5a31\u4e50&#x27;</span>,<span class="hljs-string">&#x27;sports&#x27;</span>:<span class="hljs-string">u&#x27;\u4f53\u80b2&#x27;</span>,<span class="hljs-string">&#x27;tech&#x27;</span>:<span class="hljs-string">u&#x27;\u79d1\u6280&#x27;</span>,<span class="hljs-string">&#x27;lady&#x27;</span>:<span class="hljs-string">u&#x27;\u5973\u4eba&#x27;</span>&#125;<br>        <span class="hljs-keyword">for</span> sel <span class="hljs-keyword">in</span> response.xpath(<span class="hljs-string">&#x27;//div[@id=&quot;latest-news&quot;]/ul/li&#x27;</span>):<br>            item = BaiduNewsItem()<br>            item[<span class="hljs-string">&#x27;title&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;link&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/@href&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;time&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;span/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;category&#x27;</span>] = category[<span class="hljs-string">&quot;&quot;</span>.join(re.findall(<span class="hljs-string">&#x27;(^|&amp;)channel=([^&amp;]*)(&amp;|$)&#x27;</span>,response.url)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>])]<br>            <span class="hljs-keyword">yield</span> item<br></code></pre></td></tr></table></figure>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy crawl baidunews<br></code></pre></td></tr></table></figure>
+<h2 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h2><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">[<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦新增新冠肺炎确诊病例1748例，累计563..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667639131171773453&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;13:30&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;面临破产危机！法国警告雷诺：若不“返回”法国将不提..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667635925032421657&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;12:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;印度战机迫降到巴基斯坦，飞行员一句话瞬间就逗笑了在..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667630787025851625&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;11:18&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;法国地方政府用菠萝丈量社交距离，被批“太幼稚”&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667624101851668641&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;09:32&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;大疆：正与巴基斯坦洽谈无人机治蝗 初中毕业生5天就..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667620721060133107&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;08:38&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;离太近！德国警察“把错门”，错把卢森堡当成法国&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667617809556396961&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;07:51&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;温格：慎重面对外资进入法甲，不能毁了法国的足球文化&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667573388455325969&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:55&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;五角大楼终于松口，巴铁F-16将迎重大利好，该印度..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667581813539045925&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:20&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;致敬！巴基斯坦坠机事故未造成地面人员死亡原因曝光&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667575501812426929&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦官方：坠机事故97人遇难 2人幸存&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667574758558193863&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:29&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦坠机事件2人生还！幸存者：被火海包围 人们..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667565408074998538&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:59&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;里昂主席：西班牙患者更多却能复赛，我们法国真是太蠢..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667563640465920816&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:31&quot;</span>&#125;,<br>]<br></code></pre></td></tr></table></figure>
+<h2 id="附：中文乱码"><a href="#附：中文乱码" class="headerlink" title="附：中文乱码"></a>附：中文乱码</h2><p>如果结果中文乱码，则需要在<code>settings.py</code>中添加如下配置：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">FEED_EXPORT_ENCODING = <span class="hljs-string">&#x27;utf-8&#x27;</span><br></code></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>开发</category>
-        <category>Elasticsearch</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -460,26 +654,22 @@
       </tags>
   </entry>
   <entry>
-    <title>使用Scrapy抓取百度热点新闻</title>
-    <url>/p/QHV65K.html</url>
-    <content><![CDATA[<h2 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">pip install Scrapy<br></code></pre></td></tr></table></figure>
-<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy startproject tutorial<br></code></pre></td></tr></table></figure>
+    <title>Composer多线程安装、更新包方法</title>
+    <url>/p/3PKQ4GE.html</url>
+    <content><![CDATA[<p>Composer通过更换国内镜像源之后，发现安装和更新都很快了，但是由于是单线程下载，有时候还是慢的出奇，能不能在安装更新的时候使用多线程来下载依赖呢？</p>
+<p>有一款Composer包可以实现此功能————<code>prestissimo</code>。</p>
+<p>Github地址：<a href="https://github.com/hirak/prestissimo">hirak/prestissimo</a></p>
 <a id="more"></a>
 
-<h2 id="编写Item"><a href="#编写Item" class="headerlink" title="编写Item"></a>编写Item</h2><p>修改<code>items.py</code>文件：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaiduNewsItem</span>(<span class="hljs-params">scrapy.Item</span>):</span><br>    <span class="hljs-comment"># define the fields for your item here like:</span><br>    <span class="hljs-comment"># name = scrapy.Field()</span><br>    title = scrapy.Field()<br>    link = scrapy.Field()<br>    time = scrapy.Field()<br>    category = scrapy.Field()<br></code></pre></td></tr></table></figure>
-<h2 id="编写爬虫-Spider"><a href="#编写爬虫-Spider" class="headerlink" title="编写爬虫(Spider)"></a>编写爬虫(Spider)</h2><p>在<code>spiders</code>文件夹下新建一个py文件，命名为<code>baidunews.py</code></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy,re<br><br><span class="hljs-keyword">from</span> tutorial.items <span class="hljs-keyword">import</span> BaiduNewsItem<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DmozSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span><br>    name = <span class="hljs-string">&quot;baidunews&quot;</span><br>    allowed_domains = [<span class="hljs-string">&quot;baidu.com&quot;</span>]<br>    start_urls = [<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guoji&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=guonei&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=mil&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=ent&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=sports&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=tech&quot;</span>,<br>        <span class="hljs-string">&quot;http://news.baidu.com/widget?id=LatestNews&amp;channel=lady&quot;</span>,<br>    ]<br><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span><br>        category = &#123;<span class="hljs-string">&#x27;guoji&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u9645&#x27;</span>,<span class="hljs-string">&#x27;guonei&#x27;</span>:<span class="hljs-string">u&#x27;\u56fd\u5185&#x27;</span>,<span class="hljs-string">&#x27;mil&#x27;</span>:<span class="hljs-string">u&#x27;\u519b\u4e8b&#x27;</span>,<span class="hljs-string">&#x27;ent&#x27;</span>:<span class="hljs-string">u&#x27;\u5a31\u4e50&#x27;</span>,<span class="hljs-string">&#x27;sports&#x27;</span>:<span class="hljs-string">u&#x27;\u4f53\u80b2&#x27;</span>,<span class="hljs-string">&#x27;tech&#x27;</span>:<span class="hljs-string">u&#x27;\u79d1\u6280&#x27;</span>,<span class="hljs-string">&#x27;lady&#x27;</span>:<span class="hljs-string">u&#x27;\u5973\u4eba&#x27;</span>&#125;<br>        <span class="hljs-keyword">for</span> sel <span class="hljs-keyword">in</span> response.xpath(<span class="hljs-string">&#x27;//div[@id=&quot;latest-news&quot;]/ul/li&#x27;</span>):<br>            item = BaiduNewsItem()<br>            item[<span class="hljs-string">&#x27;title&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;link&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;a/@href&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;time&#x27;</span>] = sel.xpath(<span class="hljs-string">&#x27;span/text()&#x27;</span>)[<span class="hljs-number">0</span>].get()<br>            item[<span class="hljs-string">&#x27;category&#x27;</span>] = category[<span class="hljs-string">&quot;&quot;</span>.join(re.findall(<span class="hljs-string">&#x27;(^|&amp;)channel=([^&amp;]*)(&amp;|$)&#x27;</span>,response.url)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>])]<br>            <span class="hljs-keyword">yield</span> item<br></code></pre></td></tr></table></figure>
-<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scrapy crawl baidunews<br></code></pre></td></tr></table></figure>
-<h2 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h2><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json">[<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦新增新冠肺炎确诊病例1748例，累计563..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667639131171773453&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;13:30&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;面临破产危机！法国警告雷诺：若不“返回”法国将不提..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667635925032421657&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;12:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;印度战机迫降到巴基斯坦，飞行员一句话瞬间就逗笑了在..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667630787025851625&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;11:18&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;法国地方政府用菠萝丈量社交距离，被批“太幼稚”&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667624101851668641&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;09:32&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;大疆：正与巴基斯坦洽谈无人机治蝗 初中毕业生5天就..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667620721060133107&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;08:38&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;离太近！德国警察“把错门”，错把卢森堡当成法国&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667617809556396961&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;07:51&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;温格：慎重面对外资进入法甲，不能毁了法国的足球文化&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667573388455325969&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:55&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;五角大楼终于松口，巴铁F-16将迎重大利好，该印度..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667581813539045925&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;22:20&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;致敬！巴基斯坦坠机事故未造成地面人员死亡原因曝光&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667575501812426929&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:39&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦官方：坠机事故97人遇难 2人幸存&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667574758558193863&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;20:29&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;巴基斯坦坠机事件2人生还！幸存者：被火海包围 人们..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667565408074998538&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:59&quot;</span>&#125;,<br>&#123;<span class="hljs-attr">&quot;category&quot;</span>: <span class="hljs-string">&quot;国际&quot;</span>, <span class="hljs-attr">&quot;title&quot;</span>: <span class="hljs-string">&quot;里昂主席：西班牙患者更多却能复赛，我们法国真是太蠢..&quot;</span>, <span class="hljs-attr">&quot;link&quot;</span>: <span class="hljs-string">&quot;http://baijiahao.baidu.com/s?id=1667563640465920816&quot;</span>, <span class="hljs-attr">&quot;time&quot;</span>: <span class="hljs-string">&quot;17:31&quot;</span>&#125;,<br>]<br></code></pre></td></tr></table></figure>
-<h2 id="附：中文乱码"><a href="#附：中文乱码" class="headerlink" title="附：中文乱码"></a>附：中文乱码</h2><p>如果结果中文乱码，则需要在<code>settings.py</code>中添加如下配置：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">FEED_EXPORT_ENCODING = <span class="hljs-string">&#x27;utf-8&#x27;</span><br></code></pre></td></tr></table></figure>]]></content>
+<h1 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer global require hirak/prestissimo<br></code></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p><code>composer install/update</code> 任何需要大量安装依赖的情景，都会自动生效。</p>
+]]></content>
       <categories>
         <category>开发</category>
-        <category>Python</category>
+        <category>PHP</category>
       </categories>
       <tags>
-        <tag>Python</tag>
+        <tag>Composer</tag>
       </tags>
   </entry>
   <entry>
@@ -508,25 +698,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Composer多线程安装、更新包方法</title>
-    <url>/p/3PKQ4GE.html</url>
-    <content><![CDATA[<p>Composer通过更换国内镜像源之后，发现安装和更新都很快了，但是由于是单线程下载，有时候还是慢的出奇，能不能在安装更新的时候使用多线程来下载依赖呢？</p>
-<p>有一款Composer包可以实现此功能————<code>prestissimo</code>。</p>
-<p>Github地址：<a href="https://github.com/hirak/prestissimo">hirak/prestissimo</a></p>
-<a id="more"></a>
-
-<h1 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">composer global require hirak/prestissimo<br></code></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p><code>composer install/update</code> 任何需要大量安装依赖的情景，都会自动生效。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>PHP</category>
-      </categories>
-      <tags>
-        <tag>Composer</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Orcale日常记录</title>
     <url>/p/3PN2K8A.html</url>
     <content><![CDATA[<p>记录一下有关Orcale数据库的一些用法。</p>
@@ -545,6 +716,38 @@
         <tag>Mac</tag>
         <tag>Orcale</tag>
         <tag>SQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在macOS上运用Crontab运行定时任务</title>
+    <url>/p/11CFSV5.html</url>
+    <content><![CDATA[<blockquote>
+<p>在电脑上运行脚本固然好，但是如果能定时运行，那最好了。</p>
+</blockquote>
+<p>通过创建Crontab，可以在macOS上运行定时任务！让我们做一个示例。</p>
+<p>假设您要运行一个名为<code>work.sh</code>的脚本，该脚本可以为您完成一些工作——脚本实际上运行了什么不重要。 但是你每天要花费几分钟来运行这个脚本，大大浪费了时间，这完全可以交给定时任务来完成。</p>
+<a id="more"></a>
+
+<h1 id="第一步：确保脚本正常"><a href="#第一步：确保脚本正常" class="headerlink" title="第一步：确保脚本正常"></a>第一步：确保脚本正常</h1><p>首先，确保<code>work.sh</code>能正常运行，并且把它放在一个固定的地方，比如，我就放在了<code>~/.script</code>目录下。</p>
+<h1 id="第二步：配置定时任务"><a href="#第二步：配置定时任务" class="headerlink" title="第二步：配置定时任务"></a>第二步：配置定时任务</h1><p>然后，启动终端（Terminal），运行命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">crontab -e<br></code></pre></td></tr></table></figure>
+<p>会为你用<code>vim</code>打开一个文本，如果你之前没有配置过定时任务，那文本内容应该是空的，只有一个行号”1”。</p>
+<p>然后按<code>i</code>进入<code>vim</code>的编辑模式，输入cron表达式和要执行的命令。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* * * * * command<br></code></pre></td></tr></table></figure>
+<p>比如：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">0,15,30,45 * * * * cd ~/.scripts &amp;&amp; ./work.sh<br></code></pre></td></tr></table></figure>
+<h1 id="第三步：保存、测试"><a href="#第三步：保存、测试" class="headerlink" title="第三步：保存、测试"></a>第三步：保存、测试</h1><p>最后，按<code>esc</code>退出到<code>vim</code>的命令模式，输入命令<code>wq!</code>保存退出。然后等待定时任务执行，查看结果。</p>
+<h1 id="附录：Cron表达式"><a href="#附录：Cron表达式" class="headerlink" title="附录：Cron表达式"></a>附录：Cron表达式</h1><figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* * * * *<br></code></pre></td></tr></table></figure>
+<p>解释：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* - 分钟 (0-59)<br>* - 小时 (0-23)<br>* - 天 (1-31)<br>* - 月 (1-12)<br>* - 星期 (0-6, 0 是星期天)<br>(从左到右边)<br></code></pre></td></tr></table></figure>
+<p>可以通过<a href="https://crontab.guru/">Crontab.guru</a>生成Cron表达式</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+        <category>macOS</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
       </tags>
   </entry>
   <entry>
@@ -635,38 +838,6 @@
         <tag>Java</tag>
         <tag>SQL</tag>
         <tag>UUID</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在macOS上运用Crontab运行定时任务</title>
-    <url>/p/11CFSV5.html</url>
-    <content><![CDATA[<blockquote>
-<p>在电脑上运行脚本固然好，但是如果能定时运行，那最好了。</p>
-</blockquote>
-<p>通过创建Crontab，可以在macOS上运行定时任务！让我们做一个示例。</p>
-<p>假设您要运行一个名为<code>work.sh</code>的脚本，该脚本可以为您完成一些工作——脚本实际上运行了什么不重要。 但是你每天要花费几分钟来运行这个脚本，大大浪费了时间，这完全可以交给定时任务来完成。</p>
-<a id="more"></a>
-
-<h1 id="第一步：确保脚本正常"><a href="#第一步：确保脚本正常" class="headerlink" title="第一步：确保脚本正常"></a>第一步：确保脚本正常</h1><p>首先，确保<code>work.sh</code>能正常运行，并且把它放在一个固定的地方，比如，我就放在了<code>~/.script</code>目录下。</p>
-<h1 id="第二步：配置定时任务"><a href="#第二步：配置定时任务" class="headerlink" title="第二步：配置定时任务"></a>第二步：配置定时任务</h1><p>然后，启动终端（Terminal），运行命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">crontab -e<br></code></pre></td></tr></table></figure>
-<p>会为你用<code>vim</code>打开一个文本，如果你之前没有配置过定时任务，那文本内容应该是空的，只有一个行号”1”。</p>
-<p>然后按<code>i</code>进入<code>vim</code>的编辑模式，输入cron表达式和要执行的命令。</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* * * * * command<br></code></pre></td></tr></table></figure>
-<p>比如：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">0,15,30,45 * * * * cd ~/.scripts &amp;&amp; ./work.sh<br></code></pre></td></tr></table></figure>
-<h1 id="第三步：保存、测试"><a href="#第三步：保存、测试" class="headerlink" title="第三步：保存、测试"></a>第三步：保存、测试</h1><p>最后，按<code>esc</code>退出到<code>vim</code>的命令模式，输入命令<code>wq!</code>保存退出。然后等待定时任务执行，查看结果。</p>
-<h1 id="附录：Cron表达式"><a href="#附录：Cron表达式" class="headerlink" title="附录：Cron表达式"></a>附录：Cron表达式</h1><figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* * * * *<br></code></pre></td></tr></table></figure>
-<p>解释：</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><code class="hljs text">* - 分钟 (0-59)<br>* - 小时 (0-23)<br>* - 天 (1-31)<br>* - 月 (1-12)<br>* - 星期 (0-6, 0 是星期天)<br>(从左到右边)<br></code></pre></td></tr></table></figure>
-<p>可以通过<a href="https://crontab.guru/">Crontab.guru</a>生成Cron表达式</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>macOS</category>
-      </categories>
-      <tags>
-        <tag>Mac</tag>
       </tags>
   </entry>
   <entry>
@@ -767,9 +938,9 @@
         <category>Apple</category>
       </categories>
       <tags>
+        <tag>Android</tag>
         <tag>HomeKit</tag>
         <tag>Mac</tag>
-        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
@@ -800,6 +971,119 @@
       <tags>
         <tag>Netflix</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>CarKey功能预测及介绍</title>
+    <url>/p/T5A9FS.html</url>
+    <content><![CDATA[<p>苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。</p>
+<a id="more"></a>
+
+<p><img src="https://file.moetu.org/images/2020/06/17/15923722550190178cd1a80bd5f90d.jpg" alt="CarKey"></p>
+<p>苹果称这种新功能叫做 “CarKey”，这就是我们今天介绍的主角。</p>
+<h2 id="什么是-CarKey-？"><a href="#什么是-CarKey-？" class="headerlink" title="什么是 CarKey ？"></a>什么是 CarKey ？</h2><p>CarKey 是一种数字协议，可以让配备了NFC功能的 iPhone 和 Apple Watch 解锁、锁定、启动、控制具有 NFC 功能的汽车。</p>
+<p>汽车通常上是不具备 NFC 功能的，就像现在已有的 CarPlay 功能一样，需要汽车制造商来适配这种功能。</p>
+<p>汽车制造商可以通过 CarKey 功能，实现 iPhone 对汽车的各种各样控制，但是最基本的控制——包括解锁、锁定、启动汽车是必须有的，这让 CarKey 可以代替物理钥匙。</p>
+<p>CarKey 工作原理基于汽车联机联盟（CCC）发布的基于 NFC 的 Digital Key 2.0 规范，苹果正是该联盟中的一员。 Digital Key 2.0 规范使得移动设备可以通过 NFC 与交通设备建立安全稳健的链接。</p>
+<h2 id="CarKey-如何工作？"><a href="#CarKey-如何工作？" class="headerlink" title="CarKey 如何工作？"></a>CarKey 如何工作？</h2><p>现如今，很多汽车都配备了可以近距离感应解锁汽车的卡片或者钥匙扣，就像特斯拉的钥匙是一张卡片，贴近车门框就能解锁。CarKey就跟这种卡片或者钥匙扣很相似，只不过CarKey是通过 NFC 功能实现的，并且可以将“钥匙”保存在 iPhone 上的“钱包”应用中。</p>
+<p>用 CarKey 解锁（或锁定）车辆需要将‌ Apple Watch ‌或 ‌iPhone 靠近汽车的 NFC 感应区。 当 NFC 感应区检测到存储在 iPhone 或 Apple Watch 中的 CarKey 时，汽车中的解锁程序将启动，汽车被解锁。</p>
+<p>使用“钱包”中的 CarKey 需要进行面容ID或者指纹解锁，但是苹果也推出一种快捷的方式，类似于快捷交通卡一样，不需要任何解锁即可使用该数字钥匙，从 iOS13 的代码中，苹果有这样一段描述：<br>“要使用 CarKey，请将‌ iPhone‌ 或 ‌Apple Watch‌ 靠近感应区。它会自动运行，不需要面容ID。 您可以在电子钱包中更改快速模式设置。”</p>
+<h2 id="CarKey-如何设置？"><a href="#CarKey-如何设置？" class="headerlink" title="CarKey 如何设置？"></a>CarKey 如何设置？</h2><p>‌iOS13 中的代码包含有关 CarKey 设置方式的详细信息。CarKey 用户需要将 iPhone 放在位于车内的 NFC 感应区上，配对过程可能需要几分钟即可完成。</p>
+<p>配对过程需要输入汽车制造商提供的配对密钥，有些汽车制造商的配对过程还可能需要下载相应的软件，在iOS中找到了以下描述：</p>
+<blockquote>
+<p>将此 iPhone 顶部靠近汽车的NFC感应区，配对过程可能需要几分钟，在配对成功之前，请不要移走 iPhone。<br>请输入汽车制造商提供的CarKey密钥，或者下载 $$汽车制造商$$ 的App进行连接。</p>
+</blockquote>
+<h2 id="CarKey在“钱包”应用中是什么样？"><a href="#CarKey在“钱包”应用中是什么样？" class="headerlink" title="CarKey在“钱包”应用中是什么样？"></a>CarKey在“钱包”应用中是什么样？</h2><p>CarKey在“钱包”中将会是一张卡片，就像交通卡，当你点击卡片的时候，会展示有关汽车的相关信息。</p>
+<p><img src="https://file.moetu.org/images/2020/06/10/15917714449109f37e1db416d6c9dd.jpg" alt="CarKey"></p>
+<p>也会有一个“快捷解锁模式”（无需面容ID和指纹解锁）的选项，或者与别人分享该 CarKey，分享的 CarKey 可以设定较少的权限，比如不能解锁汽车，只能控制车内空调温度。</p>
+<h2 id="我能与别人分享-CarKey-吗？"><a href="#我能与别人分享-CarKey-吗？" class="headerlink" title="我能与别人分享 CarKey 吗？"></a>我能与别人分享 CarKey 吗？</h2><p>答案是肯定的。将会有个选项可以通过“信息”App与别人分享你的 CarKey 数字钥匙，来解锁汽车。这种分享功能很实用，比如去酒店，服务人员代泊车，与亲戚朋友分享汽车，与配偶公用一辆汽车，维修点维修汽车等。</p>
+<p>不同的分享权限可以被车主人设定，这就意味着你可以把全部汽车权限分享给别人，也可以分享一部分权限，比如只允许解锁汽车，但是无法启动汽车。分享出去的CarKey有效时间也可以被控制，永久有效或者在某段时间内有效。开发者们从iOS中找到以下描述：</p>
+<blockquote>
+<p>$$汽车拥有者$$ 邀请您使用他的 $$汽车品牌$$ 汽车的解锁和驾驶权限。您可以使用您的iPhone 或者 Apple Watch 来解锁、锁定、启动、控制汽车。</p>
+</blockquote>
+<p>CarKey分享具有三种不同等级的权限：解锁汽车、解锁并启动汽车、解锁后备箱。</p>
+<p>在“信息”App中可以分享 CarKey 钥匙，就像给对方发送 Apple Cash（国内无此功能） 一样方便，而且，CarKey 只能在私聊中分享，在群聊中是不能分享的。</p>
+<p>拥有你汽车 CarKey 密钥的人可以用他们自己的 iPhone 或者 Apple Watch 解锁你的汽车，就像你解锁你自己汽车一样方便。</p>
+<h2 id="CarKey-可以在所有汽车上用吗？"><a href="#CarKey-可以在所有汽车上用吗？" class="headerlink" title="CarKey 可以在所有汽车上用吗？"></a>CarKey 可以在所有汽车上用吗？</h2><p>答案是不会。CarKey 只会在具有NFC功能、并且汽车制造商适配了该功能的汽车上使用。</p>
+<p>苹果公司正在与汽车制造商合作，而CarKey可能是工厂安装的选件，仅限于新车型。 但是，与“ CarPlay”一样，这种功能可能会是汽车高级版本的选配选项，某一种型号的低配版本可能不会配备。</p>
+<p>iOS 中的屏幕截图表明，苹果公司的首批合作伙伴之一将是宝马。 宝马已经支持在 BMW Connected 应用程序中使用 BMW Digital Key 锁定和解锁车辆并启动发动机，并计划将其引入其他平台，比如苹果的 CarKey。</p>
+<h2 id="iPhone-没电时-CarKey-会工作吗？"><a href="#iPhone-没电时-CarKey-会工作吗？" class="headerlink" title="iPhone 没电时 CarKey 会工作吗？"></a>iPhone 没电时 CarKey 会工作吗？</h2><p>会。CarKey 基于 NFC，即使 ‌iPhone ‌或 ‌Apple Watch‌ 电池电量过低自动关机，它仍将继续运行。 然而，并非总是可以用没电关机了的 iPhone 来开锁汽车，就像快捷公交卡一样，没电的 iPhone 仍可以刷4次，CarKey 能刷几次还不得而知。</p>
+<h2 id="苹果会有我使用CarKey的记录吗？"><a href="#苹果会有我使用CarKey的记录吗？" class="headerlink" title="苹果会有我使用CarKey的记录吗？"></a>苹果会有我使用CarKey的记录吗？</h2><p>不会。Apple 在 iOS13.5.1 中发布了 CarKey 隐私策略。 在设置过程中，为了防止欺诈，将必须输入的一次性兑换令牌与设置时的用户Apple帐户、设备和位置信息一起发送，以将车辆与“钱包”应用程序配对。</p>
+<p>唯一的设备标识符将发送给车辆制造商以设置 CarKey。 出于隐私保护目的，标识符对于每个制造商都是唯一的。 苹果公司表示，汽车制造商可以根据制造商的隐私权政策，将设备标识符与有关您的其他信息联系起来。</p>
+<p>虽然苹果不保留有关车辆使用情况的信息，但是车辆制造商根据协议了解你的使用记录。这就像使用信用卡，银行怎么会不知道使用记录呢？</p>
+<h2 id="CarKey-什么时候可以使用？"><a href="#CarKey-什么时候可以使用？" class="headerlink" title="CarKey 什么时候可以使用？"></a>CarKey 什么时候可以使用？</h2><p>CarKey 何时可用尚无消息。但是在 iOS 13 多个版本中都发现了 CarKey 的更新迹象，因此绝对是Apple积极开发和完善的东西。</p>
+<p>由于 iOS14 将于6月进行内测并于秋季推出，因此 CarKey 很有可能被设计为‌ iOS14 ‌功能，Apple 很有可能在 WWDC 上推出该功能。不过，CarKey 依赖于汽车制造商，因此苹果可能需要等汽车制造商适配完成再推出。</p>
+<h2 id="CarKey-未来怎样？"><a href="#CarKey-未来怎样？" class="headerlink" title="CarKey 未来怎样？"></a>CarKey 未来怎样？</h2><p>Digital Key 2.0 协议虽然在今年5月刚刚发布，汽车联机联盟（CCC）已经在研究 Digital Key 3.0 协议了，3.0协议将会基于蓝牙LE和超宽带感知，iPhone 11, iPhone 11 Pro, 和 iPhone 11 Pro 支持该超宽带感知功能。该 3.0 规范将允许被动的，位置感知的无钥匙访问，也就是说你靠近汽车，汽车就解锁了。</p>
+<blockquote>
+<p>关注”家有Apple”公众号，获取更多Apple资讯。<br><img src="https://file.moetu.org/images/2020/06/10/AppleInHomef80951724f2257d2.png" alt="AppleInHome"></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>Apple</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>真正的自律，就是战胜你自己</title>
+    <url>/p/ZAB5E7.html</url>
+    <content><![CDATA[<p>1</p>
+<p>问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。</p>
+<p>三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。</p>
+<p>他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。</p>
+<a id="more"></a>
+
+<p>不知你是否发现，很多人空有一颗求上进的心，但在实际生活中，却活得敷衍、潦草、不自律。他们一边痛恨自己总是拖延和懒散，一边又纵容自己，贪图片刻的满足和安逸。</p>
+<p>其实，<strong>人这一辈子就是战胜自己的过程。如果你管住了自己，就可以拥有更多的自由。如果你管不好自己，就只能被现实左右</strong>。</p>
+<p>2</p>
+<p>大概你也曾经历过无数个失败的自律计划。</p>
+<p>坚持早起，但第二天实在起不来，就放弃了。坚持读书，但刚读了几页还是忍不住看手机，就放弃了。坚持减肥，刚确立这个信念，但美食一出现又放弃了。</p>
+<p>放弃，其实很简单。只要你的思想稍微松动一下，就可以让自己轻松地逃避那些原本你不愿做的事。但想要坚持就太难了，因为你面对的困难和挫折，经受的挑战和诱惑实在太多了。</p>
+<p>人与人之间最大的差距就在于自律。优秀的人想要做成一件事，几乎是言出必行，说到即能做到。但很多人虽然也想改变自己，却很难克服自身的惰性。</p>
+<p>自律最难的地方，在于它没法一蹴而就。<strong>大多数时刻，你需要反复跟自己做斗争，需要对自己下狠手，需要对自己更严苛，不能给自己丝毫的犹豫和退路。</strong></p>
+<p>3</p>
+<p>人在什么时刻会意识到自律的重要性？</p>
+<p>大概不是在早晨睡到日上三竿时，也不是在深夜吃着炸鸡喝着啤酒时，更不是在一有空闲就盯着手机追剧时，而是当你发现自己的身材越来越胖、生活越来越无聊、人生越来越失去掌控时，才会感受到巨大的压力。</p>
+<p>人在什么时刻会意识到自律的好处？</p>
+<p>大概不是在寒冷的冬天逼着自己五点起床时，也不是在感到疲惫依旧锻炼身体时，更不是一个人在书房独自读书写作时，而是当你发现自己的身体越来越好、事业越来越有所成、生活越来越有趣时，为此感到无比欣慰。</p>
+<p>于不自律的人而言，轻松是暂时的，痛苦却是长久的。于自律的人来说，过程是痛苦的，结果却是令人满意的。</p>
+<p>记得网上有一个问题：“高度自律是一种什么体验”。有个回答是“不再被生活拖曳着前进，而是未来变得可控，一切有条不紊，想要的生活触手可及”。</p>
+<p>当你觉得管不住自己，想要偷懒、想要懈怠时，想一想自己理想的生活，大概就不会沉迷于安逸享乐。<strong>当你觉得坚持不下去，想要泄气、放弃时，想一想放任的后果，大概就有了自我约束的紧迫感。</strong></p>
+<p>4</p>
+<p>人人都渴望更出色，但无论做什么都没有捷径，都要做到自律。</p>
+<p>成绩比你好的人可能并没有比你更聪明，不过是在一日又一日的枯燥学业中，坚持不断地练题、背书、做笔记。</p>
+<p>身体比你好的人可能并不是天生体质好，而是在一天又一天的单调重复中，坚持不断地早睡、早起、多运动。</p>
+<p>文采比你好的人可能并不是有特殊的天赋，而是在一年又一年的平淡光阴里坚持不断地读书、沉淀和积累。</p>
+<p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
+<p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
+<p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>摘抄</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>请记住人生中的“三”</title>
+    <url>/p/18JYVC6.html</url>
+    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
+<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
+<a id="more"></a>
+
+<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
+<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
+<p>三样东西永不放弃:<br>童真、理想、希望</p>
+<p>三样东西最无常:<br>成功、财富、机遇</p>
+<p>三样东西最无价:<br>健康、善良、真情</p>
+<p>三样东西成就人:<br>天时、地利、人和</p>
+<p>三样东西要珍惜:<br>父母、家庭、健康</p>
+<p>三样东西助成功：<br>目标、方法、改进</p>
+<p>三样东西交朋友:<br>诚信、热情、互助</p>
+<p>三样东西把握好:<br>机会、工作、婚姻</p>
+<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+        <category>摘抄</category>
+      </categories>
   </entry>
   <entry>
     <title>运用Live Template加快写代码速度</title>
@@ -942,56 +1226,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CarKey功能预测及介绍</title>
-    <url>/p/T5A9FS.html</url>
-    <content><![CDATA[<p>苹果的 iPhone 和 Apple Watch 设备已经有 NFC 功能一段时间了，在不久的将来，NFC 功能还可以用于解锁汽车，用户可以通过 iPhone 或者 Apple Watch 来锁定、解锁、启动汽车，从而代替传统的物理钥匙。</p>
-<a id="more"></a>
-
-<p><img src="https://file.moetu.org/images/2020/06/17/15923722550190178cd1a80bd5f90d.jpg" alt="CarKey"></p>
-<p>苹果称这种新功能叫做 “CarKey”，这就是我们今天介绍的主角。</p>
-<h2 id="什么是-CarKey-？"><a href="#什么是-CarKey-？" class="headerlink" title="什么是 CarKey ？"></a>什么是 CarKey ？</h2><p>CarKey 是一种数字协议，可以让配备了NFC功能的 iPhone 和 Apple Watch 解锁、锁定、启动、控制具有 NFC 功能的汽车。</p>
-<p>汽车通常上是不具备 NFC 功能的，就像现在已有的 CarPlay 功能一样，需要汽车制造商来适配这种功能。</p>
-<p>汽车制造商可以通过 CarKey 功能，实现 iPhone 对汽车的各种各样控制，但是最基本的控制——包括解锁、锁定、启动汽车是必须有的，这让 CarKey 可以代替物理钥匙。</p>
-<p>CarKey 工作原理基于汽车联机联盟（CCC）发布的基于 NFC 的 Digital Key 2.0 规范，苹果正是该联盟中的一员。 Digital Key 2.0 规范使得移动设备可以通过 NFC 与交通设备建立安全稳健的链接。</p>
-<h2 id="CarKey-如何工作？"><a href="#CarKey-如何工作？" class="headerlink" title="CarKey 如何工作？"></a>CarKey 如何工作？</h2><p>现如今，很多汽车都配备了可以近距离感应解锁汽车的卡片或者钥匙扣，就像特斯拉的钥匙是一张卡片，贴近车门框就能解锁。CarKey就跟这种卡片或者钥匙扣很相似，只不过CarKey是通过 NFC 功能实现的，并且可以将“钥匙”保存在 iPhone 上的“钱包”应用中。</p>
-<p>用 CarKey 解锁（或锁定）车辆需要将‌ Apple Watch ‌或 ‌iPhone 靠近汽车的 NFC 感应区。 当 NFC 感应区检测到存储在 iPhone 或 Apple Watch 中的 CarKey 时，汽车中的解锁程序将启动，汽车被解锁。</p>
-<p>使用“钱包”中的 CarKey 需要进行面容ID或者指纹解锁，但是苹果也推出一种快捷的方式，类似于快捷交通卡一样，不需要任何解锁即可使用该数字钥匙，从 iOS13 的代码中，苹果有这样一段描述：<br>“要使用 CarKey，请将‌ iPhone‌ 或 ‌Apple Watch‌ 靠近感应区。它会自动运行，不需要面容ID。 您可以在电子钱包中更改快速模式设置。”</p>
-<h2 id="CarKey-如何设置？"><a href="#CarKey-如何设置？" class="headerlink" title="CarKey 如何设置？"></a>CarKey 如何设置？</h2><p>‌iOS13 中的代码包含有关 CarKey 设置方式的详细信息。CarKey 用户需要将 iPhone 放在位于车内的 NFC 感应区上，配对过程可能需要几分钟即可完成。</p>
-<p>配对过程需要输入汽车制造商提供的配对密钥，有些汽车制造商的配对过程还可能需要下载相应的软件，在iOS中找到了以下描述：</p>
-<blockquote>
-<p>将此 iPhone 顶部靠近汽车的NFC感应区，配对过程可能需要几分钟，在配对成功之前，请不要移走 iPhone。<br>请输入汽车制造商提供的CarKey密钥，或者下载 $$汽车制造商$$ 的App进行连接。</p>
-</blockquote>
-<h2 id="CarKey在“钱包”应用中是什么样？"><a href="#CarKey在“钱包”应用中是什么样？" class="headerlink" title="CarKey在“钱包”应用中是什么样？"></a>CarKey在“钱包”应用中是什么样？</h2><p>CarKey在“钱包”中将会是一张卡片，就像交通卡，当你点击卡片的时候，会展示有关汽车的相关信息。</p>
-<p><img src="https://file.moetu.org/images/2020/06/10/15917714449109f37e1db416d6c9dd.jpg" alt="CarKey"></p>
-<p>也会有一个“快捷解锁模式”（无需面容ID和指纹解锁）的选项，或者与别人分享该 CarKey，分享的 CarKey 可以设定较少的权限，比如不能解锁汽车，只能控制车内空调温度。</p>
-<h2 id="我能与别人分享-CarKey-吗？"><a href="#我能与别人分享-CarKey-吗？" class="headerlink" title="我能与别人分享 CarKey 吗？"></a>我能与别人分享 CarKey 吗？</h2><p>答案是肯定的。将会有个选项可以通过“信息”App与别人分享你的 CarKey 数字钥匙，来解锁汽车。这种分享功能很实用，比如去酒店，服务人员代泊车，与亲戚朋友分享汽车，与配偶公用一辆汽车，维修点维修汽车等。</p>
-<p>不同的分享权限可以被车主人设定，这就意味着你可以把全部汽车权限分享给别人，也可以分享一部分权限，比如只允许解锁汽车，但是无法启动汽车。分享出去的CarKey有效时间也可以被控制，永久有效或者在某段时间内有效。开发者们从iOS中找到以下描述：</p>
-<blockquote>
-<p>$$汽车拥有者$$ 邀请您使用他的 $$汽车品牌$$ 汽车的解锁和驾驶权限。您可以使用您的iPhone 或者 Apple Watch 来解锁、锁定、启动、控制汽车。</p>
-</blockquote>
-<p>CarKey分享具有三种不同等级的权限：解锁汽车、解锁并启动汽车、解锁后备箱。</p>
-<p>在“信息”App中可以分享 CarKey 钥匙，就像给对方发送 Apple Cash（国内无此功能） 一样方便，而且，CarKey 只能在私聊中分享，在群聊中是不能分享的。</p>
-<p>拥有你汽车 CarKey 密钥的人可以用他们自己的 iPhone 或者 Apple Watch 解锁你的汽车，就像你解锁你自己汽车一样方便。</p>
-<h2 id="CarKey-可以在所有汽车上用吗？"><a href="#CarKey-可以在所有汽车上用吗？" class="headerlink" title="CarKey 可以在所有汽车上用吗？"></a>CarKey 可以在所有汽车上用吗？</h2><p>答案是不会。CarKey 只会在具有NFC功能、并且汽车制造商适配了该功能的汽车上使用。</p>
-<p>苹果公司正在与汽车制造商合作，而CarKey可能是工厂安装的选件，仅限于新车型。 但是，与“ CarPlay”一样，这种功能可能会是汽车高级版本的选配选项，某一种型号的低配版本可能不会配备。</p>
-<p>iOS 中的屏幕截图表明，苹果公司的首批合作伙伴之一将是宝马。 宝马已经支持在 BMW Connected 应用程序中使用 BMW Digital Key 锁定和解锁车辆并启动发动机，并计划将其引入其他平台，比如苹果的 CarKey。</p>
-<h2 id="iPhone-没电时-CarKey-会工作吗？"><a href="#iPhone-没电时-CarKey-会工作吗？" class="headerlink" title="iPhone 没电时 CarKey 会工作吗？"></a>iPhone 没电时 CarKey 会工作吗？</h2><p>会。CarKey 基于 NFC，即使 ‌iPhone ‌或 ‌Apple Watch‌ 电池电量过低自动关机，它仍将继续运行。 然而，并非总是可以用没电关机了的 iPhone 来开锁汽车，就像快捷公交卡一样，没电的 iPhone 仍可以刷4次，CarKey 能刷几次还不得而知。</p>
-<h2 id="苹果会有我使用CarKey的记录吗？"><a href="#苹果会有我使用CarKey的记录吗？" class="headerlink" title="苹果会有我使用CarKey的记录吗？"></a>苹果会有我使用CarKey的记录吗？</h2><p>不会。Apple 在 iOS13.5.1 中发布了 CarKey 隐私策略。 在设置过程中，为了防止欺诈，将必须输入的一次性兑换令牌与设置时的用户Apple帐户、设备和位置信息一起发送，以将车辆与“钱包”应用程序配对。</p>
-<p>唯一的设备标识符将发送给车辆制造商以设置 CarKey。 出于隐私保护目的，标识符对于每个制造商都是唯一的。 苹果公司表示，汽车制造商可以根据制造商的隐私权政策，将设备标识符与有关您的其他信息联系起来。</p>
-<p>虽然苹果不保留有关车辆使用情况的信息，但是车辆制造商根据协议了解你的使用记录。这就像使用信用卡，银行怎么会不知道使用记录呢？</p>
-<h2 id="CarKey-什么时候可以使用？"><a href="#CarKey-什么时候可以使用？" class="headerlink" title="CarKey 什么时候可以使用？"></a>CarKey 什么时候可以使用？</h2><p>CarKey 何时可用尚无消息。但是在 iOS 13 多个版本中都发现了 CarKey 的更新迹象，因此绝对是Apple积极开发和完善的东西。</p>
-<p>由于 iOS14 将于6月进行内测并于秋季推出，因此 CarKey 很有可能被设计为‌ iOS14 ‌功能，Apple 很有可能在 WWDC 上推出该功能。不过，CarKey 依赖于汽车制造商，因此苹果可能需要等汽车制造商适配完成再推出。</p>
-<h2 id="CarKey-未来怎样？"><a href="#CarKey-未来怎样？" class="headerlink" title="CarKey 未来怎样？"></a>CarKey 未来怎样？</h2><p>Digital Key 2.0 协议虽然在今年5月刚刚发布，汽车联机联盟（CCC）已经在研究 Digital Key 3.0 协议了，3.0协议将会基于蓝牙LE和超宽带感知，iPhone 11, iPhone 11 Pro, 和 iPhone 11 Pro 支持该超宽带感知功能。该 3.0 规范将允许被动的，位置感知的无钥匙访问，也就是说你靠近汽车，汽车就解锁了。</p>
-<blockquote>
-<p>关注”家有Apple”公众号，获取更多Apple资讯。<br><img src="https://file.moetu.org/images/2020/06/10/AppleInHomef80951724f2257d2.png" alt="AppleInHome"></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>Apple</category>
-      </categories>
-  </entry>
-  <entry>
     <title>How to download Wechat on iOS in india</title>
     <url>/p/ESP3TJ.html</url>
     <content><![CDATA[<p>WeChat has been removed from the App Store India, so how can friends in India download WeChat?</p>
@@ -1014,69 +1248,6 @@
       <categories>
         <category>日常</category>
         <category>技巧</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>真正的自律，就是战胜你自己</title>
-    <url>/p/ZAB5E7.html</url>
-    <content><![CDATA[<p>1</p>
-<p>问答平台上有个问题：“你见过最不求上进的人是什么样子”。有个高赞的回答是：为现状焦虑，又没有毅力践行决心改变自己。</p>
-<p>三分钟热度，时常憎恶自己不争气，坚持最多的事情就是坚持不下去……本想在有限的生命里体验更多的生活，有的人却只会把同样的日子机械重复很多年。</p>
-<p>他们不曾经历过真正的沧桑，却失守了最后一点少年意气；尚未拥有百毒不侵的内心，却提前丧失了热泪盈眶的能力。</p>
-<a id="more"></a>
-
-<p>不知你是否发现，很多人空有一颗求上进的心，但在实际生活中，却活得敷衍、潦草、不自律。他们一边痛恨自己总是拖延和懒散，一边又纵容自己，贪图片刻的满足和安逸。</p>
-<p>其实，<strong>人这一辈子就是战胜自己的过程。如果你管住了自己，就可以拥有更多的自由。如果你管不好自己，就只能被现实左右</strong>。</p>
-<p>2</p>
-<p>大概你也曾经历过无数个失败的自律计划。</p>
-<p>坚持早起，但第二天实在起不来，就放弃了。坚持读书，但刚读了几页还是忍不住看手机，就放弃了。坚持减肥，刚确立这个信念，但美食一出现又放弃了。</p>
-<p>放弃，其实很简单。只要你的思想稍微松动一下，就可以让自己轻松地逃避那些原本你不愿做的事。但想要坚持就太难了，因为你面对的困难和挫折，经受的挑战和诱惑实在太多了。</p>
-<p>人与人之间最大的差距就在于自律。优秀的人想要做成一件事，几乎是言出必行，说到即能做到。但很多人虽然也想改变自己，却很难克服自身的惰性。</p>
-<p>自律最难的地方，在于它没法一蹴而就。<strong>大多数时刻，你需要反复跟自己做斗争，需要对自己下狠手，需要对自己更严苛，不能给自己丝毫的犹豫和退路。</strong></p>
-<p>3</p>
-<p>人在什么时刻会意识到自律的重要性？</p>
-<p>大概不是在早晨睡到日上三竿时，也不是在深夜吃着炸鸡喝着啤酒时，更不是在一有空闲就盯着手机追剧时，而是当你发现自己的身材越来越胖、生活越来越无聊、人生越来越失去掌控时，才会感受到巨大的压力。</p>
-<p>人在什么时刻会意识到自律的好处？</p>
-<p>大概不是在寒冷的冬天逼着自己五点起床时，也不是在感到疲惫依旧锻炼身体时，更不是一个人在书房独自读书写作时，而是当你发现自己的身体越来越好、事业越来越有所成、生活越来越有趣时，为此感到无比欣慰。</p>
-<p>于不自律的人而言，轻松是暂时的，痛苦却是长久的。于自律的人来说，过程是痛苦的，结果却是令人满意的。</p>
-<p>记得网上有一个问题：“高度自律是一种什么体验”。有个回答是“不再被生活拖曳着前进，而是未来变得可控，一切有条不紊，想要的生活触手可及”。</p>
-<p>当你觉得管不住自己，想要偷懒、想要懈怠时，想一想自己理想的生活，大概就不会沉迷于安逸享乐。<strong>当你觉得坚持不下去，想要泄气、放弃时，想一想放任的后果，大概就有了自我约束的紧迫感。</strong></p>
-<p>4</p>
-<p>人人都渴望更出色，但无论做什么都没有捷径，都要做到自律。</p>
-<p>成绩比你好的人可能并没有比你更聪明，不过是在一日又一日的枯燥学业中，坚持不断地练题、背书、做笔记。</p>
-<p>身体比你好的人可能并不是天生体质好，而是在一天又一天的单调重复中，坚持不断地早睡、早起、多运动。</p>
-<p>文采比你好的人可能并不是有特殊的天赋，而是在一年又一年的平淡光阴里坚持不断地读书、沉淀和积累。</p>
-<p>许多人之所以觉得自律很难做到，不过是耽于眼前的轻松和安逸，他们抱着及时行乐、得过且过的态度耗费和虚度人生。</p>
-<p>曾看过一句话：我相信一万小时定律，但从不相信天上掉馅饼的灵感和坐享其成的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</p>
-<p><strong>自律最大的敌人，不是温暖的被窝、不是好吃的美食、不是好玩的游戏，而是你想要战胜自己的决心、勇气和毅力。</strong></p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>摘抄</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>请记住人生中的“三”</title>
-    <url>/p/18JYVC6.html</url>
-    <content><![CDATA[<p>【男人三大责任】<br>让父母骄傲，<br>让自己的妻子幸福，<br>保持高贵的灵魂</p>
-<p>【女人三大责任】<br>激励自己的丈夫，让他飞翔<br>照顾好他的家族<br>做气质非凡，独一无二的自己</p>
-<a id="more"></a>
-
-<p>【父母三大责任】<br>成为孩子的榜样，<br>帮孩子建立强大<br>内在力量和外在习惯，<br>帮孩子实现梦想</p>
-<p><strong>三样东西毁掉一个人:</strong><br><strong>怒气、傲气、小气</strong></p>
-<p>三样东西永不放弃:<br>童真、理想、希望</p>
-<p>三样东西最无常:<br>成功、财富、机遇</p>
-<p>三样东西最无价:<br>健康、善良、真情</p>
-<p>三样东西成就人:<br>天时、地利、人和</p>
-<p>三样东西要珍惜:<br>父母、家庭、健康</p>
-<p>三样东西助成功：<br>目标、方法、改进</p>
-<p>三样东西交朋友:<br>诚信、热情、互助</p>
-<p>三样东西把握好:<br>机会、工作、婚姻</p>
-<p>三样东西得快乐:<br>知足常乐、助人为乐、自得其乐</p>
-]]></content>
-      <categories>
-        <category>日常</category>
-        <category>摘抄</category>
       </categories>
   </entry>
   <entry>
@@ -1425,177 +1596,6 @@
       </categories>
       <tags>
         <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>[Material Design] 尝试使用 Bottom Navigation</title>
-    <url>/p/GJ0Q47.html</url>
-    <content><![CDATA[<p>Material Design是由Google推出的全新的设计语言，谷歌表示，这种设计语言旨在为手机、平板电脑、台式机和“其他平台”提供更一致、更广泛的“外观和感觉”。</p>
-<p>Material Design的一些重要功能包括系统字体Roboto的升级版本，同时颜色更鲜艳，动画效果更突出。谷歌的想法是让谷歌平台上的开发者掌握这个新框架，从而让所有应用就有统一的外观，就像是苹果向开发者提出的设计原则一样。</p>
-<p>一直感觉Material Design设计很是好看，尤其是底部的导航栏，简约的图标以及透明的背景。决定自己体验一把。</p>
-<a id="more"></a>
-
-<p>先上效果图：</p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-14bd1b8c91c5f8b99.gif" alt="效果图"></p>
-<h1 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h1><p>Bottom Navigation经常用于底部导航栏。不过它所包含的标签页不应过多也不应该过少，<a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a>中表示，标签页的个数在3-5个左右合适。</p>
-<h1 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h1><h2 id="在Module的build-gradle中添加如下代码"><a href="#在Module的build-gradle中添加如下代码" class="headerlink" title="在Module的build.gradle中添加如下代码"></a>在Module的build.gradle中添加如下代码</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">compile &#x27;com.roughike:bottom-bar:2.0.2&#x27;<br></code></pre></td></tr></table></figure>
-<p>实现Bottom Navigation功能，比较好用的是第三方的BottomBar库，截止2017.1.8，最新的版本是2.0.2，如果需要最新版，请访问 <a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></p>
-<h2 id="在res下新建类型为xml的xml文件夹"><a href="#在res下新建类型为xml的xml文件夹" class="headerlink" title="在res下新建类型为xml的xml文件夹"></a>在res下新建类型为xml的xml文件夹</h2><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-27a8c62661b42fd13.png"></p>
-<p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/20210120100350.png"></p>
-<h2 id="在xml文件夹下新建bottombar-tabs-xml文件"><a href="#在xml文件夹下新建bottombar-tabs-xml文件" class="headerlink" title="在xml文件夹下新建bottombar_tabs.xml文件"></a>在xml文件夹下新建bottombar_tabs.xml文件</h2><p>res/xml/bottombar_tabs.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">PreferenceScreen</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">tabs</span>&gt;</span><br>        &lt;tab<br>            id=&quot;@+id/tab_one&quot;<br>            icon=&quot;@drawable/ic_3d_rotation_white_24dp&quot;<br>            title=&quot;财务&quot;<br>            barColorWhenSelected=&quot;#865242&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_two&quot;<br>            icon=&quot;@drawable/ic_account_balance_white_24dp&quot;<br>            title=&quot;群组&quot;<br>            barColorWhenSelected=&quot;#268434&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>        &lt;tab<br>            id=&quot;@+id/tab_three&quot;<br>            icon=&quot;@drawable/ic_accessibility_white_24dp&quot;<br>            title=&quot;朋友&quot;<br>            barColorWhenSelected=&quot;#8b2099&quot;<br>            inActiveColor=&quot;#FFFFFF&quot;<br>            activeColor = &quot;#FFFFFF&quot;/&gt;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">tabs</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">PreferenceScreen</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<p><code>barColorWhenSelected</code>属性控制着当这个Tab被选择时，BottomBar的整体颜色。<code>inActiveColor</code>属性是这个Tab未激活时图片的颜色。与之相对应的<code>activeColor</code>属性，则是控制着激活时的图片颜色。</p>
-<h2 id="activity-main-xml"><a href="#activity-main-xml" class="headerlink" title="activity_main.xml"></a>activity_main.xml</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">RelativeLayout</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:app</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">xmlns:tools</span>=<span class="hljs-string">&quot;http://schemas.android.com/tools&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/activity_main&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;match_parent&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingBottom</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingLeft</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingRight</span>=<span class="hljs-string">&quot;@dimen/activity_horizontal_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:paddingTop</span>=<span class="hljs-string">&quot;@dimen/activity_vertical_margin&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">tools:context</span>=<span class="hljs-string">&quot;me.luzhoumin.bottomnavigation.MainActivity&quot;</span>&gt;</span><br><br>    &lt;com.roughike.bottombar.BottomBar<br>        android:id=&quot;@+id/bottomBar&quot;<br>        android:layout_width=&quot;match_parent&quot;<br>        android:layout_height=&quot;60dp&quot;<br>        android:layout_alignParentBottom=&quot;true&quot;<br>        app:bb_tabXmlResource=&quot;@xml/bottombar_tabs&quot;<br>        app:bb_behavior=&quot;underNavbar&quot;<br>        app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>        app:bb_activeTabAlpha=&quot;1&quot;<br>        app:bb_showShadow=&quot;true&quot;/&gt;<br><br>    &lt;TextView<br>        android:id=&quot;@+id/textview&quot;<br>        android:layout_width=&quot;wrap_content&quot;<br>        android:layout_height=&quot;wrap_content&quot;<br>        android:textSize=&quot;36sp&quot;<br>        android:text=&quot;Hello World!&quot;<br>        android:layout_alignParentTop=&quot;true&quot;<br>        android:layout_alignParentStart=&quot;true&quot;<br>        android:layout_marginTop=&quot;51dp&quot; /&gt;<br><br><span class="hljs-tag">&lt;/<span class="hljs-name">RelativeLayout</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<p><code>app:bb_tabXmlResource</code>指向的是第三步建的xml文件，里面有每个Tab的属性。</p>
-<h2 id="MainActivity-java"><a href="#MainActivity-java" class="headerlink" title="MainActivity.java"></a>MainActivity.java</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> android.support.annotation.IdRes;<br><span class="hljs-keyword">import</span> android.support.v7.app.AppCompatActivity;<br><span class="hljs-keyword">import</span> android.os.Bundle;<br><span class="hljs-keyword">import</span> android.widget.TextView;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBar;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.BottomBarTab;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabReselectListener;<br><span class="hljs-keyword">import</span> com.roughike.bottombar.OnTabSelectListener;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AppCompatActivity</span> </span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> </span>&#123;<br>        <span class="hljs-keyword">super</span>.onCreate(savedInstanceState);<br>        setContentView(R.layout.activity_main);<br>        <span class="hljs-comment">//获取Bottom Bar组件</span><br>        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);<br>        <span class="hljs-comment">//获取用来显示的TextView组件</span><br>        <span class="hljs-keyword">final</span> TextView tv = (TextView) findViewById(R.id.textview);<br>        <span class="hljs-comment">//设置Bottom Bar的选择监听器</span><br>        bottomBar.setOnTabSelectListener(<span class="hljs-keyword">new</span> OnTabSelectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_group 被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Bottom Bar的重复选择监听器</span><br>        bottomBar.setOnTabReselectListener(<span class="hljs-keyword">new</span> OnTabReselectListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onTabReSelected</span><span class="hljs-params">(<span class="hljs-meta">@IdRes</span> <span class="hljs-keyword">int</span> tabId)</span> </span>&#123;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_one)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_one 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_two)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_two 再次被点击&quot;</span>);<br>                &#125;<br>                <span class="hljs-keyword">if</span> (tabId == R.id.tab_three)&#123;<br>                    tv.setText(<span class="hljs-string">&quot;tab_three 再次被点击&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-comment">//设置Tab的Badge</span><br>        BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_two);<br>        nearby.setBadgeCount(<span class="hljs-number">5</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="修改主题样式"><a href="#修改主题样式" class="headerlink" title="修改主题样式"></a>修改主题样式</h2><p>res/values/styles.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Base application theme. --&gt;</span><br>    <span class="hljs-comment">&lt;!--修改主题为无ActionBar--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;AppTheme&quot;</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">&quot;Theme.AppCompat.Light.NoActionBar&quot;</span>&gt;</span><br><span class="xml">        <span class="hljs-comment">&lt;!-- Customize your theme here. --&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-comment">&lt;!--添加--&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:navigationBarColor&quot;</span>&gt;</span>@android:color/transparent<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowTranslucentNavigation&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">item</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;android:windowDrawsSystemBarBackgrounds&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">item</span>&gt;</span></span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<h1 id="BottomBar-API"><a href="#BottomBar-API" class="headerlink" title="BottomBar API"></a>BottomBar API</h1><h2 id="For-the-BottomBar"><a href="#For-the-BottomBar" class="headerlink" title="For the BottomBar"></a>For the BottomBar</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;com.roughike.bottombar.BottomBar<br>    android:id=&quot;@+id/bottomBar&quot;<br>    android:layout_width=&quot;match_parent&quot;<br>    android:layout_height=&quot;60dp&quot;<br>    android:layout_alignParentBottom=&quot;true&quot;<br>    app:bb_tabXmlResource=&quot;@xml/bottombar_tabs_three&quot;<br>    app:bb_tabletMode=&quot;true&quot;<br>    app:bb_behavior=&quot;shifting|shy|underNavbar&quot;<br>    app:bb_inActiveTabAlpha=&quot;0.6&quot;<br>    app:bb_activeTabAlpha=&quot;1&quot;<br>    app:bb_inActiveTabColor=&quot;#222222&quot;<br>    app:bb_activeTabColor=&quot;@color/colorPrimary&quot;<br>    app:bb_titleTextAppearance=&quot;@style/MyTextAppearance&quot;<br>    app:bb_titleTypeFace=&quot;fonts/MySuperDuperFont.ttf&quot;<br>    app:bb_showShadow=&quot;true&quot; /&gt;<br></code></pre></td></tr></table></figure>
-<p><strong>bb_tabXmlResource</strong></p>
-<p>the XML Resource id for your tabs, that reside in values/xml/</p>
-<p><strong>bb_tabletMode</strong></p>
-<p>if you want the BottomBar to behave differently for tablets. There’s an example of this in the sample project!</p>
-<p><strong>bb_behavior</strong></p>
-<ul>
-<li><code>shifting</code>: the selected tab is wider than the rest.</li>
-<li><code>shy</code>: put the BottomBar inside a CoordinatorLayout and it’ll automatically hide on scroll!</li>
-<li><code>underNavbar</code>: draw the BottomBar under the navBar!</li>
-</ul>
-<p><strong>bb_inActiveTabAlpha</strong></p>
-<p>the alpha value for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_activeTabAlpha</strong></p>
-<p>the alpha value for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_inActiveTabColor</strong></p>
-<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_activeTabColor</strong></p>
-<p>the color for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>bb_badgeBackgroundColor</strong></p>
-<p>the background color for any Badges in this BottomBar.</p>
-<p><strong>bb_titleTextAppearance</strong></p>
-<p>custom textAppearance for the titles</p>
-<p><strong>bb_titleTypeFace</strong></p>
-<p>path for your custom font file, such as <code>fonts/MySuperDuperFont.ttf</code>. In that case your font path would look like <code>src/main/assets/fonts/MySuperDuperFont.ttf</code>, but you only need to provide <code>fonts/MySuperDuperFont.ttf</code>, as the asset folder will be auto-filled for you.</p>
-<p><strong>bb_showShadow</strong></p>
-<p>controls whether the shadow is shown or hidden, defaults to true.</p>
-<h2 id="For-the-tabs"><a href="#For-the-tabs" class="headerlink" title="For the tabs"></a>For the tabs</h2><figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml">&lt;tab<br>    id=&quot;@+id/tab_recents&quot;<br>    title=&quot;Recents&quot;<br>    icon=&quot;@drawable/empty_icon&quot;<br>    inActiveColor=&quot;#00FF00&quot;<br>    activeColor=&quot;#FF0000&quot;<br>    barColorWhenSelected=&quot;#FF0000&quot;<br>    badgeBackgroundColor=&quot;#FF0000&quot; /&gt;<br></code></pre></td></tr></table></figure>
-<p><strong>inActiveColor</strong></p>
-<p>the color for inactive tabs, that’s used in the tab icons and titles.</p>
-<p><strong>activeColor</strong></p>
-<p>the color for active tabs, that’s used in the tab icons and titles.</p>
-<p><strong>barColorWhenSelected</strong></p>
-<p>the color that the whole BottomBar should be when selected this tab.</p>
-<p><strong>badgeBackgroundColor</strong></p>
-<p>the background color for any Badges in this tab.</p>
-<h1 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h1><ul>
-<li>Tab的图标必须是<strong>全透明、纯黑、24dp、Padding = 0dp</strong>，而且最好所有分辨密度的图片都要有，否则图标会很大或者很小，影响显示效果。</li>
-<li>如果想保持在屏幕最底部，记得在布局xml的<code>&lt;com.roughike.bottombar.BottomBar&gt;</code>标签中添加属性<code>android:layout_alignParentBottom=&quot;true&quot;</code>，并且做好第六步工作。</li>
-</ul>
-<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
-<li><a href="https://material.io/guidelines/components/bottom-navigation.html">谷歌官方文档</a></li>
-<li><a href="https://github.com/roughike/BottomBar">BottomBar的Github Repository</a></li>
-</ul>
-<h1 id="与FloatingActionButton和SnackBar合作的效果"><a href="#与FloatingActionButton和SnackBar合作的效果" class="headerlink" title="与FloatingActionButton和SnackBar合作的效果"></a>与FloatingActionButton和SnackBar合作的效果</h1><p><img src="https://raw.githubusercontent.com/zmlu/zmlu.github.io.assets/master/images/2019122001-material-design-notes-bottom-navigation.md-4368fd9376e31ff43.gif"></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Google</tag>
-        <tag>Android</tag>
-        <tag>Material Design</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「翻译」Java 14带来了许多新功能</title>
-    <url>/p/2305442.html</url>
-    <content><![CDATA[<p>Java 14包含比前两个发行版更多的新功能-其中大多数旨在简化编程开发工作。</p>
-<p>Java 14计划于3月17日发布。版本14包含的<a href="https://openjdk.java.net/projects/jdk/14/">JEP</a>（Java Enhancement Proposals）比Java 12和13的总和还多。 那么，对于每天编写和维护代码的Java开发人员来说，最重要的是什么呢？</p>
-<p>在本文中，我研究了以下主要方面：</p>
-<ul>
-<li>改进的<code>switch</code>表达式，该表达式最初在Java 12和Java 13中作为预览出现，现在已完全成为Java 14的一部分</li>
-<li>新增<code>instanceof</code>的模式匹配（语法糖）</li>
-<li>增强的<code>NullPointerExceptions</code>提示（JVM功能）</li>
-</ul>
-<p>如果您阅读本文并尝试在代码库中使用其中的某些功能，建议您通过<a href="mailto:amber-dev@openjdk.java.net">向Java团队提供反馈</a>来分享您的经验。 这样，您就有机会为Java的发展做出贡献。</p>
-<a id="more"></a>
-
-<h1 id="switch-表达式"><a href="#switch-表达式" class="headerlink" title="switch 表达式"></a>switch 表达式</h1><p>在Java 14中，switch 表达式被保留变为正式版本。</p>
-<p>在早期版本中，switch 表达式是Beta功能。 提醒一下，将特征指定为 Beta 以收集反馈，并且根据反馈可能会更改甚至删除这些特征。 但预计大多数最终将在 Java 中被保留下来。</p>
-<p>新的 switch 表达式的优点让出bug的几率降低。 作为一个刷新示例，switch表达式现在可以利用箭头语法，例如在以下示例中：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> log = <span class="hljs-keyword">switch</span> (event) &#123;<br>    <span class="hljs-keyword">case</span> PLAY -&gt; <span class="hljs-string">&quot;User has triggered the play button&quot;</span>;<br>    <span class="hljs-keyword">case</span> STOP, PAUSE -&gt; <span class="hljs-string">&quot;User needs a break&quot;</span>;<br>    <span class="hljs-keyword">default</span> -&gt; &#123;<br>        String message = event.toString();<br>        LocalDateTime now = LocalDateTime.now();<br>        yield <span class="hljs-string">&quot;Unknown event &quot;</span> + message + <br>              <span class="hljs-string">&quot; logged on &quot;</span> + now;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
-<h1 id="Text-Block-Beta"><a href="#Text-Block-Beta" class="headerlink" title="Text Block (Beta)"></a>Text Block (Beta)</h1><p>Java 13引入了<code>Text Block</code>作为Beta功能。 <code>Text Block</code>使使用多行字符串文字更加容易。 此功能在Java 14将是第二个版本的Beta功能，并进行了一些调整。 作为回顾，编写带有许多字符串连接和转义序列的代码以提供适当的多行文本格式非常普遍。 下面的代码显示了HTML格式的示例：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String html = <span class="hljs-string">&quot;&lt;HTML&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t&quot;</span> + <span class="hljs-string">&quot;&lt;BODY&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t\t&quot;</span> + <span class="hljs-string">&quot;&lt;H1&gt;\&quot;Java 14 is here!\&quot;&lt;/H1&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n\t&quot;</span> + <span class="hljs-string">&quot;&lt;/BODY&gt;&quot;</span> +<br><span class="hljs-string">&quot;\n&quot;</span> + <span class="hljs-string">&quot;&lt;/HTML&gt;&quot;</span>;<br></code></pre></td></tr></table></figure>
-<p>使用<code>Text Block</code>，您可以简化此过程并使用界定<code>Text Block</code>开头和结尾的三个引号来编写更优雅的代码：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String html = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">&lt;HTML&gt;</span><br><span class="hljs-string">  &lt;BODY&gt;</span><br><span class="hljs-string">    &lt;H1&gt;&quot;</span>Java <span class="hljs-number">14</span> is here!<span class="hljs-string">&quot;&lt;/H1&gt;</span><br><span class="hljs-string">  &lt;/BODY&gt;</span><br><span class="hljs-string">&lt;/HTML&gt;&quot;</span><span class="hljs-string">&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
-<p>与普通字符串文字相比，<code>Text Block</code>还提供了更高的表达能力。</p>
-<p>Java 14中添加了两个新的转义序列。首先，您可以使用新的<code>\s</code>转义序列表示单个空格。 其次，您可以使用反斜杠<code>\</code>来禁止在行尾插入新行字符。 当您想分隔很长的行以简化<code>Text Block</code>内的可读性时，这很有用。</p>
-<p>例如，当前处理多行字符串的方法是：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String literal = <br>         <span class="hljs-string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing &quot;</span> +<br>         <span class="hljs-string">&quot;elit, sed do eiusmod tempor incididunt ut labore &quot;</span> +<br>         <span class="hljs-string">&quot;et dolore magna aliqua.&quot;</span>;<br></code></pre></td></tr></table></figure>
-<p>使用<code>Text Block</code>中的<code>\</code>转义序列，可以表示如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">String text = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">    Lorem ipsum dolor sit amet, consectetur adipiscing \</span><br><span class="hljs-string">    elit, sed do eiusmod tempor incididunt ut labore \</span><br><span class="hljs-string">    et dolore magna aliqua.\</span><br><span class="hljs-string">    &quot;</span><span class="hljs-string">&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
-<h1 id="instanceof-的模式匹配-Beta"><a href="#instanceof-的模式匹配-Beta" class="headerlink" title="instanceof 的模式匹配 (Beta)"></a>instanceof 的模式匹配 (Beta)</h1><p>Java 14引入了该Beta功能，该功能有助于消除对在有条件的<code>instanceof</code>检查之前进行显式强制转换的需求。 例如，考虑以下代码：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> Group) &#123;<br>  Group group = (Group) obj;<br><br>  <span class="hljs-comment">// use group specific methods</span><br>  <span class="hljs-keyword">var</span> entries = group.getEntries();<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>可以使用<code>instanceof</code>的模式匹配功能将其重构为：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> Group group) &#123;<br>  <span class="hljs-keyword">var</span> entries = group.getEntries();<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>由于条件检查断言<code>obj</code>是<code>Group</code>类型，为什么还要在第一个代码段中把<code>obj</code>强制转换为<code>Group</code>类型？ 这可能会增加错误几率。`</p>
-<p>较短的语法将删除典型Java程序中的许多强制转换。 （2011年一项提出相关语言功能的研究报告指出，所有演员表中约有24％遵循条件语句中的<code>instanceof</code>。）</p>
-<p>JEP 305涵盖了此更改，并从Joshua Bloch的Effective Java书中指出了一个示例，该示例通过以下相等方法进行说明：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123; <br>    <span class="hljs-keyword">return</span> (o <span class="hljs-keyword">instanceof</span> CaseInsensitiveString) &amp;&amp; <br>            ((CaseInsensitiveString) o).s.equalsIgnoreCase(s); <br>&#125;<br></code></pre></td></tr></table></figure>
-<p>通过删除对CaseInsensitiveString的冗余显式转换，可以将前面的代码简化为以下形式：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123; <br>    <span class="hljs-keyword">return</span> (o <span class="hljs-keyword">instanceof</span> CaseInsensitiveString cis) &amp;&amp;<br>            cis.s.equalsIgnoreCase(s); <br>&#125;<br></code></pre></td></tr></table></figure>
-<p>这是一个有趣的预览功能，因为它为更广泛的模式匹配打开了大门。 模式匹配的思想是为语言功能提供方便的语法，以根据某些条件提取对象的成分。 <code>instanceof</code>运算符就是这种情况，因为条件是类型检查，并且提取操作正在调用适当的方法或访问特定字段。</p>
-<p>换句话说，此预览功能仅仅是个开始，您可以期待一种语言功能，它可以帮助进一步减少冗长性，从而减少错误的可能性。</p>
-<h1 id="record-修饰符-Beta"><a href="#record-修饰符-Beta" class="headerlink" title="record 修饰符 (Beta)"></a>record 修饰符 (Beta)</h1><p>本次更新中还有另一种Beta功能：<code>record</code>修饰符。 像到目前为止提出的其他想法一样，此功能遵循减少Java冗长并帮助开发人员编写更简洁的代码的趋势。 记录集中在某些域类上，这些类仅用于将数据存储在字段中，并且不声明任何自定义行为。</p>
-<p>为了直接解决问题，用一个简单的类<code>BankTransaction</code>进行举例，该类使用三个字段对交易进行建模：<code>date</code>，<code>amount</code>和<code>description</code>。 声明类时，您需要担心多个问题：</p>
-<ul>
-<li>构造方法</li>
-<li><code>Getter</code> 方法</li>
-<li><code>toString()</code> 方法</li>
-<li><code>hashCode()</code> 和 <code>equals()</code> 方法</li>
-</ul>
-<p>此类组件的代码通常由IDE自动生成，并占用大量空间。 这是<code>BankTransaction</code>类的完整生成的实现：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BankTransaction</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> LocalDate date;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> amount;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String description;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BankTransaction</span><span class="hljs-params">(<span class="hljs-keyword">final</span> LocalDate date, </span></span><br><span class="hljs-function"><span class="hljs-params">                           <span class="hljs-keyword">final</span> <span class="hljs-keyword">double</span> amount, </span></span><br><span class="hljs-function"><span class="hljs-params">                           <span class="hljs-keyword">final</span> String description)</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>.date = date;<br>        <span class="hljs-keyword">this</span>.amount = amount;<br>        <span class="hljs-keyword">this</span>.description = description;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> LocalDate <span class="hljs-title">date</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> date;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">double</span> <span class="hljs-title">amount</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> amount;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">description</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> description;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;BankTransaction&#123;&quot;</span> +<br>                <span class="hljs-string">&quot;date=&quot;</span> + date +<br>                <span class="hljs-string">&quot;, amount=&quot;</span> + amount +<br>                <span class="hljs-string">&quot;, description=&#x27;&quot;</span> + description + <span class="hljs-string">&#x27;\&#x27;&#x27;</span> +<br>                <span class="hljs-string">&#x27;&#125;&#x27;</span>;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object o)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> == o) <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;<br>        <span class="hljs-keyword">if</span> (o == <span class="hljs-keyword">null</span> || getClass() != o.getClass()) <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;<br>        BankTransaction that = (BankTransaction) o;<br>        <span class="hljs-keyword">return</span> Double.compare(that.amount, amount) == <span class="hljs-number">0</span> &amp;&amp;<br>                date.equals(that.date) &amp;&amp;<br>                description.equals(that.description);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">hashCode</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> Objects.hash(date, amount, description);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>Java 14提供了一种消除冗长且明确意图的方法，即您所需要的只是一个仅将数据与<code>equals</code>，<code>hashCode</code>和<code>toString</code>方法的实现一起聚合的类。 您可以按以下方式重构<code>BankTransaction</code>：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> record <span class="hljs-title">BankTransaction</span><span class="hljs-params">(LocalDate date,</span></span><br><span class="hljs-function"><span class="hljs-params">                              <span class="hljs-keyword">double</span> amount,</span></span><br><span class="hljs-function"><span class="hljs-params">                              String description)</span> </span>&#123;&#125;<br></code></pre></td></tr></table></figure>
-<p>使用<code>record</code>修饰符，您可以“自动”获取除构造函数和获取器之外的<code>equals</code>，<code>hashCode</code>和<code>toString</code>方法的实现。</p>
-<p>要尝试该示例，请记住您需要使用预览标志来编译文件：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">javac --enable-preview --release 14 BankTransaction.java<br></code></pre></td></tr></table></figure>
-<p>被<code>record</code>修饰的类是隐式的<code>final</code>类。 这意味着您无法重新分配它们。 请注意，但这并不意味着整个记录都是不变的。 存储在字段中的对象本身可以是可变的。</p>
-<p>如果您对有关<code>record</code>的更详细的文章感兴趣，请查看<a href="https://blogs.oracle.com/javamagazine/records-come-to-java">Java杂志上Ben Evans的最新文章</a>。</p>
-<p>敬请关注。 从教育的角度来看，<code>record</code>还为下一代Java开发人员提出了有趣的问题。 例如，如果您指导初级开发人员，那么什么时候应该在课程中引入<code>record</code>：在引入OOP和类之前或之后？</p>
-<h1 id="增强的-NullPointerExceptions-Beta"><a href="#增强的-NullPointerExceptions-Beta" class="headerlink" title="增强的 NullPointerExceptions (Beta)"></a>增强的 NullPointerExceptions (Beta)</h1><p>有人说抛出<code>NullPointerExceptions</code>应该是Java中新的<code>“Hello world”</code>，因为您无法逃避它们。 撇开笑话，它们会引起挫败感，因为当代码在生产环境中运行时，它们经常出现在应用程序日志中，这可能使调试变得困难，因为原码不容易获得。 例如，考虑以下代码：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">var</span> name = user.getLocation().getCity().getName();<br></code></pre></td></tr></table></figure>
-<p>在Java 14之前，您可能会收到以下错误：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Exception in thread &quot;main&quot; java.lang.NullPointerException<br>    at NullPointerExample.main(NullPointerExample.java:5)<br></code></pre></td></tr></table></figure>
-<p>不幸的是，如果在第5行，有一个具有多个方法调用的赋值——<code>getLocation()</code>和<code>getCity()</code>——两者都可能返回<code>null</code>。 实际上，变量<code>user</code>也可以为<code>null</code>。 因此，尚不清楚是什么导致了<strong>NullPointerException</strong>。</p>
-<p>现在，使用Java 14，有一个新的JVM功能，通过它您可以接收更多信息的诊断：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">Exception in thread &quot;main&quot; java.lang.NullPointerException: Cannot invoke &quot;Location.getCity()&quot; because the return value of &quot;User.getLocation()&quot; is null<br></code></pre></td></tr></table></figure>
-<p>该消息现在具有两个明确的组成部分：</p>
-<ul>
-<li><strong>结果</strong>：无法调用<code>Location.getCity()</code>。</li>
-<li><strong>原因</strong>：<code>User.getLocation()</code>的返回值为<code>null</code>。</li>
-</ul>
-<p>仅当您使用以下标志运行Java时，增强型诊断才有效：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">-XX:+ShowCodeDetailsInExceptionMessages<br></code></pre></td></tr></table></figure>
-<p>这是一个例子：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">java -XX:+ShowCodeDetailsInExceptionMessages NullPointerExample<br></code></pre></td></tr></table></figure>
-<p>在Java的未来版本中，此功能可能默认启用，如<a href="https://bugs.openjdk.java.net/browse/JDK-8233014">此处报告</a>。</p>
-<p>此增强功能不仅可用于方法调用，还可用于可以导致<code>NullPointerException</code>异常的其他地方，包括字段访问，数组访问和赋值。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在Java 14中，有新的Beta功能和更新可帮助开发人员进行日常工作。 例如，Java 14引入了<code>instanceof</code>模式匹配，这是减少显式强制转换的一种方式。 而且，Java 14引入了<code>record</code>，这是一种新的结构，用于简洁地声明仅用于聚合数据的类。 此外，<code>NullPointerException</code>消息已得到改进，具有更好的诊断功能，并且<code>switch</code>表达式现在已成为Java 14的一部分。<code>Text Block</code>是一种可帮助您处理多行字符串值的功能，在引入了两个新的转义序列后，将进行另一轮预览。 Java操作的一部分技术人员可能会感兴趣的另一项更改是<a href="https://openjdk.java.net/jeps/349">JDK Flight Recorder中的事件流</a>。 Ben Evans在<a href="https://blogs.oracle.com/javamagazine/java-flight-recorder-and-jfr-event-streaming-in-java-14">他的文章中</a>中讨论了该功能。</p>
-<p>如您所见，Java 14带来了很多创新。 您绝对应该考虑一下，并将有关Beta功能的反馈发送给Java团队。</p>
-<blockquote>
-<p>原文：<a href="https://blogs.oracle.com/javamagazine/java-14-arrives-with-a-host-of-new-features">Java 14 Arrives with a Host of New Features</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>开发</category>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>总结</tag>
-        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
